@@ -1,4 +1,4 @@
-package conversion_deprecated
+package conversion
 
 type intModule interface {
 	intmodule()

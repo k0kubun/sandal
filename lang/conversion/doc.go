@@ -1,4 +1,4 @@
-// package conversion_deprecated provides a way to convert Sandal's AST to NuSMV's module.
+// package conversion provides a way to convert Sandal's AST to NuSMV's module.
 //
 // Sandal
 //
@@ -224,4 +224,4 @@
 //       ch_filled := [__pid0_ch.next_filled];
 //       ch_received := [__pid0_ch.next_received];
 //       ch_value_0 := [__pid0_ch.next_value_0];
-package conversion_deprecated
+package conversion

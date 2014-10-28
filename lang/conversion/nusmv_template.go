@@ -1,4 +1,4 @@
-package conversion_deprecated
+package conversion
 
 import (
 	"bytes"

@@ -3,7 +3,7 @@ package lang
 import (
 	"github.com/k0kubun/santalum/lang/parsing"
 	"github.com/k0kubun/santalum/lang/typecheck"
-	"github.com/k0kubun/santalum/lang/conversion_deprecated"
+	"github.com/k0kubun/santalum/lang/conversion"
 )
 
 func CompileFile(body string) (error, string) {
@@ -13,5 +13,5 @@ func CompileFile(body string) (error, string) {
 	if err := typecheck.TypeCheck(defs); err != nil {
 		return err, ""
 	}
-	return conversion_deprecated.ConvertASTToNuSMV(defs)
+	return conversion.ConvertASTToNuSMV(defs)
 }
