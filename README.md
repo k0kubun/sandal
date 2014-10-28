@@ -1,20 +1,50 @@
-Sandal
-======
+# Santalum
 
-Sandal is a fault-aware model checker for message passing systems.
+Extensible fault-aware model checking language forked from [Sandal](https://github.com/draftcode/sandal).
 
-Install
--------
+## Features
 
-Sandal follows Go's standard package structure. The following command will install Sandal compiler to $GOPATH/bin:
+### Sandal-derived features
 
-    $ go get github.com/draftcode/sandal
+These features are derived from Sandal.
 
-In addition to Sandal compiler, you need to install NuSMV to model-check a converted model that the compiler outputs.
+- Simple syntax like Go language
+- Easy fault injection without changing semantics
 
-Usage
------
+### Extended features
 
-Sandal compiler converts a model written in Sandal into a NuSMV module, and write it to STDOUT. For example, the following command will convert your Sandal model to a NuSMV module and execute NuSMV:
+Santalum has some extra features Sandal does not have.
 
-    $ sandal your_model.sandal | nusmv
+- Fault statements are unified as `@` prefixed, like `recv @timeout`
+- You can define orignal faults for any processes for functions
+
+## Installation
+
+Santalum depends on NuSMV.
+
+```bash
+$ go get github.com/k0kubun/santalum
+$ brew install homebrew/science/nusmv
+```
+
+## Usage
+
+To see model checking result, you have to pipe Santalum's stdout to NuSMV
+
+```bash
+$ santalum your_model.sant | nusmv
+```
+
+## Model examples
+
+```go
+proc ProcA(ch0 channel {bool}) {
+  var b int
+  send(ch0, true)
+}
+
+init {
+  ch:    channel {bool},
+  proc1: ProcA(ch),
+}
+```
