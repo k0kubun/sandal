@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/draftcode/sandal/lang"
+	"github.com/k0kubun/santalum/lang"
 	"io/ioutil"
 	"log"
 	"os"

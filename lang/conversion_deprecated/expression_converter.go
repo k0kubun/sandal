@@ -1,7 +1,7 @@
 package conversion_deprecated
 
 import (
-	. "github.com/draftcode/sandal/lang/data"
+	. "github.com/k0kubun/santalum/lang/data"
 )
 
 func expressionToInternalObj(expr Expression, env *varEnv) intInternalExpressionObj {

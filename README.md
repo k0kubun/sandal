@@ -1,6 +1,6 @@
 # Santalum
 
-Extensible fault-aware model checking language forked from [Sandal](https://github.com/draftcode/sandal).
+Extensible fault-aware model checking language forked from [Sandal](https://github.com/k0kubun/santalum).
 
 ## Features
 

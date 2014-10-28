@@ -4,7 +4,7 @@ package parsing
 
 import (
 	"log"
-	data "github.com/draftcode/sandal/lang/data"
+	data "github.com/k0kubun/santalum/lang/data"
 )
 
 type token struct {

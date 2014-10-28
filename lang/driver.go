@@ -1,10 +1,10 @@
 package lang
 
 import (
-	"github.com/draftcode/sandal/lang/parsing"
-	"github.com/draftcode/sandal/lang/typecheck"
-	"github.com/draftcode/sandal/lang/conversion"
-	"github.com/draftcode/sandal/lang/conversion_deprecated"
+	"github.com/k0kubun/santalum/lang/parsing"
+	"github.com/k0kubun/santalum/lang/typecheck"
+	"github.com/k0kubun/santalum/lang/conversion"
+	"github.com/k0kubun/santalum/lang/conversion_deprecated"
 )
 
 func CompileFile(body string, deprecated bool) (error, string) {

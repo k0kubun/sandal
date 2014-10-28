@@ -2,7 +2,7 @@ package parsing
 
 import (
 	"github.com/cookieo9/go-misc/pp"
-	. "github.com/draftcode/sandal/lang/data"
+	. "github.com/k0kubun/santalum/lang/data"
 	"reflect"
 	"testing"
 )

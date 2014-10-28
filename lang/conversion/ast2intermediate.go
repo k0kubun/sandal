@@ -2,7 +2,7 @@ package conversion
 
 import (
 	"fmt"
-	. "github.com/draftcode/sandal/lang/data"
+	. "github.com/k0kubun/santalum/lang/data"
 	"strconv"
 	"strings"
 )

@@ -1,7 +1,7 @@
 package typecheck
 
 import (
-	. "github.com/draftcode/sandal/lang/data"
+	. "github.com/k0kubun/santalum/lang/data"
 	"testing"
 )
 

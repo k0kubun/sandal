@@ -2,7 +2,7 @@ package conversion
 
 import (
 	"github.com/cookieo9/go-misc/pp"
-	. "github.com/draftcode/sandal/lang/data"
+	. "github.com/k0kubun/santalum/lang/data"
 	"testing"
 )
 

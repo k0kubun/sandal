@@ -2,7 +2,7 @@ package conversion_deprecated
 
 import (
 	"fmt"
-	. "github.com/draftcode/sandal/lang/data"
+	. "github.com/k0kubun/santalum/lang/data"
 )
 
 func (x *intModConverter) convertStatements(statements []Statement, defaults map[string]string, tags []string, vars []intVar) ([]intVar, intState, []intTransition) {
