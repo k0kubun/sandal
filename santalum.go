@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Println("Specify a source")
+		fmt.Println("Usage: santalum [programfile]")
 		os.Exit(1)
 	}
 
