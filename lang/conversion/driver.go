@@ -5,15 +5,15 @@ import (
 	"strings"
 )
 
-func ConvertASTToNuSMV(defs []Definition) (error, string) {
+func ConvertASTToNuSMV(defs []Definition) (string, error) {
 	err, intMods := convertASTToIntModule(defs)
 	if err != nil {
-		return err, ""
+		return "", err
 	}
 
 	err, tmplMods := convertIntermediateModuleToTemplate(intMods)
 	if err != nil {
-		return err, ""
+		return "", err
 	}
 
 	mods := []string{}
@@ -21,5 +21,5 @@ func ConvertASTToNuSMV(defs []Definition) (error, string) {
 		mods = append(mods, instantiateTemplate(tmplMod))
 	}
 
-	return nil, strings.Join(mods, "")
+	return strings.Join(mods, ""), nil
 }

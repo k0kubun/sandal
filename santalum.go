@@ -13,12 +13,14 @@ func main() {
 		fmt.Println("Specify a source")
 		os.Exit(1)
 	}
+
 	filePath := os.Args[1]
 	body, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		log.Fatal(filePath, err)
 	}
-	err, compiled := lang.CompileFile(string(body))
+
+	compiled, err := lang.CompileFile(string(body))
 	if err != nil {
 		log.Fatal(filePath, err)
 	}

@@ -147,7 +147,7 @@ func TestConvertASTToNuSMV1(t *testing.T) {
 			},
 		},
 	}
-	err, mod := ConvertASTToNuSMV(defs)
+	mod, err := ConvertASTToNuSMV(defs)
 	if err != nil {
 		t.Fatalf("Unexpected error: %s", err)
 	}
@@ -317,7 +317,7 @@ func TestConvertASTToNuSMV2(t *testing.T) {
 			},
 		},
 	}
-	err, mod := ConvertASTToNuSMV(defs)
+	mod, err := ConvertASTToNuSMV(defs)
 	if err != nil {
 		t.Fatalf("Unexpected error: %s", err)
 	}
