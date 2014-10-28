@@ -18,7 +18,7 @@ func main() {
 	if err != nil {
 		log.Fatal(filePath, err)
 	}
-	err, compiled := lang.CompileFile(string(body), true)
+	err, compiled := lang.CompileFile(string(body))
 	if err != nil {
 		log.Fatal(filePath, err)
 	}
