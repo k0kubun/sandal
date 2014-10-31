@@ -20,17 +20,60 @@ Compile steps:
 
 ## Abrupt Termination Faults
 
-Abrupt Termination is a fault which is injected to process.
+Abrupt Termination is a fault which is injected to process or channel.
 
 ```
 init {
-  bossProcess : Boss(chQueue, chResp) @unstable,
+  unstableProc : Boss(chQueue, chResp) @unstable,
+}
+
+init {
+  unstableCh : channel { bool } @unstable,
 }
 ```
 
 ### Parsing
 
-TBD
+```go
+// Input
+init { a : M(b) @unstable }
+
+// Output
+[]Definition{
+	InitBlock{
+		Pos{1, 1},
+		[]InitVar{
+			InstanceVar{
+				Pos{1, 8},
+				"a",
+				"M",
+				[]Expression{IdentifierExpression{Pos{1, 14}, "b"}},
+				[]string{"unstable"},
+			},
+		},
+	},
+},
+```
+
+```go
+// Input
+init { a : channel { bool } @unstable }
+
+// Output
+[]Definition{
+	InitBlock{
+		Pos{1, 1},
+		[]InitVar{
+			ChannelVar{
+				Pos{1, 8},
+				"a",
+				HandshakeChannelType{[]Type{NamedType{"bool"}}},
+				[]string{"unstable"},
+			},
+		},
+	},
+},
+```
 
 ### TypeCheck
 
