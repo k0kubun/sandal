@@ -61,7 +61,13 @@ func TestParseInitBlock(t *testing.T) {
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
-					InstanceVar{Pos{1, 8}, "a", "M", []Expression{IdentifierExpression{Pos{1, 14}, "b"}}, []string{}},
+					InstanceVar{
+						Pos{1, 8},
+						"a",
+						"M",
+						[]Expression{IdentifierExpression{Pos{1, 14}, "b"}},
+						[]string{},
+					},
 				},
 			},
 		},
@@ -74,7 +80,13 @@ func TestParseInitBlock(t *testing.T) {
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
-					InstanceVar{Pos{1, 8}, "a", "M", []Expression{IdentifierExpression{Pos{1, 14}, "b"}}, []string{"unstable"}},
+					InstanceVar{
+						Pos{1, 8},
+						"a",
+						"M",
+						[]Expression{IdentifierExpression{Pos{1, 14}, "b"}},
+						[]string{"unstable"},
+					},
 				},
 			},
 		},
@@ -87,7 +99,12 @@ func TestParseInitBlock(t *testing.T) {
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
-					ChannelVar{Pos{1, 8}, "a", HandshakeChannelType{[]Type{NamedType{"bool"}}}, []string{}},
+					ChannelVar{
+						Pos{1, 8},
+						"a",
+						HandshakeChannelType{[]Type{NamedType{"bool"}}},
+						[]string{},
+					},
 				},
 			},
 		},
@@ -100,7 +117,12 @@ func TestParseInitBlock(t *testing.T) {
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
-					ChannelVar{Pos{1, 8}, "a", HandshakeChannelType{[]Type{NamedType{"bool"}}}, []string{"unstable"}},
+					ChannelVar{
+						Pos{1, 8},
+						"a",
+						HandshakeChannelType{[]Type{NamedType{"bool"}}},
+						[]string{"unstable"},
+					},
 				},
 			},
 		},
