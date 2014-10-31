@@ -39,7 +39,8 @@ for filename in `ls test`; do
             printf "\e[0m"
           else
             printf "\e[32m"
-            echo "PASSED: ${actual_filename}"
+            echo "PASS"
+            echo "ok      ${actual_filename} -> ${expect_filename}"
             printf "\e[0m"
           fi
         fi

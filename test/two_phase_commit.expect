@@ -1,5 +1,5 @@
 
-MODULE HandshakeChannel0(running_pid, filleds, receiveds, values_0)
+MODULE HandshakeChannel0()
   VAR
     filled : boolean;
     received : boolean;
@@ -7,21 +7,39 @@ MODULE HandshakeChannel0(running_pid, filleds, receiveds, values_0)
   ASSIGN
     init(filled) := FALSE;
     init(received) := FALSE;
-    next(filled) := filleds[running_pid];
-    next(received) := receiveds[running_pid];
-    next(value_0) := values_0[running_pid];
+    init(value_0) := Ready;
 
 MODULE HandshakeChannel0Proxy(ch)
   VAR
-    next_filled : boolean;
-    next_received : boolean;
-    next_value_0 : {Ready, NotReady, Commit, Abort};
+    recv_received : boolean;
+    send_filled : boolean;
+    send_leaving : boolean;
+    send_value_0 : {Ready, NotReady, Commit, Abort};
+  ASSIGN
+    next(ch.filled) :=
+      case
+        send_filled : TRUE;
+        send_leaving : FALSE;
+        TRUE : ch.filled;
+      esac;
+    next(ch.received) :=
+      case
+        send_filled : FALSE;
+        send_leaving : FALSE;
+        recv_received : TRUE;
+        TRUE : ch.received;
+      esac;
+    next(ch.value_0) :=
+      case
+        send_filled : send_value_0;
+        TRUE : ch.value_0;
+      esac;
   DEFINE
-    filled := ch.filled;
+    ready := ch.filled;
     received := ch.received;
     value_0 := ch.value_0;
 
-MODULE HandshakeChannel1(running_pid, filleds, receiveds, values_0)
+MODULE HandshakeChannel1()
   VAR
     filled : boolean;
     received : boolean;
@@ -29,21 +47,39 @@ MODULE HandshakeChannel1(running_pid, filleds, receiveds, values_0)
   ASSIGN
     init(filled) := FALSE;
     init(received) := FALSE;
-    next(filled) := filleds[running_pid];
-    next(received) := receiveds[running_pid];
-    next(value_0) := values_0[running_pid];
+    init(value_0) := Ready;
 
 MODULE HandshakeChannel1Proxy(ch)
   VAR
-    next_filled : boolean;
-    next_received : boolean;
-    next_value_0 : {Ready, NotReady, Commit, Abort};
+    recv_received : boolean;
+    send_filled : boolean;
+    send_leaving : boolean;
+    send_value_0 : {Ready, NotReady, Commit, Abort};
+  ASSIGN
+    next(ch.filled) :=
+      case
+        send_filled : TRUE;
+        send_leaving : FALSE;
+        TRUE : ch.filled;
+      esac;
+    next(ch.received) :=
+      case
+        send_filled : FALSE;
+        send_leaving : FALSE;
+        recv_received : TRUE;
+        TRUE : ch.received;
+      esac;
+    next(ch.value_0) :=
+      case
+        send_filled : send_value_0;
+        TRUE : ch.value_0;
+      esac;
   DEFINE
-    filled := ch.filled;
+    ready := ch.filled;
     received := ch.received;
     value_0 := ch.value_0;
 
-MODULE HandshakeChannel2(running_pid, filleds, receiveds, values_0)
+MODULE HandshakeChannel2()
   VAR
     filled : boolean;
     received : boolean;
@@ -51,21 +87,39 @@ MODULE HandshakeChannel2(running_pid, filleds, receiveds, values_0)
   ASSIGN
     init(filled) := FALSE;
     init(received) := FALSE;
-    next(filled) := filleds[running_pid];
-    next(received) := receiveds[running_pid];
-    next(value_0) := values_0[running_pid];
+    init(value_0) := Ready;
 
 MODULE HandshakeChannel2Proxy(ch)
   VAR
-    next_filled : boolean;
-    next_received : boolean;
-    next_value_0 : {Ready, NotReady, Commit, Abort};
+    recv_received : boolean;
+    send_filled : boolean;
+    send_leaving : boolean;
+    send_value_0 : {Ready, NotReady, Commit, Abort};
+  ASSIGN
+    next(ch.filled) :=
+      case
+        send_filled : TRUE;
+        send_leaving : FALSE;
+        TRUE : ch.filled;
+      esac;
+    next(ch.received) :=
+      case
+        send_filled : FALSE;
+        send_leaving : FALSE;
+        recv_received : TRUE;
+        TRUE : ch.received;
+      esac;
+    next(ch.value_0) :=
+      case
+        send_filled : send_value_0;
+        TRUE : ch.value_0;
+      esac;
   DEFINE
-    filled := ch.filled;
+    ready := ch.filled;
     received := ch.received;
     value_0 := ch.value_0;
 
-MODULE HandshakeChannel3(running_pid, filleds, receiveds, values_0)
+MODULE HandshakeChannel3()
   VAR
     filled : boolean;
     received : boolean;
@@ -73,131 +127,165 @@ MODULE HandshakeChannel3(running_pid, filleds, receiveds, values_0)
   ASSIGN
     init(filled) := FALSE;
     init(received) := FALSE;
-    next(filled) := filleds[running_pid];
-    next(received) := receiveds[running_pid];
-    next(value_0) := values_0[running_pid];
+    init(value_0) := Ready;
 
 MODULE HandshakeChannel3Proxy(ch)
   VAR
-    next_filled : boolean;
-    next_received : boolean;
-    next_value_0 : {Ready, NotReady, Commit, Abort};
+    recv_received : boolean;
+    send_filled : boolean;
+    send_leaving : boolean;
+    send_value_0 : {Ready, NotReady, Commit, Abort};
+  ASSIGN
+    next(ch.filled) :=
+      case
+        send_filled : TRUE;
+        send_leaving : FALSE;
+        TRUE : ch.filled;
+      esac;
+    next(ch.received) :=
+      case
+        send_filled : FALSE;
+        send_leaving : FALSE;
+        recv_received : TRUE;
+        TRUE : ch.received;
+      esac;
+    next(ch.value_0) :=
+      case
+        send_filled : send_value_0;
+        TRUE : ch.value_0;
+      esac;
   DEFINE
-    filled := ch.filled;
+    ready := ch.filled;
     received := ch.received;
     value_0 := ch.value_0;
 
-MODULE __pid0_Arbiter(running_pid, pid, __elem0_chRecvs, __elem1_chRecvs, __elem0_chSends, __elem1_chSends)
+MODULE __pid0_Arbiter(__orig___elem0_chRecvs, __orig___elem1_chRecvs, __orig___elem0_chSends, __orig___elem1_chSends)
+  JUSTICE
+    running
   VAR
+    __elem0_chRecvs : HandshakeChannel0Proxy(__orig___elem0_chRecvs);
+    __elem0_chSends : HandshakeChannel1Proxy(__orig___elem0_chSends);
+    __elem1_chRecvs : HandshakeChannel2Proxy(__orig___elem1_chRecvs);
+    __elem1_chSends : HandshakeChannel3Proxy(__orig___elem1_chSends);
     all_ready : boolean;
     resp : {Ready, NotReady, Commit, Abort};
     resp_2 : {Ready, NotReady, Commit, Abort};
     state : {state0, state1, state10, state11, state12, state13, state14, state15, state16, state17, state18, state19, state2, state20, state21, state22, state23, state24, state25, state26, state27, state28, state29, state3, state30, state31, state32, state4, state5, state6, state7, state8, state9};
     transition : {notrans, trans0, trans1, trans10, trans11, trans12, trans13, trans14, trans15, trans16, trans17, trans18, trans19, trans2, trans20, trans21, trans22, trans23, trans24, trans25, trans26, trans27, trans28, trans29, trans3, trans30, trans31, trans32, trans33, trans34, trans4, trans5, trans6, trans7, trans8, trans9};
-  TRANS transition = trans0 -> (!(__elem0_chSends.filled));
-  TRANS transition = trans1 -> ((__elem0_chSends.filled) & (__elem0_chSends.received));
+  TRANS transition = trans0 -> (!(__elem0_chSends.ready));
+  TRANS transition = trans1 -> ((__elem0_chSends.ready) & (__elem0_chSends.received));
   TRANS transition = trans10 -> (TRUE);
   TRANS transition = trans11 -> (TRUE);
   TRANS transition = trans12 -> (TRUE);
   TRANS transition = trans13 -> (TRUE);
-  TRANS transition = trans14 -> (__elem1_chRecvs.filled & !__elem1_chRecvs.received);
+  TRANS transition = trans14 -> (__elem1_chRecvs.ready & !__elem1_chRecvs.received);
   TRANS transition = trans15 -> (resp_2!=Ready);
   TRANS transition = trans16 -> (!(resp_2!=Ready));
   TRANS transition = trans17 -> (TRUE);
   TRANS transition = trans18 -> (TRUE);
   TRANS transition = trans19 -> (TRUE);
-  TRANS transition = trans2 -> (!(__elem1_chSends.filled));
+  TRANS transition = trans2 -> (!(__elem1_chSends.ready));
   TRANS transition = trans20 -> (TRUE);
   TRANS transition = trans21 -> (all_ready);
   TRANS transition = trans22 -> (!(all_ready));
-  TRANS transition = trans23 -> (!(__elem0_chSends.filled));
-  TRANS transition = trans24 -> ((__elem0_chSends.filled) & (__elem0_chSends.received));
-  TRANS transition = trans25 -> (!(__elem1_chSends.filled));
-  TRANS transition = trans26 -> ((__elem1_chSends.filled) & (__elem1_chSends.received));
+  TRANS transition = trans23 -> (!(__elem0_chSends.ready));
+  TRANS transition = trans24 -> ((__elem0_chSends.ready) & (__elem0_chSends.received));
+  TRANS transition = trans25 -> (!(__elem1_chSends.ready));
+  TRANS transition = trans26 -> ((__elem1_chSends.ready) & (__elem1_chSends.received));
   TRANS transition = trans27 -> (TRUE);
   TRANS transition = trans28 -> (TRUE);
-  TRANS transition = trans29 -> (!(__elem0_chSends.filled));
-  TRANS transition = trans3 -> ((__elem1_chSends.filled) & (__elem1_chSends.received));
-  TRANS transition = trans30 -> ((__elem0_chSends.filled) & (__elem0_chSends.received));
-  TRANS transition = trans31 -> (!(__elem1_chSends.filled));
-  TRANS transition = trans32 -> ((__elem1_chSends.filled) & (__elem1_chSends.received));
+  TRANS transition = trans29 -> (!(__elem0_chSends.ready));
+  TRANS transition = trans3 -> ((__elem1_chSends.ready) & (__elem1_chSends.received));
+  TRANS transition = trans30 -> ((__elem0_chSends.ready) & (__elem0_chSends.received));
+  TRANS transition = trans31 -> (!(__elem1_chSends.ready));
+  TRANS transition = trans32 -> ((__elem1_chSends.ready) & (__elem1_chSends.received));
   TRANS transition = trans33 -> (TRUE);
   TRANS transition = trans34 -> (TRUE);
   TRANS transition = trans4 -> (TRUE);
   TRANS transition = trans5 -> (TRUE);
   TRANS transition = trans6 -> (TRUE);
-  TRANS transition = trans7 -> (__elem0_chRecvs.filled & !__elem0_chRecvs.received);
+  TRANS transition = trans7 -> (__elem0_chRecvs.ready & !__elem0_chRecvs.received);
   TRANS transition = trans8 -> (resp!=Ready);
   TRANS transition = trans9 -> (!(resp!=Ready));
   ASSIGN
-    __elem0_chRecvs.next_filled :=
-      case
-        TRUE : __elem0_chRecvs.filled;
-      esac;
-    __elem0_chRecvs.next_received :=
+    __elem0_chRecvs.recv_received :=
       case
         transition = trans7 : TRUE;
-        TRUE : __elem0_chRecvs.received;
+        TRUE : FALSE;
       esac;
-    __elem0_chRecvs.next_value_0 :=
+    __elem0_chRecvs.send_filled :=
+      case
+        TRUE : FALSE;
+      esac;
+    __elem0_chRecvs.send_leaving :=
+      case
+        TRUE : FALSE;
+      esac;
+    __elem0_chRecvs.send_value_0 :=
       case
         TRUE : __elem0_chRecvs.value_0;
       esac;
-    __elem0_chSends.next_filled :=
+    __elem0_chSends.recv_received :=
+      case
+        TRUE : FALSE;
+      esac;
+    __elem0_chSends.send_filled :=
       case
         transition = trans0 : TRUE;
-        transition = trans1 : FALSE;
         transition = trans23 : TRUE;
-        transition = trans24 : FALSE;
         transition = trans29 : TRUE;
-        transition = trans30 : FALSE;
-        TRUE : __elem0_chSends.filled;
+        TRUE : FALSE;
       esac;
-    __elem0_chSends.next_received :=
+    __elem0_chSends.send_leaving :=
       case
-        transition = trans0 : FALSE;
-        transition = trans23 : FALSE;
-        transition = trans29 : FALSE;
-        TRUE : __elem0_chSends.received;
+        transition = trans1 : TRUE;
+        transition = trans24 : TRUE;
+        transition = trans30 : TRUE;
+        TRUE : FALSE;
       esac;
-    __elem0_chSends.next_value_0 :=
+    __elem0_chSends.send_value_0 :=
       case
         transition = trans0 : Ready;
         transition = trans23 : Commit;
         transition = trans29 : Abort;
         TRUE : __elem0_chSends.value_0;
       esac;
-    __elem1_chRecvs.next_filled :=
-      case
-        TRUE : __elem1_chRecvs.filled;
-      esac;
-    __elem1_chRecvs.next_received :=
+    __elem1_chRecvs.recv_received :=
       case
         transition = trans14 : TRUE;
-        TRUE : __elem1_chRecvs.received;
+        TRUE : FALSE;
       esac;
-    __elem1_chRecvs.next_value_0 :=
+    __elem1_chRecvs.send_filled :=
+      case
+        TRUE : FALSE;
+      esac;
+    __elem1_chRecvs.send_leaving :=
+      case
+        TRUE : FALSE;
+      esac;
+    __elem1_chRecvs.send_value_0 :=
       case
         TRUE : __elem1_chRecvs.value_0;
       esac;
-    __elem1_chSends.next_filled :=
+    __elem1_chSends.recv_received :=
+      case
+        TRUE : FALSE;
+      esac;
+    __elem1_chSends.send_filled :=
       case
         transition = trans2 : TRUE;
         transition = trans25 : TRUE;
-        transition = trans26 : FALSE;
-        transition = trans3 : FALSE;
         transition = trans31 : TRUE;
-        transition = trans32 : FALSE;
-        TRUE : __elem1_chSends.filled;
+        TRUE : FALSE;
       esac;
-    __elem1_chSends.next_received :=
+    __elem1_chSends.send_leaving :=
       case
-        transition = trans2 : FALSE;
-        transition = trans25 : FALSE;
-        transition = trans31 : FALSE;
-        TRUE : __elem1_chSends.received;
+        transition = trans26 : TRUE;
+        transition = trans3 : TRUE;
+        transition = trans32 : TRUE;
+        TRUE : FALSE;
       esac;
-    __elem1_chSends.next_value_0 :=
+    __elem1_chSends.send_value_0 :=
       case
         transition = trans2 : Ready;
         transition = trans25 : Commit;
@@ -263,89 +351,99 @@ MODULE __pid0_Arbiter(running_pid, pid, __elem0_chRecvs, __elem1_chRecvs, __elem
       esac;
     transition :=
       case
-        running_pid = pid & state = state0 & ((!(__elem0_chSends.filled))) : {trans0};
-        running_pid = pid & state = state1 & ((TRUE)) : {trans5};
-        running_pid = pid & state = state10 & ((TRUE)) : {trans13};
-        running_pid = pid & state = state11 & ((TRUE)) : {trans10};
-        running_pid = pid & state = state12 & ((TRUE)) : {trans12};
-        running_pid = pid & state = state13 & ((TRUE)) : {trans11};
-        running_pid = pid & state = state14 & ((__elem1_chRecvs.filled & !__elem1_chRecvs.received)) : {trans14};
-        running_pid = pid & state = state15 & ((!(resp_2!=Ready)) | (resp_2!=Ready)) : {trans15, trans16};
-        running_pid = pid & state = state16 & ((TRUE)) : {trans20};
-        running_pid = pid & state = state17 & ((TRUE)) : {trans17};
-        running_pid = pid & state = state18 & ((TRUE)) : {trans19};
-        running_pid = pid & state = state19 & ((TRUE)) : {trans18};
-        running_pid = pid & state = state2 & (((__elem0_chSends.filled) & (__elem0_chSends.received))) : {trans1};
-        running_pid = pid & state = state21 & ((!(__elem0_chSends.filled))) : {trans23};
-        running_pid = pid & state = state22 & ((!(__elem0_chSends.filled))) : {trans29};
-        running_pid = pid & state = state23 & ((TRUE)) : {trans28};
-        running_pid = pid & state = state24 & (((__elem0_chSends.filled) & (__elem0_chSends.received))) : {trans24};
-        running_pid = pid & state = state25 & ((!(__elem1_chSends.filled))) : {trans25};
-        running_pid = pid & state = state26 & (((__elem1_chSends.filled) & (__elem1_chSends.received))) : {trans26};
-        running_pid = pid & state = state27 & ((TRUE)) : {trans27};
-        running_pid = pid & state = state28 & ((TRUE)) : {trans34};
-        running_pid = pid & state = state29 & (((__elem0_chSends.filled) & (__elem0_chSends.received))) : {trans30};
-        running_pid = pid & state = state3 & ((!(__elem1_chSends.filled))) : {trans2};
-        running_pid = pid & state = state30 & ((!(__elem1_chSends.filled))) : {trans31};
-        running_pid = pid & state = state31 & (((__elem1_chSends.filled) & (__elem1_chSends.received))) : {trans32};
-        running_pid = pid & state = state32 & ((TRUE)) : {trans33};
-        running_pid = pid & state = state4 & (((__elem1_chSends.filled) & (__elem1_chSends.received))) : {trans3};
-        running_pid = pid & state = state5 & ((TRUE)) : {trans4};
-        running_pid = pid & state = state6 & ((TRUE)) : {trans6};
-        running_pid = pid & state = state7 & ((!(all_ready)) | (all_ready)) : {trans21, trans22};
-        running_pid = pid & state = state8 & ((__elem0_chRecvs.filled & !__elem0_chRecvs.received)) : {trans7};
-        running_pid = pid & state = state9 & ((!(resp!=Ready)) | (resp!=Ready)) : {trans8, trans9};
+        state = state0 & ((!(__elem0_chSends.ready))) : {trans0};
+        state = state1 & ((TRUE)) : {trans5};
+        state = state10 & ((TRUE)) : {trans13};
+        state = state11 & ((TRUE)) : {trans10};
+        state = state12 & ((TRUE)) : {trans12};
+        state = state13 & ((TRUE)) : {trans11};
+        state = state14 & ((__elem1_chRecvs.ready & !__elem1_chRecvs.received)) : {trans14};
+        state = state15 & ((!(resp_2!=Ready)) | (resp_2!=Ready)) : {trans15, trans16};
+        state = state16 & ((TRUE)) : {trans20};
+        state = state17 & ((TRUE)) : {trans17};
+        state = state18 & ((TRUE)) : {trans19};
+        state = state19 & ((TRUE)) : {trans18};
+        state = state2 & (((__elem0_chSends.ready) & (__elem0_chSends.received))) : {trans1};
+        state = state21 & ((!(__elem0_chSends.ready))) : {trans23};
+        state = state22 & ((!(__elem0_chSends.ready))) : {trans29};
+        state = state23 & ((TRUE)) : {trans28};
+        state = state24 & (((__elem0_chSends.ready) & (__elem0_chSends.received))) : {trans24};
+        state = state25 & ((!(__elem1_chSends.ready))) : {trans25};
+        state = state26 & (((__elem1_chSends.ready) & (__elem1_chSends.received))) : {trans26};
+        state = state27 & ((TRUE)) : {trans27};
+        state = state28 & ((TRUE)) : {trans34};
+        state = state29 & (((__elem0_chSends.ready) & (__elem0_chSends.received))) : {trans30};
+        state = state3 & ((!(__elem1_chSends.ready))) : {trans2};
+        state = state30 & ((!(__elem1_chSends.ready))) : {trans31};
+        state = state31 & (((__elem1_chSends.ready) & (__elem1_chSends.received))) : {trans32};
+        state = state32 & ((TRUE)) : {trans33};
+        state = state4 & (((__elem1_chSends.ready) & (__elem1_chSends.received))) : {trans3};
+        state = state5 & ((TRUE)) : {trans4};
+        state = state6 & ((TRUE)) : {trans6};
+        state = state7 & ((!(all_ready)) | (all_ready)) : {trans21, trans22};
+        state = state8 & ((__elem0_chRecvs.ready & !__elem0_chRecvs.received)) : {trans7};
+        state = state9 & ((!(resp!=Ready)) | (resp!=Ready)) : {trans8, trans9};
         TRUE : notrans;
       esac;
 
-MODULE __pid1_Worker(running_pid, pid, chRecv, chSend)
+MODULE __pid1_Worker(__orig_chRecv, __orig_chSend)
+  JUSTICE
+    running
   VAR
+    chRecv : HandshakeChannel1Proxy(__orig_chRecv);
+    chSend : HandshakeChannel0Proxy(__orig_chSend);
     resp : {Ready, NotReady, Commit, Abort};
     state : {state0, state1, state10, state11, state12, state2, state3, state4, state5, state6, state7, state8, state9};
     transition : {notrans, trans0, trans1, trans10, trans11, trans12, trans2, trans3, trans4, trans5, trans6, trans7, trans8, trans9};
   TRANS transition = trans0 -> (TRUE);
-  TRANS transition = trans1 -> (chRecv.filled & !chRecv.received);
+  TRANS transition = trans1 -> (chRecv.ready & !chRecv.received);
   TRANS transition = trans10 -> (TRUE);
   TRANS transition = trans11 -> (TRUE);
-  TRANS transition = trans12 -> (chRecv.filled & !chRecv.received);
+  TRANS transition = trans12 -> (chRecv.ready & !chRecv.received);
   TRANS transition = trans2 -> (TRUE);
-  TRANS transition = trans3 -> (!(chSend.filled));
-  TRANS transition = trans4 -> ((chSend.filled) & (chSend.received));
+  TRANS transition = trans3 -> (!(chSend.ready));
+  TRANS transition = trans4 -> ((chSend.ready) & (chSend.received));
   TRANS transition = trans5 -> (TRUE);
   TRANS transition = trans6 -> (TRUE);
   TRANS transition = trans7 -> (TRUE);
-  TRANS transition = trans8 -> (!(chSend.filled));
-  TRANS transition = trans9 -> ((chSend.filled) & (chSend.received));
+  TRANS transition = trans8 -> (!(chSend.ready));
+  TRANS transition = trans9 -> ((chSend.ready) & (chSend.received));
   ASSIGN
-    chRecv.next_filled :=
-      case
-        TRUE : chRecv.filled;
-      esac;
-    chRecv.next_received :=
+    chRecv.recv_received :=
       case
         transition = trans1 : TRUE;
         transition = trans12 : TRUE;
-        TRUE : chRecv.received;
+        TRUE : FALSE;
       esac;
-    chRecv.next_value_0 :=
+    chRecv.send_filled :=
+      case
+        TRUE : FALSE;
+      esac;
+    chRecv.send_leaving :=
+      case
+        TRUE : FALSE;
+      esac;
+    chRecv.send_value_0 :=
       case
         TRUE : chRecv.value_0;
       esac;
-    chSend.next_filled :=
+    chSend.recv_received :=
+      case
+        TRUE : FALSE;
+      esac;
+    chSend.send_filled :=
       case
         transition = trans3 : TRUE;
-        transition = trans4 : FALSE;
         transition = trans8 : TRUE;
-        transition = trans9 : FALSE;
-        TRUE : chSend.filled;
+        TRUE : FALSE;
       esac;
-    chSend.next_received :=
+    chSend.send_leaving :=
       case
-        transition = trans3 : FALSE;
-        transition = trans8 : FALSE;
-        TRUE : chSend.received;
+        transition = trans4 : TRUE;
+        transition = trans9 : TRUE;
+        TRUE : FALSE;
       esac;
-    chSend.next_value_0 :=
+    chSend.send_value_0 :=
       case
         transition = trans3 : NotReady;
         transition = trans8 : Ready;
@@ -377,69 +475,79 @@ MODULE __pid1_Worker(running_pid, pid, chRecv, chSend)
       esac;
     transition :=
       case
-        running_pid = pid & state = state0 & ((TRUE)) : {trans0};
-        running_pid = pid & state = state1 & ((chRecv.filled & !chRecv.received)) : {trans1};
-        running_pid = pid & state = state10 & (((chSend.filled) & (chSend.received))) : {trans9};
-        running_pid = pid & state = state11 & ((TRUE)) : {trans10};
-        running_pid = pid & state = state2 & ((TRUE)) : {trans2, trans7};
-        running_pid = pid & state = state3 & ((chRecv.filled & !chRecv.received)) : {trans12};
-        running_pid = pid & state = state4 & ((!(chSend.filled))) : {trans3};
-        running_pid = pid & state = state5 & ((TRUE)) : {trans6};
-        running_pid = pid & state = state6 & (((chSend.filled) & (chSend.received))) : {trans4};
-        running_pid = pid & state = state7 & ((TRUE)) : {trans5};
-        running_pid = pid & state = state8 & ((!(chSend.filled))) : {trans8};
-        running_pid = pid & state = state9 & ((TRUE)) : {trans11};
+        state = state0 & ((TRUE)) : {trans0};
+        state = state1 & ((chRecv.ready & !chRecv.received)) : {trans1};
+        state = state10 & (((chSend.ready) & (chSend.received))) : {trans9};
+        state = state11 & ((TRUE)) : {trans10};
+        state = state2 & ((TRUE)) : {trans2, trans7};
+        state = state3 & ((chRecv.ready & !chRecv.received)) : {trans12};
+        state = state4 & ((!(chSend.ready))) : {trans3};
+        state = state5 & ((TRUE)) : {trans6};
+        state = state6 & (((chSend.ready) & (chSend.received))) : {trans4};
+        state = state7 & ((TRUE)) : {trans5};
+        state = state8 & ((!(chSend.ready))) : {trans8};
+        state = state9 & ((TRUE)) : {trans11};
         TRUE : notrans;
       esac;
 
-MODULE __pid2_Worker(running_pid, pid, chRecv, chSend)
+MODULE __pid2_Worker(__orig_chRecv, __orig_chSend)
+  JUSTICE
+    running
   VAR
+    chRecv : HandshakeChannel3Proxy(__orig_chRecv);
+    chSend : HandshakeChannel2Proxy(__orig_chSend);
     resp : {Ready, NotReady, Commit, Abort};
     state : {state0, state1, state10, state11, state12, state2, state3, state4, state5, state6, state7, state8, state9};
     transition : {notrans, trans0, trans1, trans10, trans11, trans12, trans2, trans3, trans4, trans5, trans6, trans7, trans8, trans9};
   TRANS transition = trans0 -> (TRUE);
-  TRANS transition = trans1 -> (chRecv.filled & !chRecv.received);
+  TRANS transition = trans1 -> (chRecv.ready & !chRecv.received);
   TRANS transition = trans10 -> (TRUE);
   TRANS transition = trans11 -> (TRUE);
-  TRANS transition = trans12 -> (chRecv.filled & !chRecv.received);
+  TRANS transition = trans12 -> (chRecv.ready & !chRecv.received);
   TRANS transition = trans2 -> (TRUE);
-  TRANS transition = trans3 -> (!(chSend.filled));
-  TRANS transition = trans4 -> ((chSend.filled) & (chSend.received));
+  TRANS transition = trans3 -> (!(chSend.ready));
+  TRANS transition = trans4 -> ((chSend.ready) & (chSend.received));
   TRANS transition = trans5 -> (TRUE);
   TRANS transition = trans6 -> (TRUE);
   TRANS transition = trans7 -> (TRUE);
-  TRANS transition = trans8 -> (!(chSend.filled));
-  TRANS transition = trans9 -> ((chSend.filled) & (chSend.received));
+  TRANS transition = trans8 -> (!(chSend.ready));
+  TRANS transition = trans9 -> ((chSend.ready) & (chSend.received));
   ASSIGN
-    chRecv.next_filled :=
-      case
-        TRUE : chRecv.filled;
-      esac;
-    chRecv.next_received :=
+    chRecv.recv_received :=
       case
         transition = trans1 : TRUE;
         transition = trans12 : TRUE;
-        TRUE : chRecv.received;
+        TRUE : FALSE;
       esac;
-    chRecv.next_value_0 :=
+    chRecv.send_filled :=
+      case
+        TRUE : FALSE;
+      esac;
+    chRecv.send_leaving :=
+      case
+        TRUE : FALSE;
+      esac;
+    chRecv.send_value_0 :=
       case
         TRUE : chRecv.value_0;
       esac;
-    chSend.next_filled :=
+    chSend.recv_received :=
+      case
+        TRUE : FALSE;
+      esac;
+    chSend.send_filled :=
       case
         transition = trans3 : TRUE;
-        transition = trans4 : FALSE;
         transition = trans8 : TRUE;
-        transition = trans9 : FALSE;
-        TRUE : chSend.filled;
+        TRUE : FALSE;
       esac;
-    chSend.next_received :=
+    chSend.send_leaving :=
       case
-        transition = trans3 : FALSE;
-        transition = trans8 : FALSE;
-        TRUE : chSend.received;
+        transition = trans4 : TRUE;
+        transition = trans9 : TRUE;
+        TRUE : FALSE;
       esac;
-    chSend.next_value_0 :=
+    chSend.send_value_0 :=
       case
         transition = trans3 : NotReady;
         transition = trans8 : Ready;
@@ -471,51 +579,29 @@ MODULE __pid2_Worker(running_pid, pid, chRecv, chSend)
       esac;
     transition :=
       case
-        running_pid = pid & state = state0 & ((TRUE)) : {trans0};
-        running_pid = pid & state = state1 & ((chRecv.filled & !chRecv.received)) : {trans1};
-        running_pid = pid & state = state10 & (((chSend.filled) & (chSend.received))) : {trans9};
-        running_pid = pid & state = state11 & ((TRUE)) : {trans10};
-        running_pid = pid & state = state2 & ((TRUE)) : {trans2, trans7};
-        running_pid = pid & state = state3 & ((chRecv.filled & !chRecv.received)) : {trans12};
-        running_pid = pid & state = state4 & ((!(chSend.filled))) : {trans3};
-        running_pid = pid & state = state5 & ((TRUE)) : {trans6};
-        running_pid = pid & state = state6 & (((chSend.filled) & (chSend.received))) : {trans4};
-        running_pid = pid & state = state7 & ((TRUE)) : {trans5};
-        running_pid = pid & state = state8 & ((!(chSend.filled))) : {trans8};
-        running_pid = pid & state = state9 & ((TRUE)) : {trans11};
+        state = state0 & ((TRUE)) : {trans0};
+        state = state1 & ((chRecv.ready & !chRecv.received)) : {trans1};
+        state = state10 & (((chSend.ready) & (chSend.received))) : {trans9};
+        state = state11 & ((TRUE)) : {trans10};
+        state = state2 & ((TRUE)) : {trans2, trans7};
+        state = state3 & ((chRecv.ready & !chRecv.received)) : {trans12};
+        state = state4 & ((!(chSend.ready))) : {trans3};
+        state = state5 & ((TRUE)) : {trans6};
+        state = state6 & (((chSend.ready) & (chSend.received))) : {trans4};
+        state = state7 & ((TRUE)) : {trans5};
+        state = state8 & ((!(chSend.ready))) : {trans8};
+        state = state9 & ((TRUE)) : {trans11};
         TRUE : notrans;
       esac;
 
 MODULE main()
   VAR
-    __pid0_chWorker1Recv : HandshakeChannel1Proxy(chWorker1Recv);
-    __pid0_chWorker1Send : HandshakeChannel0Proxy(chWorker1Send);
-    __pid0_chWorker2Recv : HandshakeChannel3Proxy(chWorker2Recv);
-    __pid0_chWorker2Send : HandshakeChannel2Proxy(chWorker2Send);
-    __pid1_chWorker1Recv : HandshakeChannel1Proxy(chWorker1Recv);
-    __pid1_chWorker1Send : HandshakeChannel0Proxy(chWorker1Send);
-    __pid2_chWorker2Recv : HandshakeChannel3Proxy(chWorker2Recv);
-    __pid2_chWorker2Send : HandshakeChannel2Proxy(chWorker2Send);
-    arbiter : __pid0_Arbiter(running_pid, 0, __pid0_chWorker1Send, __pid0_chWorker2Send, __pid0_chWorker1Recv, __pid0_chWorker2Recv);
-    chWorker1Recv : HandshakeChannel1(running_pid, chWorker1Recv_filled, chWorker1Recv_received, chWorker1Recv_value_0);
-    chWorker1Send : HandshakeChannel0(running_pid, chWorker1Send_filled, chWorker1Send_received, chWorker1Send_value_0);
-    chWorker2Recv : HandshakeChannel3(running_pid, chWorker2Recv_filled, chWorker2Recv_received, chWorker2Recv_value_0);
-    chWorker2Send : HandshakeChannel2(running_pid, chWorker2Send_filled, chWorker2Send_received, chWorker2Send_value_0);
-    running_pid : {0, 1, 2};
-    worker1 : __pid1_Worker(running_pid, 1, __pid1_chWorker1Recv, __pid1_chWorker1Send);
-    worker2 : __pid2_Worker(running_pid, 2, __pid2_chWorker2Recv, __pid2_chWorker2Send);
-  ASSIGN
-    running_pid := {0, 1, 2};
-  DEFINE
-    chWorker1Recv_filled := [__pid0_chWorker1Recv.next_filled, __pid1_chWorker1Recv.next_filled, chWorker1Recv.filled];
-    chWorker1Recv_received := [__pid0_chWorker1Recv.next_received, __pid1_chWorker1Recv.next_received, chWorker1Recv.received];
-    chWorker1Recv_value_0 := [__pid0_chWorker1Recv.next_value_0, __pid1_chWorker1Recv.next_value_0, chWorker1Recv.value_0];
-    chWorker1Send_filled := [__pid0_chWorker1Send.next_filled, __pid1_chWorker1Send.next_filled, chWorker1Send.filled];
-    chWorker1Send_received := [__pid0_chWorker1Send.next_received, __pid1_chWorker1Send.next_received, chWorker1Send.received];
-    chWorker1Send_value_0 := [__pid0_chWorker1Send.next_value_0, __pid1_chWorker1Send.next_value_0, chWorker1Send.value_0];
-    chWorker2Recv_filled := [__pid0_chWorker2Recv.next_filled, chWorker2Recv.filled, __pid2_chWorker2Recv.next_filled];
-    chWorker2Recv_received := [__pid0_chWorker2Recv.next_received, chWorker2Recv.received, __pid2_chWorker2Recv.next_received];
-    chWorker2Recv_value_0 := [__pid0_chWorker2Recv.next_value_0, chWorker2Recv.value_0, __pid2_chWorker2Recv.next_value_0];
-    chWorker2Send_filled := [__pid0_chWorker2Send.next_filled, chWorker2Send.filled, __pid2_chWorker2Send.next_filled];
-    chWorker2Send_received := [__pid0_chWorker2Send.next_received, chWorker2Send.received, __pid2_chWorker2Send.next_received];
-    chWorker2Send_value_0 := [__pid0_chWorker2Send.next_value_0, chWorker2Send.value_0, __pid2_chWorker2Send.next_value_0];
+    arbiter : process __pid0_Arbiter(chWorker1Send, chWorker2Send, chWorker1Recv, chWorker2Recv);
+    chWorker1Recv : HandshakeChannel1;
+    chWorker1Send : HandshakeChannel0;
+    chWorker2Recv : HandshakeChannel3;
+    chWorker2Send : HandshakeChannel2;
+    worker1 : process __pid1_Worker(chWorker1Recv, chWorker1Send);
+    worker2 : process __pid2_Worker(chWorker2Recv, chWorker2Send);
+  LTLSPEC
+    F(arbiter.all_ready & worker1.resp = Commit | !arbiter.all_ready)
