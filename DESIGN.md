@@ -2,15 +2,21 @@
 
 Santalum has three built-in injectable faults.
 
-- Timeout Faults
 - Abrupt Termination Faults
 - Message Drop Faults
+- Timeout Faults
 
-## Timeout faults
+TODO:
 
-```
-received = timeout_recv(chResp, doneTask)
-```
+- Byzantine Generals Problem
+  - Omission fault
+  - Comission fault
+
+Compile steps:
+
+- Parsing
+- TypeCheck
+- Conversion
 
 ## Abrupt Termination Faults
 
@@ -20,10 +26,28 @@ init {
 }
 ```
 
+### Parsing
+
+TBD
+
+### TypeCheck
+
+TBD
+
+### Conversion
+
+TBD
+
 ## Message Drop Faults
 
 ```
 init {
   chQueue : channel { Task } @drop,
 }
+```
+
+## Timeout faults
+
+```
+received = timeout_recv(chResp, doneTask)
 ```

@@ -16,7 +16,7 @@ These features are derived from Sandal.
 Santalum has some extra features Sandal does not have.
 
 - Fault statements are unified as `@` prefixed, like `recv @timeout`
-- You can define orignal faults for any processes for functions
+- You can define orignal faults for any processes, channels or functions
 
 ## Installation
 
