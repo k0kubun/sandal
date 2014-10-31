@@ -44,23 +44,67 @@ func TestParseProcDefinition(t *testing.T) {
 }
 
 func TestParseInitBlock(t *testing.T) {
-	parse(t, "init { };", []Definition{InitBlock{Pos: Pos{1, 1}}})
-	parse(t, "init { a : M(b) };",
-		[]Definition{InitBlock{Pos{1, 1}, []InitVar{
-			InstanceVar{Pos{1, 8}, "a", "M", []Expression{IdentifierExpression{Pos{1, 14}, "b"}}, []string{}},
-		}}})
-	parse(t, "init { a : M(b) @unstable };",
-		[]Definition{InitBlock{Pos{1, 1}, []InitVar{
-			InstanceVar{Pos{1, 8}, "a", "M", []Expression{IdentifierExpression{Pos{1, 14}, "b"}}, []string{"unstable"}},
-		}}})
-	parse(t, "init { a : channel { bool } };",
-		[]Definition{InitBlock{Pos{1, 1}, []InitVar{
-			ChannelVar{Pos{1, 8}, "a", HandshakeChannelType{[]Type{NamedType{"bool"}}}, []string{}},
-		}}})
-	parse(t, "init { a : channel { bool } @unstable };",
-		[]Definition{InitBlock{Pos{1, 1}, []InitVar{
-			ChannelVar{Pos{1, 8}, "a", HandshakeChannelType{[]Type{NamedType{"bool"}}}, []string{"unstable"}},
-		}}})
+	parse(
+		t,
+		"init { };",
+		[]Definition{
+			InitBlock{
+				Pos: Pos{1, 1},
+			},
+		},
+	)
+
+	parse(
+		t,
+		"init { a : M(b) };",
+		[]Definition{
+			InitBlock{
+				Pos{1, 1},
+				[]InitVar{
+					InstanceVar{Pos{1, 8}, "a", "M", []Expression{IdentifierExpression{Pos{1, 14}, "b"}}, []string{}},
+				},
+			},
+		},
+	)
+
+	parse(
+		t,
+		"init { a : M(b) @unstable };",
+		[]Definition{
+			InitBlock{
+				Pos{1, 1},
+				[]InitVar{
+					InstanceVar{Pos{1, 8}, "a", "M", []Expression{IdentifierExpression{Pos{1, 14}, "b"}}, []string{"unstable"}},
+				},
+			},
+		},
+	)
+
+	parse(
+		t,
+		"init { a : channel { bool } };",
+		[]Definition{
+			InitBlock{
+				Pos{1, 1},
+				[]InitVar{
+					ChannelVar{Pos{1, 8}, "a", HandshakeChannelType{[]Type{NamedType{"bool"}}}, []string{}},
+				},
+			},
+		},
+	)
+
+	parse(
+		t,
+		"init { a : channel { bool } @unstable };",
+		[]Definition{
+			InitBlock{
+				Pos{1, 1},
+				[]InitVar{
+					ChannelVar{Pos{1, 8}, "a", HandshakeChannelType{[]Type{NamedType{"bool"}}}, []string{"unstable"}},
+				},
+			},
+		},
+	)
 }
 
 const parseBlockOffset = 11
