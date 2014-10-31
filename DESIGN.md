@@ -20,6 +20,8 @@ Compile steps:
 
 ## Abrupt Termination Faults
 
+Abrupt Termination is a fault which is injected to process.
+
 ```
 init {
   bossProcess : Boss(chQueue, chResp) @unstable,
