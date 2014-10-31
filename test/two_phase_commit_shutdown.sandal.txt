@@ -1,4 +1,4 @@
-% time santalum two_phase_commit_shutdown.sant | nusmv                [master]-[~/src/go/src/github.com/k0kubun/santalum/test]
+% time sandal two_phase_commit_shutdown.sant | nusmv                [master]-[~/src/go/src/github.com/k0kubun/sandal/test]
 *** This is NuSMV 2.5.4 (compiled on Sat Dec 14 12:51:03 UTC 2013)
 *** Enabled addons are: compass
 *** For more information on NuSMV see <http://nusmv.fbk.eu>
@@ -165,5 +165,5 @@ Trace Type: Counterexample
   running_pid = 1
 -> State: 1.9 <-
   running_pid = 0
-santalum two_phase_commit_shutdown.sant  0.01s user 0.00s system 98% cpu 0.007 total
+sandal two_phase_commit_shutdown.sant  0.01s user 0.00s system 98% cpu 0.007 total
 nusmv  784.30s user 0.06s system 99% cpu 13:04.97 total

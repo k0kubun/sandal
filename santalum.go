@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/k0kubun/santalum/lang"
+	"github.com/k0kubun/sandal/lang"
 	"io/ioutil"
 	"log"
 	"os"
@@ -10,7 +10,7 @@ import (
 
 func main() {
 	if len(os.Args) != 2 {
-		fmt.Println("Usage: santalum [programfile]")
+		fmt.Println("Usage: sandal [programfile]")
 		os.Exit(1)
 	}
 

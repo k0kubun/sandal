@@ -1,4 +1,4 @@
-% time santalum two_phase_commit_drop.sant| nusmv                      [master][~/src/go/src/github.com/k0kubun/santalum/test]
+% time sandal two_phase_commit_drop.sant| nusmv                      [master][~/src/go/src/github.com/k0kubun/sandal/test]
 *** This is NuSMV 2.5.4 (compiled on Sat Dec 14 12:51:03 UTC 2013)
 *** Enabled addons are: compass
 *** For more information on NuSMV see <http://nusmv.fbk.eu>
@@ -307,5 +307,5 @@ Trace Type: Counterexample
   running_pid = 1
 -> State: 1.33 <-
   running_pid = 0
-santalum two_phase_commit_drop.sant  0.00s user 0.00s system 77% cpu 0.009 total
+sandal two_phase_commit_drop.sant  0.00s user 0.00s system 77% cpu 0.009 total
 nusmv  1928.78s user 0.15s system 99% cpu 32:10.41 total

@@ -2,7 +2,7 @@ package conversion
 
 import (
 	"fmt"
-	. "github.com/k0kubun/santalum/lang/data"
+	. "github.com/k0kubun/sandal/lang/data"
 )
 
 func (x *intModConverter) convertStatements(statements []Statement, defaults map[string]string, tags []string, vars []intVar) ([]intVar, intState, []intTransition) {

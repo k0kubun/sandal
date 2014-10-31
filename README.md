@@ -1,6 +1,6 @@
 # Santalum
 
-Extensible fault-aware model checking language forked from [Sandal](https://github.com/k0kubun/santalum).
+Extensible fault-aware model checking language forked from [Sandal](https://github.com/k0kubun/sandal).
 
 ## Features
 
@@ -23,7 +23,7 @@ Santalum has some extra features Sandal does not have.
 Santalum depends on NuSMV.
 
 ```bash
-$ go get github.com/k0kubun/santalum
+$ go get github.com/k0kubun/sandal
 $ brew install homebrew/science/nusmv
 ```
 
@@ -32,7 +32,7 @@ $ brew install homebrew/science/nusmv
 To see model checking result, you have to pipe Santalum's stdout to NuSMV
 
 ```bash
-$ santalum your_model.sant | nusmv
+$ sandal your_model.sant | nusmv
 ```
 
 ## Model examples

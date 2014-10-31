@@ -6,7 +6,7 @@ import __yyfmt__ "fmt"
 		
 import (
 	"log"
-	data "github.com/k0kubun/santalum/lang/data"
+	data "github.com/k0kubun/sandal/lang/data"
 )
 
 type token struct {

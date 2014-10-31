@@ -1,7 +1,7 @@
 package conversion
 
 import (
-	. "github.com/k0kubun/santalum/lang/data"
+	. "github.com/k0kubun/sandal/lang/data"
 )
 
 func expressionToInternalObj(expr Expression, env *varEnv) intInternalExpressionObj {

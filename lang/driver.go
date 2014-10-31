@@ -1,9 +1,9 @@
 package lang
 
 import (
-	"github.com/k0kubun/santalum/lang/parsing"
-	"github.com/k0kubun/santalum/lang/typecheck"
-	"github.com/k0kubun/santalum/lang/conversion"
+	"github.com/k0kubun/sandal/lang/parsing"
+	"github.com/k0kubun/sandal/lang/typecheck"
+	"github.com/k0kubun/sandal/lang/conversion"
 )
 
 func CompileFile(body string) (string, error) {

@@ -13,7 +13,7 @@ for filename in `ls`; do
   case $filename in
     (*.sant)
       expect_filename=${filename%.sant}.expect
-      err_output=`../santalum $filename 2>&1 1>$tempfile`
+      err_output=`../sandal $filename 2>&1 1>$tempfile`
       if [ $? -ne 0 ]; then
           echo "FAILED: $filename"
           echo "    "$err_output
