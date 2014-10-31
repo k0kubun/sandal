@@ -23,6 +23,7 @@ $ sandal your_model.sandal | nusmv
 ## Testing
 
 ```bash
+$ go build
 $ ./run_test.sh
 ```
 
