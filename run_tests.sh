@@ -8,6 +8,7 @@ for testdir in $testdirs; do
     printf "\e[32m${result}\e[0m\n"
   else
     printf "\e[31m${result}\e[0m\n"
+    exit 1
   fi
   popd > /dev/null
 done
@@ -29,6 +30,7 @@ for filename in `ls test`; do
           echo "FAILED: ${actual_filename}"
           echo "    ${err_output}"
           printf "\e[0m"
+          exit 1
         else
           diff_output=`diff -u $expect_filename $tempfile`
 
@@ -37,6 +39,7 @@ for filename in `ls test`; do
             echo "FAILED: ${actual_filename}"
             echo "${diff_output}" | awk '{ print "    " $0 }'
             printf "\e[0m"
+            exit 1
           else
             printf "\e[32m"
             echo "PASS"
