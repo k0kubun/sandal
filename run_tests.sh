@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-testdirs=$(find . -type f -name "*\_test.go" | sed -e "s/[^\/]*$//" | uniq)
+testdirs=$(find . -type f -name "*\_test.go" | grep -v "\.gondler" | sed -e "s/[^\/]*$//" | uniq)
 
 for testdir in $testdirs; do
   pushd $testdir > /dev/null

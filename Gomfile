@@ -1,0 +1,3 @@
+itself "github.com/k0kubun/santalum"
+
+gom "github.com/cookieo9/go-misc/pp", commit: "3f3d0c5e2c4cf0bd5a8855ab306ebbadd598059a"
