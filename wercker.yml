@@ -25,4 +25,4 @@ build:
     - script:
         name: go test
         code: |
-          go test ./...
+          ./run_tests.sh
