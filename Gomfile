@@ -1,3 +1,4 @@
 itself "github.com/k0kubun/santalum"
 
 gom "github.com/cookieo9/go-misc/pp", commit: "3f3d0c5e2c4cf0bd5a8855ab306ebbadd598059a"
+gom "github.com/kylelemons/godebug/diff", commit: "808ac284003ce2b08ef590da08f95379e8a06936"
