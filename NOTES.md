@@ -1,6 +1,6 @@
-# Santalum language design
+# Sandal language notes
 
-Santalum has three built-in injectable faults.
+Sandal has three built-in injectable faults.
 
 - Abrupt Termination Faults
 - Message Drop Faults
