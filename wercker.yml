@@ -25,4 +25,5 @@ build:
     - script:
         name: go test
         code: |
+          go build
           ./run_tests.sh
