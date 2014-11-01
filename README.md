@@ -29,5 +29,4 @@ $ ./run_test.sh
 
 ## Planned features
 
-- Fault statements are unified as `@` prefixed, i.e. `recv(ch) @timeout`
 - You can define orignal faults for any processes, channels or functions
