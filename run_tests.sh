@@ -20,7 +20,7 @@ for filename in `ls test`; do
   case $filename in
     (*.sandal)
       actual_filename="test/${filename}"
-      expect_filename="test/${filename%.sandal}.expect"
+      expect_filename="test/${filename%.sandal}.smv"
 
       if [ -e $expect_filename ]; then
         err_output=`./sandal ${actual_filename} 2>&1 1>$tempfile`
