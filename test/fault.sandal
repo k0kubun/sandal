@@ -1,0 +1,12 @@
+fault @omission send(ch channel { bool }, val bool) {
+	// do nothing
+}
+
+proc SendProc(ch channel { bool }) {
+	send(ch, true) @omission
+}
+
+init {
+	ch: channel { bool },
+	process: SendProc(ch),
+}
