@@ -36,7 +36,7 @@ state 2
 	PROC  shift 12
 	INIT  shift 13
 	LTL  shift 14
-	.  reduce 1 (src line 145)
+	.  reduce 1 (src line 146)
 
 	spec  goto 15
 	toplevel_body  goto 2
@@ -50,37 +50,37 @@ state 2
 state 3
 	toplevel_body:  data_def.    (3)
 
-	.  reduce 3 (src line 160)
+	.  reduce 3 (src line 161)
 
 
 state 4
 	toplevel_body:  module_def.    (4)
 
-	.  reduce 4 (src line 162)
+	.  reduce 4 (src line 163)
 
 
 state 5
 	toplevel_body:  const_def.    (5)
 
-	.  reduce 5 (src line 163)
+	.  reduce 5 (src line 164)
 
 
 state 6
 	toplevel_body:  proc_def.    (6)
 
-	.  reduce 6 (src line 164)
+	.  reduce 6 (src line 165)
 
 
 state 7
 	toplevel_body:  init_block.    (7)
 
-	.  reduce 7 (src line 165)
+	.  reduce 7 (src line 166)
 
 
 state 8
 	toplevel_body:  ltl_spec.    (8)
 
-	.  reduce 8 (src line 166)
+	.  reduce 8 (src line 167)
 
 
 state 9
@@ -129,7 +129,7 @@ state 14
 state 15
 	spec:  toplevel_body spec.    (2)
 
-	.  reduce 2 (src line 152)
+	.  reduce 2 (src line 153)
 
 
 state 16
@@ -168,7 +168,7 @@ state 20
 	initvars_zero: .    (21)
 
 	IDENTIFIER  shift 32
-	.  reduce 21 (src line 223)
+	.  reduce 21 (src line 224)
 
 	initvars_zero  goto 29
 	initvars_one  goto 30
@@ -206,7 +206,7 @@ state 23
 	parameters_zero: .    (114)
 
 	IDENTIFIER  shift 50
-	.  reduce 114 (src line 613)
+	.  reduce 114 (src line 614)
 
 	parameters_zero  goto 47
 	parameters_one  goto 48
@@ -222,7 +222,7 @@ state 24
 state 25
 	type:  IDENTIFIER.    (126)
 
-	.  reduce 126 (src line 671)
+	.  reduce 126 (src line 672)
 
 
 state 26
@@ -247,7 +247,7 @@ state 28
 	parameters_zero: .    (114)
 
 	IDENTIFIER  shift 50
-	.  reduce 114 (src line 613)
+	.  reduce 114 (src line 614)
 
 	parameters_zero  goto 55
 	parameters_one  goto 48
@@ -263,7 +263,7 @@ state 29
 state 30
 	initvars_zero:  initvars_one.    (22)
 
-	.  reduce 22 (src line 228)
+	.  reduce 22 (src line 229)
 
 
 state 31
@@ -272,7 +272,7 @@ state 31
 	initvars_one:  initvar., initvars_one 
 
 	,  shift 57
-	.  reduce 23 (src line 233)
+	.  reduce 23 (src line 234)
 
 
 state 32
@@ -313,7 +313,7 @@ state 33
 state 34
 	ltl_expr:  ltl_atom.    (90)
 
-	.  reduce 90 (src line 511)
+	.  reduce 90 (src line 512)
 
 
 state 35
@@ -483,7 +483,7 @@ state 44
 	ltl_atom:  IDENTIFIER.. ltl_atom 
 
 	.  shift 79
-	.  reduce 109 (src line 588)
+	.  reduce 109 (src line 589)
 
 
 state 45
@@ -499,7 +499,7 @@ state 46
 	idents_one:  IDENTIFIER., idents_one 
 
 	,  shift 81
-	.  reduce 111 (src line 599)
+	.  reduce 111 (src line 600)
 
 
 state 47
@@ -512,7 +512,7 @@ state 47
 state 48
 	parameters_zero:  parameters_one.    (115)
 
-	.  reduce 115 (src line 618)
+	.  reduce 115 (src line 619)
 
 
 state 49
@@ -521,7 +521,7 @@ state 49
 	parameters_one:  parameter., parameters_one 
 
 	,  shift 83
-	.  reduce 116 (src line 623)
+	.  reduce 116 (src line 624)
 
 
 state 50
@@ -614,7 +614,7 @@ state 57
 	initvars_one:  initvar ,.initvars_one 
 
 	IDENTIFIER  shift 32
-	.  reduce 24 (src line 238)
+	.  reduce 24 (src line 239)
 
 	initvars_one  goto 105
 	initvar  goto 31
@@ -843,7 +843,7 @@ state 71
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  NOT ltl_expr.    (101)
 
-	.  reduce 101 (src line 555)
+	.  reduce 101 (src line 556)
 
 
 state 72
@@ -858,7 +858,7 @@ state 72
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  X ltl_expr.    (102)
 
-	.  reduce 102 (src line 559)
+	.  reduce 102 (src line 560)
 
 
 state 73
@@ -873,7 +873,7 @@ state 73
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  G ltl_expr.    (103)
 
-	.  reduce 103 (src line 563)
+	.  reduce 103 (src line 564)
 
 
 state 74
@@ -888,7 +888,7 @@ state 74
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  F ltl_expr.    (104)
 
-	.  reduce 104 (src line 567)
+	.  reduce 104 (src line 568)
 
 
 state 75
@@ -903,7 +903,7 @@ state 75
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  Y ltl_expr.    (105)
 
-	.  reduce 105 (src line 571)
+	.  reduce 105 (src line 572)
 
 
 state 76
@@ -918,7 +918,7 @@ state 76
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  Z ltl_expr.    (106)
 
-	.  reduce 106 (src line 575)
+	.  reduce 106 (src line 576)
 
 
 state 77
@@ -933,7 +933,7 @@ state 77
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  H ltl_expr.    (107)
 
-	.  reduce 107 (src line 579)
+	.  reduce 107 (src line 580)
 
 
 state 78
@@ -948,7 +948,7 @@ state 78
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  O ltl_expr.    (108)
 
-	.  reduce 108 (src line 583)
+	.  reduce 108 (src line 584)
 
 
 state 79
@@ -971,7 +971,7 @@ state 81
 	idents_one:  IDENTIFIER ,.idents_one 
 
 	IDENTIFIER  shift 46
-	.  reduce 112 (src line 604)
+	.  reduce 112 (src line 605)
 
 	idents_one  goto 122
 
@@ -987,7 +987,7 @@ state 83
 	parameters_one:  parameter ,.parameters_one 
 
 	IDENTIFIER  shift 50
-	.  reduce 117 (src line 628)
+	.  reduce 117 (src line 629)
 
 	parameters_one  goto 124
 	parameter  goto 49
@@ -995,7 +995,7 @@ state 83
 state 84
 	parameter:  IDENTIFIER type.    (119)
 
-	.  reduce 119 (src line 637)
+	.  reduce 119 (src line 638)
 
 
 state 85
@@ -1044,25 +1044,25 @@ state 85
 state 86
 	expr:  IDENTIFIER.    (60)
 
-	.  reduce 60 (src line 388)
+	.  reduce 60 (src line 389)
 
 
 state 87
 	expr:  NUMBER.    (61)
 
-	.  reduce 61 (src line 392)
+	.  reduce 61 (src line 393)
 
 
 state 88
 	expr:  TRUE.    (62)
 
-	.  reduce 62 (src line 396)
+	.  reduce 62 (src line 397)
 
 
 state 89
 	expr:  FALSE.    (63)
 
-	.  reduce 63 (src line 400)
+	.  reduce 63 (src line 401)
 
 
 state 90
@@ -1173,7 +1173,7 @@ state 97
 state 98
 	type:  [ ] type.    (127)
 
-	.  reduce 127 (src line 675)
+	.  reduce 127 (src line 676)
 
 
 state 99
@@ -1189,7 +1189,7 @@ state 100
 	types_one:  type., types_one 
 
 	,  shift 154
-	.  reduce 123 (src line 657)
+	.  reduce 123 (src line 658)
 
 
 state 101
@@ -1252,13 +1252,13 @@ state 103
 state 104
 	init_block:  INIT { initvars_zero } ;.    (18)
 
-	.  reduce 18 (src line 207)
+	.  reduce 18 (src line 208)
 
 
 state 105
 	initvars_one:  initvar , initvars_one.    (25)
 
-	.  reduce 25 (src line 242)
+	.  reduce 25 (src line 243)
 
 
 state 106
@@ -1266,7 +1266,7 @@ state 106
 	tags_zero: .    (131)
 
 	@  shift 161
-	.  reduce 131 (src line 692)
+	.  reduce 131 (src line 693)
 
 	tags_zero  goto 158
 	tags_one  goto 159
@@ -1277,7 +1277,7 @@ state 107
 	type:  IDENTIFIER.    (126)
 
 	(  shift 162
-	.  reduce 126 (src line 671)
+	.  reduce 126 (src line 672)
 
 
 state 108
@@ -1290,7 +1290,7 @@ state 108
 state 109
 	ltl_spec:  LTL { ltl_expr } ;.    (20)
 
-	.  reduce 20 (src line 218)
+	.  reduce 20 (src line 219)
 
 
 state 110
@@ -1312,7 +1312,7 @@ state 110
 	V  shift 67
 	S  shift 68
 	T  shift 69
-	.  reduce 92 (src line 519)
+	.  reduce 92 (src line 520)
 
 
 state 111
@@ -1335,7 +1335,7 @@ state 111
 	V  shift 67
 	S  shift 68
 	T  shift 69
-	.  reduce 93 (src line 523)
+	.  reduce 93 (src line 524)
 
 
 state 112
@@ -1355,7 +1355,7 @@ state 112
 	V  shift 67
 	S  shift 68
 	T  shift 69
-	.  reduce 94 (src line 527)
+	.  reduce 94 (src line 528)
 
 
 state 113
@@ -1370,7 +1370,7 @@ state 113
 	ltl_expr:  ltl_expr.S ltl_expr 
 	ltl_expr:  ltl_expr.T ltl_expr 
 
-	.  reduce 95 (src line 531)
+	.  reduce 95 (src line 532)
 
 
 state 114
@@ -1391,7 +1391,7 @@ state 114
 	V  shift 67
 	S  shift 68
 	T  shift 69
-	.  reduce 96 (src line 535)
+	.  reduce 96 (src line 536)
 
 
 state 115
@@ -1406,7 +1406,7 @@ state 115
 	ltl_expr:  ltl_expr.S ltl_expr 
 	ltl_expr:  ltl_expr.T ltl_expr 
 
-	.  reduce 97 (src line 539)
+	.  reduce 97 (src line 540)
 
 
 state 116
@@ -1421,7 +1421,7 @@ state 116
 	ltl_expr:  ltl_expr.S ltl_expr 
 	ltl_expr:  ltl_expr.T ltl_expr 
 
-	.  reduce 98 (src line 543)
+	.  reduce 98 (src line 544)
 
 
 state 117
@@ -1436,7 +1436,7 @@ state 117
 	ltl_expr:  ltl_expr S ltl_expr.    (99)
 	ltl_expr:  ltl_expr.T ltl_expr 
 
-	.  reduce 99 (src line 547)
+	.  reduce 99 (src line 548)
 
 
 state 118
@@ -1451,31 +1451,31 @@ state 118
 	ltl_expr:  ltl_expr.T ltl_expr 
 	ltl_expr:  ltl_expr T ltl_expr.    (100)
 
-	.  reduce 100 (src line 551)
+	.  reduce 100 (src line 552)
 
 
 state 119
 	ltl_expr:  ( ltl_expr ).    (91)
 
-	.  reduce 91 (src line 515)
+	.  reduce 91 (src line 516)
 
 
 state 120
 	ltl_atom:  IDENTIFIER . ltl_atom.    (110)
 
-	.  reduce 110 (src line 592)
+	.  reduce 110 (src line 593)
 
 
 state 121
 	data_def:  DATA IDENTIFIER { idents_one } ;.    (9)
 
-	.  reduce 9 (src line 168)
+	.  reduce 9 (src line 169)
 
 
 state 122
 	idents_one:  IDENTIFIER , idents_one.    (113)
 
-	.  reduce 113 (src line 608)
+	.  reduce 113 (src line 609)
 
 
 state 123
@@ -1485,7 +1485,7 @@ state 123
 	CONST  shift 11
 	PROC  shift 12
 	INIT  shift 13
-	.  reduce 11 (src line 180)
+	.  reduce 11 (src line 181)
 
 	const_def  goto 166
 	proc_def  goto 167
@@ -1496,13 +1496,13 @@ state 123
 state 124
 	parameters_one:  parameter , parameters_one.    (118)
 
-	.  reduce 118 (src line 632)
+	.  reduce 118 (src line 633)
 
 
 state 125
 	const_def:  CONST IDENTIFIER type ASSIGN expr ;.    (16)
 
-	.  reduce 16 (src line 195)
+	.  reduce 16 (src line 196)
 
 
 state 126
@@ -1868,7 +1868,7 @@ state 144
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 64 (src line 404)
+	.  reduce 64 (src line 405)
 
 
 state 145
@@ -1892,7 +1892,7 @@ state 145
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 65 (src line 408)
+	.  reduce 65 (src line 409)
 
 
 state 146
@@ -2067,13 +2067,13 @@ state 152
 	LEQ  shift 142
 	GEQ  shift 143
 	,  shift 193
-	.  reduce 120 (src line 643)
+	.  reduce 120 (src line 644)
 
 
 state 153
 	type:  CHANNEL { types_one }.    (128)
 
-	.  reduce 128 (src line 679)
+	.  reduce 128 (src line 680)
 
 
 state 154
@@ -2083,7 +2083,7 @@ state 154
 	IDENTIFIER  shift 25
 	CHANNEL  shift 27
 	[  shift 26
-	.  reduce 124 (src line 662)
+	.  reduce 124 (src line 663)
 
 	types_one  goto 194
 	type  goto 100
@@ -2135,7 +2135,7 @@ state 157
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 197
@@ -2145,13 +2145,13 @@ state 157
 state 158
 	initvar:  IDENTIFIER : type tags_zero.    (26)
 
-	.  reduce 26 (src line 247)
+	.  reduce 26 (src line 248)
 
 
 state 159
 	tags_zero:  tags_one.    (132)
 
-	.  reduce 132 (src line 697)
+	.  reduce 132 (src line 698)
 
 
 state 160
@@ -2159,7 +2159,7 @@ state 160
 	tags_one:  tag.tags_one 
 
 	@  shift 161
-	.  reduce 133 (src line 702)
+	.  reduce 133 (src line 703)
 
 	tags_one  goto 214
 	tag  goto 160
@@ -2194,7 +2194,7 @@ state 162
 state 163
 	ltl_spec:  LTL { ltl_expr ; } ;.    (19)
 
-	.  reduce 19 (src line 213)
+	.  reduce 19 (src line 214)
 
 
 state 164
@@ -2211,7 +2211,7 @@ state 165
 	CONST  shift 11
 	PROC  shift 12
 	INIT  shift 13
-	.  reduce 11 (src line 180)
+	.  reduce 11 (src line 181)
 
 	const_def  goto 166
 	proc_def  goto 167
@@ -2222,19 +2222,19 @@ state 165
 state 166
 	module_body:  const_def.    (13)
 
-	.  reduce 13 (src line 190)
+	.  reduce 13 (src line 191)
 
 
 state 167
 	module_body:  proc_def.    (14)
 
-	.  reduce 14 (src line 192)
+	.  reduce 14 (src line 193)
 
 
 state 168
 	module_body:  init_block.    (15)
 
-	.  reduce 15 (src line 193)
+	.  reduce 15 (src line 194)
 
 
 state 169
@@ -2264,7 +2264,7 @@ state 169
 	AND  shift 131
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 67 (src line 416)
+	.  reduce 67 (src line 417)
 
 
 state 170
@@ -2294,7 +2294,7 @@ state 170
 	AND  shift 131
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 68 (src line 420)
+	.  reduce 68 (src line 421)
 
 
 state 171
@@ -2318,7 +2318,7 @@ state 171
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 69 (src line 424)
+	.  reduce 69 (src line 425)
 
 
 state 172
@@ -2342,7 +2342,7 @@ state 172
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 70 (src line 428)
+	.  reduce 70 (src line 429)
 
 
 state 173
@@ -2366,7 +2366,7 @@ state 173
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 71 (src line 432)
+	.  reduce 71 (src line 433)
 
 
 state 174
@@ -2390,7 +2390,7 @@ state 174
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 72 (src line 436)
+	.  reduce 72 (src line 437)
 
 
 state 175
@@ -2420,7 +2420,7 @@ state 175
 	AND  shift 131
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 73 (src line 440)
+	.  reduce 73 (src line 441)
 
 
 state 176
@@ -2450,7 +2450,7 @@ state 176
 	AND  shift 131
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 74 (src line 444)
+	.  reduce 74 (src line 445)
 
 
 state 177
@@ -2474,7 +2474,7 @@ state 177
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 75 (src line 448)
+	.  reduce 75 (src line 449)
 
 
 state 178
@@ -2498,7 +2498,7 @@ state 178
 	expr:  expr.LEQ expr 
 	expr:  expr.GEQ expr 
 
-	.  reduce 76 (src line 452)
+	.  reduce 76 (src line 453)
 
 
 state 179
@@ -2538,7 +2538,7 @@ state 179
 	NEQ  shift 141
 	LEQ  shift 142
 	GEQ  shift 143
-	.  reduce 77 (src line 456)
+	.  reduce 77 (src line 457)
 
 
 state 180
@@ -2579,7 +2579,7 @@ state 180
 	NEQ  shift 141
 	LEQ  shift 142
 	GEQ  shift 143
-	.  reduce 78 (src line 460)
+	.  reduce 78 (src line 461)
 
 
 state 181
@@ -2613,7 +2613,7 @@ state 181
 	XOR  shift 133
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 79 (src line 464)
+	.  reduce 79 (src line 465)
 
 
 state 182
@@ -2647,7 +2647,7 @@ state 182
 	XOR  shift 133
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 80 (src line 468)
+	.  reduce 80 (src line 469)
 
 
 state 183
@@ -2681,7 +2681,7 @@ state 183
 	XOR  shift 133
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 81 (src line 472)
+	.  reduce 81 (src line 473)
 
 
 state 184
@@ -2715,7 +2715,7 @@ state 184
 	XOR  shift 133
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 82 (src line 476)
+	.  reduce 82 (src line 477)
 
 
 state 185
@@ -2749,7 +2749,7 @@ state 185
 	XOR  shift 133
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 83 (src line 480)
+	.  reduce 83 (src line 481)
 
 
 state 186
@@ -2783,13 +2783,13 @@ state 186
 	XOR  shift 133
 	SHL  shift 134
 	SHR  shift 135
-	.  reduce 84 (src line 484)
+	.  reduce 84 (src line 485)
 
 
 state 187
 	expr:  ( expr ).    (66)
 
-	.  reduce 66 (src line 412)
+	.  reduce 66 (src line 413)
 
 
 state 188
@@ -2823,7 +2823,7 @@ state 191
 state 192
 	expr:  [ arguments_one ].    (89)
 
-	.  reduce 89 (src line 504)
+	.  reduce 89 (src line 505)
 
 
 state 193
@@ -2842,7 +2842,7 @@ state 193
 	FALSE  shift 89
 	(  shift 92
 	[  shift 97
-	.  reduce 121 (src line 648)
+	.  reduce 121 (src line 649)
 
 	expr  goto 152
 	arguments_one  goto 223
@@ -2850,7 +2850,7 @@ state 193
 state 194
 	types_one:  type , types_one.    (125)
 
-	.  reduce 125 (src line 666)
+	.  reduce 125 (src line 667)
 
 
 state 195
@@ -2907,7 +2907,7 @@ state 198
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 227
@@ -2941,7 +2941,7 @@ state 199
 	SHR_ASSIGN  shift 239
 	ASSIGN  shift 229
 	:  shift 228
-	.  reduce 60 (src line 388)
+	.  reduce 60 (src line 389)
 
 
 state 200
@@ -2973,7 +2973,7 @@ state 200
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 240
@@ -3114,25 +3114,25 @@ state 211
 state 212
 	statement:  ;.    (58)
 
-	.  reduce 58 (src line 379)
+	.  reduce 58 (src line 380)
 
 
 state 213
 	statement:  const_def.    (59)
 
-	.  reduce 59 (src line 383)
+	.  reduce 59 (src line 384)
 
 
 state 214
 	tags_one:  tag tags_one.    (134)
 
-	.  reduce 134 (src line 707)
+	.  reduce 134 (src line 708)
 
 
 state 215
 	tag:  @ IDENTIFIER.    (135)
 
-	.  reduce 135 (src line 712)
+	.  reduce 135 (src line 713)
 
 
 state 216
@@ -3152,43 +3152,43 @@ state 217
 state 218
 	module_body_zero:  module_body module_body_zero.    (12)
 
-	.  reduce 12 (src line 185)
+	.  reduce 12 (src line 186)
 
 
 state 219
 	expr:  TIMEOUT_RECV ( arguments_one ).    (85)
 
-	.  reduce 85 (src line 488)
+	.  reduce 85 (src line 489)
 
 
 state 220
 	expr:  TIMEOUT_PEEK ( arguments_one ).    (86)
 
-	.  reduce 86 (src line 492)
+	.  reduce 86 (src line 493)
 
 
 state 221
 	expr:  NONBLOCK_RECV ( arguments_one ).    (87)
 
-	.  reduce 87 (src line 496)
+	.  reduce 87 (src line 497)
 
 
 state 222
 	expr:  NONBLOCK_PEEK ( arguments_one ).    (88)
 
-	.  reduce 88 (src line 500)
+	.  reduce 88 (src line 501)
 
 
 state 223
 	arguments_one:  expr , arguments_one.    (122)
 
-	.  reduce 122 (src line 652)
+	.  reduce 122 (src line 653)
 
 
 state 224
 	type:  CHANNEL [ ] { types_one }.    (129)
 
-	.  reduce 129 (src line 683)
+	.  reduce 129 (src line 684)
 
 
 state 225
@@ -3208,7 +3208,7 @@ state 226
 state 227
 	statements_zero:  statement statements_zero.    (29)
 
-	.  reduce 29 (src line 261)
+	.  reduce 29 (src line 262)
 
 
 state 228
@@ -3554,7 +3554,7 @@ state 244
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 274
@@ -3650,7 +3650,7 @@ state 248
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 278
@@ -3668,7 +3668,7 @@ state 249
 state 250
 	statement:  BREAK ;.    (54)
 
-	.  reduce 54 (src line 363)
+	.  reduce 54 (src line 364)
 
 
 state 251
@@ -3681,13 +3681,13 @@ state 251
 state 252
 	statement:  SKIP ;.    (56)
 
-	.  reduce 56 (src line 371)
+	.  reduce 56 (src line 372)
 
 
 state 253
 	statement:  expr ;.    (57)
 
-	.  reduce 57 (src line 375)
+	.  reduce 57 (src line 376)
 
 
 state 254
@@ -3695,7 +3695,7 @@ state 254
 	tags_zero: .    (131)
 
 	@  shift 161
-	.  reduce 131 (src line 692)
+	.  reduce 131 (src line 693)
 
 	tags_zero  goto 281
 	tags_one  goto 159
@@ -3704,25 +3704,25 @@ state 254
 state 255
 	module_def:  MODULE IDENTIFIER ( parameters_zero ) { module_body_zero } ;.    (10)
 
-	.  reduce 10 (src line 174)
+	.  reduce 10 (src line 175)
 
 
 state 256
 	type:  CHANNEL [ expr ] { types_one }.    (130)
 
-	.  reduce 130 (src line 687)
+	.  reduce 130 (src line 688)
 
 
 state 257
 	proc_def:  PROC IDENTIFIER ( parameters_zero ) { statements_zero } ;.    (17)
 
-	.  reduce 17 (src line 201)
+	.  reduce 17 (src line 202)
 
 
 state 258
 	statement:  IDENTIFIER : statement.    (30)
 
-	.  reduce 30 (src line 266)
+	.  reduce 30 (src line 267)
 
 
 state 259
@@ -4244,7 +4244,7 @@ state 272
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 296
@@ -4254,7 +4254,7 @@ state 272
 state 273
 	statement:  CHOICE blocks_one ;.    (47)
 
-	.  reduce 47 (src line 335)
+	.  reduce 47 (src line 336)
 
 
 state 274
@@ -4318,91 +4318,91 @@ state 279
 state 280
 	statement:  GOTO IDENTIFIER ;.    (55)
 
-	.  reduce 55 (src line 367)
+	.  reduce 55 (src line 368)
 
 
 state 281
 	initvar:  IDENTIFIER : IDENTIFIER ( arguments_one ) tags_zero.    (27)
 
-	.  reduce 27 (src line 251)
+	.  reduce 27 (src line 252)
 
 
 state 282
 	statement:  IDENTIFIER ASSIGN expr ;.    (36)
 
-	.  reduce 36 (src line 291)
+	.  reduce 36 (src line 292)
 
 
 state 283
 	statement:  IDENTIFIER ADD_ASSIGN expr ;.    (37)
 
-	.  reduce 37 (src line 295)
+	.  reduce 37 (src line 296)
 
 
 state 284
 	statement:  IDENTIFIER SUB_ASSIGN expr ;.    (38)
 
-	.  reduce 38 (src line 299)
+	.  reduce 38 (src line 300)
 
 
 state 285
 	statement:  IDENTIFIER MUL_ASSIGN expr ;.    (39)
 
-	.  reduce 39 (src line 303)
+	.  reduce 39 (src line 304)
 
 
 state 286
 	statement:  IDENTIFIER QUO_ASSIGN expr ;.    (40)
 
-	.  reduce 40 (src line 307)
+	.  reduce 40 (src line 308)
 
 
 state 287
 	statement:  IDENTIFIER REM_ASSIGN expr ;.    (41)
 
-	.  reduce 41 (src line 311)
+	.  reduce 41 (src line 312)
 
 
 state 288
 	statement:  IDENTIFIER AND_ASSIGN expr ;.    (42)
 
-	.  reduce 42 (src line 315)
+	.  reduce 42 (src line 316)
 
 
 state 289
 	statement:  IDENTIFIER OR_ASSIGN expr ;.    (43)
 
-	.  reduce 43 (src line 319)
+	.  reduce 43 (src line 320)
 
 
 state 290
 	statement:  IDENTIFIER XOR_ASSIGN expr ;.    (44)
 
-	.  reduce 44 (src line 323)
+	.  reduce 44 (src line 324)
 
 
 state 291
 	statement:  IDENTIFIER SHL_ASSIGN expr ;.    (45)
 
-	.  reduce 45 (src line 327)
+	.  reduce 45 (src line 328)
 
 
 state 292
 	statement:  IDENTIFIER SHR_ASSIGN expr ;.    (46)
 
-	.  reduce 46 (src line 331)
+	.  reduce 46 (src line 332)
 
 
 state 293
 	statement:  { statements_zero } ;.    (31)
 
-	.  reduce 31 (src line 271)
+	.  reduce 31 (src line 272)
 
 
 state 294
 	statement:  VAR IDENTIFIER type ;.    (32)
 
-	.  reduce 32 (src line 275)
+	.  reduce 32 (src line 276)
 
 
 state 295
@@ -4438,7 +4438,7 @@ state 297
 	blocks_one:  { statements_zero }., blocks_one 
 
 	,  shift 306
-	.  reduce 136 (src line 718)
+	.  reduce 136 (src line 719)
 
 
 state 298
@@ -4588,32 +4588,32 @@ state 306
 	blocks_one:  { statements_zero } ,.blocks_one 
 
 	{  shift 244
-	.  reduce 137 (src line 723)
+	.  reduce 137 (src line 724)
 
 	blocks_one  goto 316
 
 state 307
 	statement:  RECV ( arguments_one ) ;.    (48)
 
-	.  reduce 48 (src line 339)
+	.  reduce 48 (src line 340)
 
 
 state 308
 	statement:  PEEK ( arguments_one ) ;.    (49)
 
-	.  reduce 49 (src line 343)
+	.  reduce 49 (src line 344)
 
 
 state 309
 	statement:  SEND ( arguments_one ) ;.    (50)
 
-	.  reduce 50 (src line 347)
+	.  reduce 50 (src line 348)
 
 
 state 310
 	statement:  FOR { statements_zero } ;.    (51)
 
-	.  reduce 51 (src line 351)
+	.  reduce 51 (src line 352)
 
 
 state 311
@@ -4645,7 +4645,7 @@ state 311
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 317
@@ -4698,13 +4698,13 @@ state 312
 state 313
 	statement:  VAR IDENTIFIER type ASSIGN expr ;.    (33)
 
-	.  reduce 33 (src line 279)
+	.  reduce 33 (src line 280)
 
 
 state 314
 	statement:  IF expr { statements_zero } ;.    (34)
 
-	.  reduce 34 (src line 283)
+	.  reduce 34 (src line 284)
 
 
 state 315
@@ -4717,7 +4717,7 @@ state 315
 state 316
 	blocks_one:  { statements_zero } , blocks_one.    (138)
 
-	.  reduce 138 (src line 727)
+	.  reduce 138 (src line 728)
 
 
 state 317
@@ -4775,7 +4775,7 @@ state 319
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 322
@@ -4842,7 +4842,7 @@ state 322
 state 323
 	statement:  FOR IDENTIFIER IN expr { statements_zero } ;.    (52)
 
-	.  reduce 52 (src line 355)
+	.  reduce 52 (src line 356)
 
 
 state 324
@@ -4874,7 +4874,7 @@ state 324
 	(  shift 92
 	[  shift 97
 	;  shift 212
-	.  reduce 28 (src line 256)
+	.  reduce 28 (src line 257)
 
 	const_def  goto 213
 	statements_zero  goto 326
@@ -4898,7 +4898,7 @@ state 326
 state 327
 	statement:  IF expr { statements_zero } ELSE { statements_zero } ;.    (35)
 
-	.  reduce 35 (src line 287)
+	.  reduce 35 (src line 288)
 
 
 state 328
@@ -4911,10 +4911,10 @@ state 328
 state 329
 	statement:  FOR IDENTIFIER IN RANGE expr TO expr { statements_zero } ;.    (53)
 
-	.  reduce 53 (src line 359)
+	.  reduce 53 (src line 360)
 
 
-88 terminals, 30 nonterminals
+89 terminals, 30 nonterminals
 139 grammar rules, 330/2000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
 79 working sets used
@@ -4923,6 +4923,6 @@ memory: parser 205/30000
 1750 shift entries, 1 exceptions
 140 goto entries
 61 entries saved by goto default
-Optimizer space used: output 975/30000
-975 table entries, 147 zero
-maximum spread: 88, maximum offset: 324
+Optimizer space used: output 998/30000
+998 table entries, 170 zero
+maximum spread: 89, maximum offset: 324

@@ -106,6 +106,7 @@ type token struct {
 %token<tok> MODULE
 %token<tok> CHANNEL
 %token<tok> PROC
+%token<tok> FAULT
 %token<tok> VAR
 %token<tok> IF
 %token<tok> ELSE

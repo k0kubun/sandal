@@ -16,6 +16,7 @@ var keywords = map[string]int{
 	"module":        MODULE,
 	"channel":       CHANNEL,
 	"proc":          PROC,
+	"fault":         FAULT,
 	"var":           VAR,
 	"if":            IF,
 	"else":          ELSE,
