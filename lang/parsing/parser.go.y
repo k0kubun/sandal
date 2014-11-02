@@ -209,11 +209,11 @@ proc_def
 fault_def
 	: FAULT SEND '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
-		$$ = data.ProcDefinition{}
+		$$ = data.FaultDefinition{}
 	}
 	| FAULT RECV '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
-		$$ = data.ProcDefinition{}
+		$$ = data.FaultDefinition{}
 	}
 
 init_block

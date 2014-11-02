@@ -76,6 +76,13 @@ type (
 		Statements []Statement
 	}
 
+	FaultDefinition struct {
+		Pos        Pos
+		Name       string
+		Parameters []Parameter
+		Statements []Statement
+	}
+
 	InitBlock struct {
 		Pos  Pos
 		Vars []InitVar
@@ -91,6 +98,7 @@ func (x ModuleDefinition) definition()   {}
 func (x ConstantDefinition) definition() {}
 func (x ConstantDefinition) statement()  {}
 func (x ProcDefinition) definition()     {}
+func (x FaultDefinition) definition()    {}
 func (x InitBlock) definition()          {}
 func (x LtlSpec) definition()            {}
 
@@ -98,6 +106,7 @@ func (x DataDefinition) Position() Pos     { return x.Pos }
 func (x ModuleDefinition) Position() Pos   { return x.Pos }
 func (x ConstantDefinition) Position() Pos { return x.Pos }
 func (x ProcDefinition) Position() Pos     { return x.Pos }
+func (x FaultDefinition) Position() Pos    { return x.Pos }
 func (x InitBlock) Position() Pos          { return x.Pos }
 func (x LtlSpec) Position() Pos            { panic("not implemented") }
 

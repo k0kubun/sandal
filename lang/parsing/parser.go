@@ -828,12 +828,12 @@ yydefault:
 	case 19:
 		//line parser.go.y:211
 		{
-			yyVAL.definition = data.ProcDefinition{}
+			yyVAL.definition = data.FaultDefinition{}
 		}
 	case 20:
 		//line parser.go.y:215
 		{
-			yyVAL.definition = data.ProcDefinition{}
+			yyVAL.definition = data.FaultDefinition{}
 		}
 	case 21:
 		//line parser.go.y:221

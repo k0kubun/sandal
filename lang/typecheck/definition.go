@@ -32,6 +32,9 @@ func typeCheckDefinitions(defs []Definition, env *typeEnv) error {
 				params[i] = p.Type
 			}
 			env.add(def.Name, CallableType{Parameters: params})
+		case FaultDefinition:
+			// TODO: some type check necessary?
+			// Do nothing
 		case InitBlock:
 			// Do nothing
 		case LtlSpec:
@@ -59,6 +62,8 @@ func typeCheckDefinition(x Definition, env *typeEnv) error {
 		return typeCheckConstantDefinition(x, env)
 	case ProcDefinition:
 		return typeCheckProcDefinition(x, env)
+	case FaultDefinition:
+		return typeCheckFaultDefinition(x, env)
 	case InitBlock:
 		return typeCheckInitBlock(x, env)
 	case LtlSpec:
@@ -113,6 +118,11 @@ func typeCheckProcDefinition(def ProcDefinition, env *typeEnv) error {
 			env.add(s.Name, s.Type)
 		}
 	}
+	return nil
+}
+
+func typeCheckFaultDefinition(def FaultDefinition, env *typeEnv) error {
+	// TODO: type check
 	return nil
 }
 
