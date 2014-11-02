@@ -1,0 +1,88 @@
+
+MODULE HandshakeChannel0()
+  VAR
+    filled : boolean;
+    received : boolean;
+    value_0 : boolean;
+  ASSIGN
+    init(filled) := FALSE;
+    init(received) := FALSE;
+    init(value_0) := FALSE;
+
+MODULE HandshakeChannel0Proxy(ch)
+  VAR
+    recv_received : boolean;
+    send_filled : boolean;
+    send_leaving : boolean;
+    send_value_0 : boolean;
+  ASSIGN
+    next(ch.filled) :=
+      case
+        send_filled : TRUE;
+        send_leaving : FALSE;
+        TRUE : ch.filled;
+      esac;
+    next(ch.received) :=
+      case
+        send_filled : FALSE;
+        send_leaving : FALSE;
+        recv_received : TRUE;
+        TRUE : ch.received;
+      esac;
+    next(ch.value_0) :=
+      case
+        send_filled : send_value_0;
+        TRUE : ch.value_0;
+      esac;
+  DEFINE
+    ready := ch.filled;
+    received := ch.received;
+    value_0 := ch.value_0;
+
+MODULE __pid0_Foo(__orig_ch)
+  JUSTICE
+    running
+  VAR
+    ch : HandshakeChannel0Proxy(__orig_ch);
+    state : {state0, state1, state2};
+    transition : {notrans, trans0, trans1};
+  TRANS transition = trans0 -> (!(ch.ready));
+  TRANS transition = trans1 -> ((ch.ready) & (ch.received));
+  ASSIGN
+    ch.recv_received :=
+      case
+        TRUE : FALSE;
+      esac;
+    ch.send_filled :=
+      case
+        transition = trans0 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch.send_leaving :=
+      case
+        transition = trans1 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch.send_value_0 :=
+      case
+        transition = trans0 : TRUE;
+        TRUE : ch.value_0;
+      esac;
+    init(state) := state0;
+    next(state) :=
+      case
+        transition = trans0 : state1;
+        transition = trans1 : state2;
+        TRUE : state;
+      esac;
+    transition :=
+      case
+        state = state0 & ((!(ch.ready))) : {trans0};
+        state = state1 & (((ch.ready) & (ch.received))) : {trans1};
+        TRUE : notrans;
+      esac;
+
+MODULE main()
+  VAR
+    ch : HandshakeChannel0;
+    foo : process __pid0_Foo(ch);

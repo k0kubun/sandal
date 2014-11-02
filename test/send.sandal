@@ -1,0 +1,8 @@
+proc Foo(ch channel { bool }) {
+  send(ch, true)
+}
+
+init {
+  ch:  channel { bool },
+  foo: Foo(ch),
+}
