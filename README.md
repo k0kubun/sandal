@@ -20,6 +20,21 @@ To see model checking result, you have to pipe sandal's stdout to NuSMV
 $ sandal your_model.sandal | nusmv
 ```
 
+### Debug
+
+You can dump AST, IR1 and IR2 with this forked version.
+
+```bash
+# Dump AST
+$ sandal -a your_model.sandal
+
+# Dump IR1
+$ sandal -i your_model.sandal
+
+# Dump IR2
+$ sandal -t your_model.sandal
+```
+
 ## Testing
 
 ```bash
