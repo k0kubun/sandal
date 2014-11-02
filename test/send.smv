@@ -44,10 +44,18 @@ MODULE __pid0_Foo(__orig_ch)
     running
   VAR
     ch : HandshakeChannel0Proxy(__orig_ch);
-    state : {state0, state1, state2};
-    transition : {notrans, trans0, trans1};
-  TRANS transition = trans0 -> (!(ch.ready));
-  TRANS transition = trans1 -> ((ch.ready) & (ch.received));
+    state : {state0, state1, state2, state3, state4, state5, state6, state7, state8, state9};
+    transition : {notrans, trans0, trans1, trans2, trans3, trans4, trans5, trans6, trans7, trans8, trans9};
+  TRANS transition = trans0 -> (TRUE);
+  TRANS transition = trans1 -> (!(ch.ready));
+  TRANS transition = trans2 -> ((ch.ready) & (ch.received));
+  TRANS transition = trans3 -> (TRUE);
+  TRANS transition = trans4 -> (TRUE);
+  TRANS transition = trans5 -> (TRUE);
+  TRANS transition = trans6 -> (!(ch.ready));
+  TRANS transition = trans7 -> ((ch.ready) & (ch.received));
+  TRANS transition = trans8 -> (TRUE);
+  TRANS transition = trans9 -> (TRUE);
   ASSIGN
     ch.recv_received :=
       case
@@ -55,30 +63,48 @@ MODULE __pid0_Foo(__orig_ch)
       esac;
     ch.send_filled :=
       case
-        transition = trans0 : TRUE;
+        transition = trans1 : TRUE;
+        transition = trans6 : TRUE;
         TRUE : FALSE;
       esac;
     ch.send_leaving :=
       case
-        transition = trans1 : TRUE;
+        transition = trans2 : TRUE;
+        transition = trans7 : TRUE;
         TRUE : FALSE;
       esac;
     ch.send_value_0 :=
       case
-        transition = trans0 : TRUE;
+        transition = trans1 : TRUE;
+        transition = trans6 : FALSE;
         TRUE : ch.value_0;
       esac;
     init(state) := state0;
     next(state) :=
       case
-        transition = trans0 : state1;
-        transition = trans1 : state2;
+        transition = trans0 : state2;
+        transition = trans1 : state4;
+        transition = trans2 : state5;
+        transition = trans3 : state3;
+        transition = trans4 : state1;
+        transition = trans5 : state6;
+        transition = trans6 : state8;
+        transition = trans7 : state9;
+        transition = trans8 : state7;
+        transition = trans9 : state1;
         TRUE : state;
       esac;
     transition :=
       case
-        state = state0 & ((!(ch.ready))) : {trans0};
-        state = state1 & (((ch.ready) & (ch.received))) : {trans1};
+        state = state0 & ((TRUE)) : {trans0, trans5};
+        state = state2 & ((!(ch.ready))) : {trans1};
+        state = state3 & ((TRUE)) : {trans4};
+        state = state4 & (((ch.ready) & (ch.received))) : {trans2};
+        state = state5 & ((TRUE)) : {trans3};
+        state = state6 & ((!(ch.ready))) : {trans6};
+        state = state7 & ((TRUE)) : {trans9};
+        state = state8 & (((ch.ready) & (ch.received))) : {trans7};
+        state = state9 & ((TRUE)) : {trans8};
         TRUE : notrans;
       esac;
 

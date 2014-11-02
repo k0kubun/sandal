@@ -1,5 +1,9 @@
 proc Foo(ch channel { bool }) {
-  send(ch, true)
+	choice {
+		send(ch, true)
+	}, {
+		send(ch, false)
+	}
 }
 
 init {
