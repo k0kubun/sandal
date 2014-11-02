@@ -39,14 +39,41 @@
 
 ## 拡張案
 
-非決定的に新たな遷移を加えられるstatement用fault markerを定義可能にする。  
+```go
+fault @omission recv(recvCh channel { int }, variable *int) {
+  // receive nothing
+  return false
+}
+
+fault @comission send(sendCh channel { int }, num int) {
+  // send invalid value
+  sendCh <- num + 1
+  return true
+}
+
+proc RecvProc(recvCh channel { int }) {
+  var variable int
+  for {
+    recv(recvCh, &variable) @omission
+  }
+}
+
+proc SendProc(sendCh channel { int }) {
+  for {
+    send(sendCh, 1) @comission
+  }
+}
+```
+
+sendやrecvに対して非決定的に新たな遷移を加えられるfault markerを定義可能にする。  
+必要に応じてsendやrecvはexpressionに変える。  
 (process, channel, variableに起きる障害は第一要件から外す)
 
 ## マイルストン
 
 1. statementの障害遷移を定義する構文を追加する。statementの還元規則でfault markerを追加可能にする。
 2. recvやsend内でのchannel操作を再現するstatementを追加し、障害定義の幅を広げる。
-3. 拡張した構文で追加した障害を用いて、リードソロモン符号やByzantine Fault Tolerantなアルゴリズムを検査してみる。
+3. 拡張した構文で追加した障害を用い、リードソロモン符号やByzantine Fault Tolerantなアルゴリズムを検査する。
 4. 変数用の障害定義構文を導入する。
 5. チャネルの挙動を再現するstatementを追加する。チャネル用の障害定義構文を導入する。
 6. process以外の既存の障害をSandal実装に変える。
