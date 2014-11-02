@@ -39,7 +39,7 @@ type token struct {
 
 %type<definitions> spec
 %type<definition> toplevel_body
-%type<definition> data_def module_def const_def proc_def init_block ltl_spec
+%type<definition> data_def module_def const_def proc_def fault_def init_block ltl_spec
 %type<definitions> module_body_zero
 %type<definition> module_body
 %type<initvars> initvars_zero initvars_one
@@ -163,6 +163,7 @@ toplevel_body
 	| module_def
 	| const_def
 	| proc_def
+	| fault_def
 	| init_block
 	| ltl_spec
 
@@ -203,6 +204,16 @@ proc_def
 	: PROC IDENTIFIER '(' parameters_zero ')' '{' statements_zero '}' ';'
 	{
 		$$ = data.ProcDefinition{Pos: $1.pos, Name: $2.lit, Parameters: $4, Statements: $7}
+	}
+
+fault_def
+	: FAULT SEND '(' parameters_one ')' tag '{' statements_zero '}' ';'
+	{
+		$$ = data.ProcDefinition{}
+	}
+	| FAULT RECV '(' parameters_one ')' tag '{' statements_zero '}' ';'
+	{
+		$$ = data.ProcDefinition{}
 	}
 
 init_block
