@@ -33,9 +33,9 @@ func TestStatementStringify(t *testing.T) {
 			BlockStatement{Pos{}, []Statement{SkipStatement{}}},
 			BlockStatement{Pos{}, []Statement{ExprStatement{NumberExpression{Pos{}, "1"}}}}}},
 		"choice { skip; }, { 1; };")
-	expectString(t, RecvStatement{Pos{}, IdentifierExpression{Pos{}, "ch"}, []Expression{IdentifierExpression{Pos{}, "a"}}}, "recv(ch, a);")
+	expectString(t, RecvStatement{Pos{}, IdentifierExpression{Pos{}, "ch"}, []Expression{IdentifierExpression{Pos{}, "a"}}, []string{}}, "recv(ch, a);")
 	expectString(t, PeekStatement{Pos{}, IdentifierExpression{Pos{}, "ch"}, []Expression{IdentifierExpression{Pos{}, "a"}}}, "peek(ch, a);")
-	expectString(t, SendStatement{Pos{}, IdentifierExpression{Pos{}, "ch"}, []Expression{IdentifierExpression{Pos{}, "a"}}}, "send(ch, a);")
+	expectString(t, SendStatement{Pos{}, IdentifierExpression{Pos{}, "ch"}, []Expression{IdentifierExpression{Pos{}, "a"}}, []string{}}, "send(ch, a);")
 	expectString(t, ForStatement{Pos{}, []Statement{SkipStatement{}}}, "for { skip; };")
 	expectString(t, ForInStatement{Pos{}, "ch", IdentifierExpression{Pos{}, "chs"}, []Statement{SkipStatement{}}}, "for ch in chs { skip; };")
 	expectString(t, ForInRangeStatement{Pos{}, "i", NumberExpression{Pos{}, "1"}, NumberExpression{Pos{}, "5"}, []Statement{SkipStatement{}}}, "for i in range 1 to 5 { skip; };")

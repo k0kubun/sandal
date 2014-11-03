@@ -3112,7 +3112,7 @@ state 215
 	blocks_one  goto 257
 
 state 216
-	statement:  RECV.( arguments_one ) ; 
+	statement:  RECV.( arguments_one ) tags_zero ; 
 
 	(  shift 259
 	.  error
@@ -3126,7 +3126,7 @@ state 217
 
 
 state 218
-	statement:  SEND.( arguments_one ) ; 
+	statement:  SEND.( arguments_one ) tags_zero ; 
 
 	(  shift 261
 	.  error
@@ -3729,7 +3729,7 @@ state 258
 	expr  goto 223
 
 state 259
-	statement:  RECV (.arguments_one ) ; 
+	statement:  RECV (.arguments_one ) tags_zero ; 
 
 	IDENTIFIER  shift 94
 	NUMBER  shift 95
@@ -3769,7 +3769,7 @@ state 260
 	arguments_one  goto 292
 
 state 261
-	statement:  SEND (.arguments_one ) ; 
+	statement:  SEND (.arguments_one ) tags_zero ; 
 
 	IDENTIFIER  shift 94
 	NUMBER  shift 95
@@ -4448,7 +4448,7 @@ state 290
 
 
 state 291
-	statement:  RECV ( arguments_one.) ; 
+	statement:  RECV ( arguments_one.) tags_zero ; 
 
 	)  shift 316
 	.  error
@@ -4462,7 +4462,7 @@ state 292
 
 
 state 293
-	statement:  SEND ( arguments_one.) ; 
+	statement:  SEND ( arguments_one.) tags_zero ; 
 
 	)  shift 318
 	.  error
@@ -4637,11 +4637,15 @@ state 315
 
 
 state 316
-	statement:  RECV ( arguments_one ).; 
+	statement:  RECV ( arguments_one ).tags_zero ; 
+	tags_zero: .    (134)
 
-	;  shift 327
-	.  error
+	@  shift 169
+	.  reduce 134 (src line 704)
 
+	tags_zero  goto 327
+	tags_one  goto 172
+	tag  goto 173
 
 state 317
 	statement:  PEEK ( arguments_one ).; 
@@ -4651,11 +4655,15 @@ state 317
 
 
 state 318
-	statement:  SEND ( arguments_one ).; 
+	statement:  SEND ( arguments_one ).tags_zero ; 
+	tags_zero: .    (134)
 
-	;  shift 329
-	.  error
+	@  shift 169
+	.  reduce 134 (src line 704)
 
+	tags_zero  goto 329
+	tags_one  goto 172
+	tag  goto 173
 
 state 319
 	statement:  FOR { statements_zero }.; 
@@ -4800,9 +4808,10 @@ state 326
 	blocks_one  goto 336
 
 state 327
-	statement:  RECV ( arguments_one ) ;.    (51)
+	statement:  RECV ( arguments_one ) tags_zero.; 
 
-	.  reduce 51 (src line 351)
+	;  shift 337
+	.  error
 
 
 state 328
@@ -4812,9 +4821,10 @@ state 328
 
 
 state 329
-	statement:  SEND ( arguments_one ) ;.    (53)
+	statement:  SEND ( arguments_one ) tags_zero.; 
 
-	.  reduce 53 (src line 359)
+	;  shift 338
+	.  error
 
 
 state 330
@@ -4855,7 +4865,7 @@ state 331
 	.  reduce 31 (src line 268)
 
 	const_def  goto 225
-	statements_zero  goto 337
+	statements_zero  goto 339
 	statement  goto 210
 	expr  goto 223
 
@@ -4898,7 +4908,7 @@ state 332
 	NEQ  shift 151
 	LEQ  shift 152
 	GEQ  shift 153
-	TO  shift 338
+	TO  shift 340
 	.  error
 
 
@@ -4917,7 +4927,7 @@ state 334
 state 335
 	statement:  IF expr { statements_zero } ELSE.{ statements_zero } ; 
 
-	{  shift 339
+	{  shift 341
 	.  error
 
 
@@ -4928,13 +4938,25 @@ state 336
 
 
 state 337
-	statement:  FOR IDENTIFIER IN expr { statements_zero.} ; 
+	statement:  RECV ( arguments_one ) tags_zero ;.    (51)
 
-	}  shift 340
-	.  error
+	.  reduce 51 (src line 351)
 
 
 state 338
+	statement:  SEND ( arguments_one ) tags_zero ;.    (53)
+
+	.  reduce 53 (src line 359)
+
+
+state 339
+	statement:  FOR IDENTIFIER IN expr { statements_zero.} ; 
+
+	}  shift 342
+	.  error
+
+
+state 340
 	statement:  FOR IDENTIFIER IN RANGE expr TO.expr { statements_zero } ; 
 
 	IDENTIFIER  shift 94
@@ -4951,9 +4973,9 @@ state 338
 	[  shift 105
 	.  error
 
-	expr  goto 341
+	expr  goto 343
 
-state 339
+state 341
 	statement:  IF expr { statements_zero } ELSE {.statements_zero } ; 
 	statements_zero: .    (31)
 
@@ -4985,18 +5007,18 @@ state 339
 	.  reduce 31 (src line 268)
 
 	const_def  goto 225
-	statements_zero  goto 342
+	statements_zero  goto 344
 	statement  goto 210
 	expr  goto 223
 
-state 340
+state 342
 	statement:  FOR IDENTIFIER IN expr { statements_zero }.; 
 
-	;  shift 343
+	;  shift 345
 	.  error
 
 
-state 341
+state 343
 	statement:  FOR IDENTIFIER IN RANGE expr TO expr.{ statements_zero } ; 
 	expr:  expr.ADD expr 
 	expr:  expr.SUB expr 
@@ -5035,24 +5057,24 @@ state 341
 	NEQ  shift 151
 	LEQ  shift 152
 	GEQ  shift 153
-	{  shift 344
+	{  shift 346
 	.  error
 
 
-state 342
+state 344
 	statement:  IF expr { statements_zero } ELSE { statements_zero.} ; 
 
-	}  shift 345
+	}  shift 347
 	.  error
 
 
-state 343
+state 345
 	statement:  FOR IDENTIFIER IN expr { statements_zero } ;.    (55)
 
 	.  reduce 55 (src line 367)
 
 
-state 344
+state 346
 	statement:  FOR IDENTIFIER IN RANGE expr TO expr {.statements_zero } ; 
 	statements_zero: .    (31)
 
@@ -5084,52 +5106,52 @@ state 344
 	.  reduce 31 (src line 268)
 
 	const_def  goto 225
-	statements_zero  goto 346
+	statements_zero  goto 348
 	statement  goto 210
 	expr  goto 223
 
-state 345
-	statement:  IF expr { statements_zero } ELSE { statements_zero }.; 
-
-	;  shift 347
-	.  error
-
-
-state 346
-	statement:  FOR IDENTIFIER IN RANGE expr TO expr { statements_zero.} ; 
-
-	}  shift 348
-	.  error
-
-
 state 347
-	statement:  IF expr { statements_zero } ELSE { statements_zero } ;.    (38)
-
-	.  reduce 38 (src line 299)
-
-
-state 348
-	statement:  FOR IDENTIFIER IN RANGE expr TO expr { statements_zero }.; 
+	statement:  IF expr { statements_zero } ELSE { statements_zero }.; 
 
 	;  shift 349
 	.  error
 
 
+state 348
+	statement:  FOR IDENTIFIER IN RANGE expr TO expr { statements_zero.} ; 
+
+	}  shift 350
+	.  error
+
+
 state 349
+	statement:  IF expr { statements_zero } ELSE { statements_zero } ;.    (38)
+
+	.  reduce 38 (src line 299)
+
+
+state 350
+	statement:  FOR IDENTIFIER IN RANGE expr TO expr { statements_zero }.; 
+
+	;  shift 351
+	.  error
+
+
+state 351
 	statement:  FOR IDENTIFIER IN RANGE expr TO expr { statements_zero } ;.    (56)
 
 	.  reduce 56 (src line 371)
 
 
 89 terminals, 31 nonterminals
-142 grammar rules, 350/2000 states
+142 grammar rules, 352/2000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
 80 working sets used
-memory: parser 222/30000
-127 extra closures
-1818 shift entries, 1 exceptions
-147 goto entries
-70 entries saved by goto default
-Optimizer space used: output 1025/30000
-1025 table entries, 177 zero
-maximum spread: 89, maximum offset: 344
+memory: parser 228/30000
+132 extra closures
+1820 shift entries, 1 exceptions
+149 goto entries
+74 entries saved by goto default
+Optimizer space used: output 1041/30000
+1041 table entries, 191 zero
+maximum spread: 89, maximum offset: 346

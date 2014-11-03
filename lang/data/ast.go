@@ -161,6 +161,7 @@ type (
 		Pos     Pos
 		Channel Expression
 		Args    []Expression
+		Tags    []string
 	}
 
 	PeekStatement struct {
@@ -173,6 +174,7 @@ type (
 		Pos     Pos
 		Channel Expression
 		Args    []Expression
+		Tags    []string
 	}
 
 	ForStatement struct {

@@ -3,10 +3,10 @@ fault send(ch channel { bool }, val bool) @omission {
 }
 
 proc SendProc(ch channel { bool }) {
-	send(ch, true) //@omission
+	send(ch, true) @omission
 }
 
 init {
 	ch: channel { bool },
-	process: SendProc(ch),
+	sp: SendProc(ch),
 }

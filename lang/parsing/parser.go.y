@@ -348,17 +348,17 @@ statement
 	{
 		$$ = data.ChoiceStatement{Pos: $1.pos, Blocks: $2}
 	}
-	| RECV '(' arguments_one ')' ';'
+	| RECV '(' arguments_one ')' tags_zero ';'
 	{
-		$$ = data.RecvStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
+		$$ = data.RecvStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:], Tags: $5}
 	}
 	| PEEK '(' arguments_one ')' ';'
 	{
 		$$ = data.PeekStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
 	}
-	| SEND '(' arguments_one ')' ';'
+	| SEND '(' arguments_one ')' tags_zero ';'
 	{
-		$$ = data.SendStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
+		$$ = data.SendStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:], Tags: $5}
 	}
 	| FOR '{' statements_zero '}' ';'
 	{
