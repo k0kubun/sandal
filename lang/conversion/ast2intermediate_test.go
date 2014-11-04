@@ -3,6 +3,7 @@ package conversion
 import (
 	"github.com/cookieo9/go-misc/pp"
 	. "github.com/k0kubun/sandal/lang/data"
+	"github.com/k0kubun/sandal/lang/parsing"
 	"github.com/kylelemons/godebug/diff"
 	"testing"
 )
@@ -113,6 +114,121 @@ func TestConvertASTToIntModule(t *testing.T) {
 	expectPP := pp.PP(expected)
 	actualPP := pp.PP(intMods)
 	if expectPP != actualPP {
+		t.Errorf("Unmatched\n%s\n", diff.Diff(expectPP, actualPP))
+	}
+}
+
+func TestConvertASTToIntModuleForSend(t *testing.T) {
+	sendWithTagSource := `
+		proc SendProc(ch channel { bool }) {
+			send(ch, true) @omission
+		}
+
+		init {
+			ch: channel { bool },
+			sp: SendProc(ch),
+		}
+	`
+	expected := []intModule{
+		intHandshakeChannel{
+			Name:      "HandshakeChannel0",
+			ValueType: []string{"boolean"},
+			ZeroValue: []string{"FALSE"},
+		},
+		intProcModule{
+			Name: "__pid0_SendProc",
+			Args: []string{"__orig_ch"},
+			Vars: []intVar{
+				{"ch", "HandshakeChannel0Proxy(__orig_ch)"},
+			},
+			InitState: intState("state0"),
+			Trans: []intTransition{
+				{
+					FromState: "state0",
+					NextState: "state2",
+					Condition: "",
+					Actions:   []intAssign(nil),
+				},
+				{
+					FromState: "state2",
+					NextState: "state3",
+					Condition: "!(ch.ready)",
+					Actions: []intAssign{
+						{"ch.send_filled", "TRUE"},
+						{"ch.send_value_0", "TRUE"},
+					},
+				},
+				{
+					FromState: "state3",
+					NextState: "state4",
+					Condition: "(ch.ready) & (ch.received)",
+					Actions: []intAssign{
+						{"ch.send_leaving", "TRUE"},
+					},
+				},
+				{
+					FromState: "state4",
+					NextState: "state1",
+					Condition: "",
+					Actions:   []intAssign(nil),
+				},
+				{
+					FromState: "state0",
+					NextState: "state5",
+					Condition: "",
+					Actions:   []intAssign(nil),
+				},
+				{
+					FromState: "state5",
+					NextState: "state6",
+					Condition: "!(ch.ready)",
+					Actions: []intAssign{
+						{"ch.send_filled", "TRUE"},
+						{"ch.send_value_0", "TRUE"},
+					},
+				},
+				{
+					FromState: "state6",
+					NextState: "state7",
+					Condition: "(ch.ready) & (ch.received)",
+					Actions: []intAssign{
+						{"ch.send_leaving", "TRUE"},
+					},
+				},
+				{
+					FromState: "state7",
+					NextState: "state1",
+					Condition: "",
+					Actions:   []intAssign(nil),
+				},
+			},
+			Defaults: map[string]string{
+				"ch.send_leaving":  "FALSE",
+				"ch.send_filled":   "FALSE",
+				"ch.recv_received": "FALSE",
+				"ch.send_value_0":  "ch.value_0",
+			},
+			Defs: []intAssign(nil),
+		},
+		intMainModule{
+			Vars: []intVar{
+				{"ch", "HandshakeChannel0"},
+				{"sp", "process __pid0_SendProc(ch)"},
+			},
+		},
+	}
+
+	scanner := new(parsing.Scanner)
+	scanner.Init([]rune(sendWithTagSource), 0)
+	defs := parsing.Parse(scanner)
+
+	err, intMods := convertASTToIntModule(defs)
+	if err != nil {
+		t.Fatalf("Unexpected error: %s", err)
+	}
+	actualPP := pp.PP(intMods)
+	expectPP := pp.PP(expected)
+	if actualPP != expectPP {
 		t.Errorf("Unmatched\n%s\n", diff.Diff(expectPP, actualPP))
 	}
 }

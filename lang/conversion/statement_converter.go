@@ -303,6 +303,47 @@ func (x *intStatementConverter) convertPeekStatement(stmt PeekStatement) {
 	panic("not implemented")
 }
 func (x *intStatementConverter) convertSendStatement(stmt SendStatement) {
+	if len(stmt.Tags) == 0 {
+		x.convertSendStatementWithoutTag(stmt)
+	} else {
+		nextState := x.genNextState()
+		currentState := x.currentState
+
+		choicedState := x.genNextState()
+		x.trans = append(x.trans, intTransition{
+			FromState: currentState,
+			NextState: choicedState,
+		})
+		x.currentState = choicedState
+		x.pushEnv()
+		x.convertSendStatementWithoutTag(stmt)
+		x.popEnv()
+		x.trans = append(x.trans, intTransition{
+			FromState: x.currentState,
+			NextState: nextState,
+		})
+
+		for _, tag := range stmt.Tags {
+			choicedState := x.genNextState()
+			x.trans = append(x.trans, intTransition{
+				FromState: currentState,
+				NextState: choicedState,
+			})
+			x.currentState = choicedState
+			x.pushEnv()
+			x.convertSendStatementWithoutTag(stmt)
+			x.popEnv()
+			x.trans = append(x.trans, intTransition{
+				FromState: x.currentState,
+				NextState: nextState,
+			})
+			println(tag) // FIXME
+		}
+
+		x.currentState = nextState
+	}
+}
+func (x *intStatementConverter) convertSendStatementWithoutTag(stmt SendStatement) {
 	ch, args := convertChannelExpr(stmt, x.env)
 	chType := ch.GetType()
 
