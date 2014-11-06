@@ -40,15 +40,13 @@
 ## 拡張案
 
 ```go
-fault @omission recv(recvCh channel { int }, variable *int) {
+fault recv(recvCh channel { int }, variable *int) @omission {
   // receive nothing
-  return false
 }
 
-fault @comission send(sendCh channel { int }, num int) {
+fault send(sendCh channel { int }, num int) @commission {
   // send invalid value
-  sendCh <- num + 1
-  return true
+  send(sendCh, num + 1)
 }
 
 proc RecvProc(recvCh channel { int }) {
@@ -60,7 +58,7 @@ proc RecvProc(recvCh channel { int }) {
 
 proc SendProc(sendCh channel { int }) {
   for {
-    send(sendCh, 1) @comission
+    send(sendCh, 1) @commission
   }
 }
 ```
