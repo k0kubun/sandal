@@ -67,6 +67,30 @@ sendやrecvに対して非決定的に新たな遷移を加えられるfault mar
 必要に応じてsendやrecvはexpressionに変える。  
 (process, channel, variableに起きる障害は第一要件から外す)
 
+## 実装
+
+```go
+fault send(sendCh channel { int }, num int) @omission {
+  // do nothing (omitted)
+}
+
+proc SendProc(ch channel { bool }) {
+  send(ch, true) @omission
+}
+```
+
+is equal to:
+
+```go
+proc SendProc(ch channel { bool }) {
+  choice {
+    send(ch, true)
+  }, {
+    // do nothing (omitted)
+  }
+}
+```
+
 ## マイルストン
 
 1. statementの障害遷移を定義する構文を追加する。statementの還元規則でfault markerを追加可能にする。
