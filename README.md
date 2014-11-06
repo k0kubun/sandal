@@ -1,4 +1,4 @@
-# Sandal [![wercker status](https://app.wercker.com/status/2f1d23a1e9e7678d0fc89a70afbb63a0/s "wercker status")](https://app.wercker.com/project/bykey/2f1d23a1e9e7678d0fc89a70afbb63a0)
+# Sandal [![wercker status](https://app.wercker.com/status/f1cc50a0555ac54c4fdbd31bb15c3fba/s "wercker status")](https://app.wercker.com/project/bykey/f1cc50a0555ac54c4fdbd31bb15c3fba)
 
 Sandal is a fault-aware model checker for message passing systems.  
 This repository is a forked version of [draftcode/sandal](https://github.com/draftcode/sandal).
