@@ -79,6 +79,7 @@ type (
 	FaultDefinition struct {
 		Pos        Pos
 		Name       string
+		Tag        string
 		Parameters []Parameter
 		Statements []Statement
 	}

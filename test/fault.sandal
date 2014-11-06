@@ -1,9 +1,9 @@
-// fault send(ch channel { bool }, val bool) @omission {
-// 	// do nothing
-// }
+fault send(ch channel { bool }, val bool) @omission {
+	// do nothing
+}
 
 proc SendProc(ch channel { bool }) {
-		send(ch, true) @omission
+	send(ch, true) @omission
 }
 
 init {

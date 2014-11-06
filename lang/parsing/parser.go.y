@@ -209,7 +209,7 @@ proc_def
 fault_def
 	: FAULT SEND '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
-		$$ = data.FaultDefinition{}
+		$$ = data.FaultDefinition{Pos: $1.pos, Name: $2.lit, Parameters: $4, Tag: $6, Statements: $8}
 	}
 	| FAULT RECV '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{

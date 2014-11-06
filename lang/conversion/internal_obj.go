@@ -35,12 +35,17 @@ type (
 		Args       []intInternalExpressionObj
 		Pid        int
 	}
+
+	intInternalFaultDef struct {
+		Def FaultDefinition
+	}
 )
 
 func (x intInternalConstantDef) intinternalobj() {}
 func (x intInternalDataTypeDef) intinternalobj() {}
 func (x intInternalProcDef) intinternalobj()     {}
 func (x intInternalProcVar) intinternalobj()     {}
+func (x intInternalFaultDef) intinternalobj()    {}
 
 // ========================================
 // intInternalExpressionObj
@@ -395,20 +400,20 @@ var operatorResultType = map[string]Type{
 	">=": NamedType{"bool"},
 }
 
-func (x intInternalPrimitiveVar) GetType() Type             { return x.Type }
-func (x intInternalArrayVar) GetType() Type                 { return x.RealLiteral.GetType() }
-func (x intInternalLiteral) GetType() Type                  { return x.Type }
-func (x intInternalNot) GetType() Type                      { return x.Sub.GetType() }
-func (x intInternalUnarySub) GetType() Type                 { return x.Sub.GetType() }
-func (x intInternalParen) GetType() Type                    { return x.Sub.GetType() }
-func (x intInternalBinOp) GetType() Type                    { return operatorResultType[x.Op] }
-func (x intInternalTimeoutRecv) GetType() Type              { return NamedType{"bool"} }
-func (x intInternalTimeoutPeek) GetType() Type              { return NamedType{"bool"} }
-func (x intInternalNonblockRecv) GetType() Type             { return NamedType{"bool"} }
-func (x intInternalNonblockPeek) GetType() Type             { return NamedType{"bool"} }
-func (x intInternalArrayLiteral) GetType() Type             { return ArrayType{x.Elems[0].GetType()} }
-func (x intInternalHandshakeChannelVar) GetType() Type      { return x.Type }
-func (x intInternalBufferedChannelVar) GetType() Type       { return x.Type }
+func (x intInternalPrimitiveVar) GetType() Type        { return x.Type }
+func (x intInternalArrayVar) GetType() Type            { return x.RealLiteral.GetType() }
+func (x intInternalLiteral) GetType() Type             { return x.Type }
+func (x intInternalNot) GetType() Type                 { return x.Sub.GetType() }
+func (x intInternalUnarySub) GetType() Type            { return x.Sub.GetType() }
+func (x intInternalParen) GetType() Type               { return x.Sub.GetType() }
+func (x intInternalBinOp) GetType() Type               { return operatorResultType[x.Op] }
+func (x intInternalTimeoutRecv) GetType() Type         { return NamedType{"bool"} }
+func (x intInternalTimeoutPeek) GetType() Type         { return NamedType{"bool"} }
+func (x intInternalNonblockRecv) GetType() Type        { return NamedType{"bool"} }
+func (x intInternalNonblockPeek) GetType() Type        { return NamedType{"bool"} }
+func (x intInternalArrayLiteral) GetType() Type        { return ArrayType{x.Elems[0].GetType()} }
+func (x intInternalHandshakeChannelVar) GetType() Type { return x.Type }
+func (x intInternalBufferedChannelVar) GetType() Type  { return x.Type }
 
 // ========================================
 

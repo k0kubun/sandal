@@ -32,6 +32,10 @@ func convertASTToIntModule(defs []Definition) (error, []intModule) {
 			converter.env.add(def.Name, intInternalProcDef{
 				Def: def,
 			})
+		case FaultDefinition:
+			converter.env.add(def.Name+"@"+def.Tag, intInternalFaultDef{
+				Def: def,
+			})
 		case InitBlock:
 			// Do nothing
 		case LtlSpec:
@@ -258,7 +262,7 @@ func (x *intModConverter) instantiateProcDef(def intInternalProcDef, moduleName 
 			Name: paramName,
 			Type: fmt.Sprintf("%sProxy(__orig_%s)", moduleName, paramName),
 		})
-		params = append(params, "__orig_" + paramName)
+		params = append(params, "__orig_"+paramName)
 	}
 	processHandshakeChannel := func(paramName string, moduleName string, numElems int) {
 		defaults[paramName+".send_leaving"] = "FALSE"
