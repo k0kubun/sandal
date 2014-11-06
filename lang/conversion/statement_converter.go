@@ -3,6 +3,7 @@ package conversion
 import (
 	"fmt"
 	. "github.com/k0kubun/sandal/lang/data"
+	"log"
 )
 
 func (x *intModConverter) convertStatements(statements []Statement, defaults map[string]string, tags []string, vars []intVar) ([]intVar, intState, []intTransition) {
@@ -331,13 +332,21 @@ func (x *intStatementConverter) convertSendStatement(stmt SendStatement) {
 			})
 			x.currentState = choicedState
 			x.pushEnv()
-			x.convertSendStatementWithoutTag(stmt)
+
+			faultVar := x.env.lookup("send@" + tag)
+			if faultVar == nil {
+				log.Fatalf("Fault @%s does not exist for send", tag)
+			}
+			faultDef := faultVar.(intInternalFaultDef).Def
+			for _, stmt := range faultDef.Statements {
+				x.convertStatement(stmt)
+			}
+
 			x.popEnv()
 			x.trans = append(x.trans, intTransition{
 				FromState: x.currentState,
 				NextState: nextState,
 			})
-			println(tag) // FIXME
 		}
 
 		x.currentState = nextState
