@@ -1,8 +1,7 @@
 package lang
 
 import (
-	"fmt"
-	"github.com/k0kubun/pretty"
+	"github.com/k0kubun/pp"
 	"github.com/k0kubun/sandal/lang/conversion"
 	"github.com/k0kubun/sandal/lang/parsing"
 	"github.com/k0kubun/sandal/lang/typecheck"
@@ -26,7 +25,7 @@ func DumpAST(body string) {
 	scanner.Init([]rune(body), 0)
 	defs := parsing.Parse(scanner)
 
-	fmt.Printf("%# v\n", pretty.Formatter(defs))
+	pp.Print(defs)
 }
 
 func DumpIR1(body string) {
