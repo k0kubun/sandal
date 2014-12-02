@@ -25,7 +25,7 @@ func DumpAST(body string) {
 	scanner.Init([]rune(body), 0)
 	defs := parsing.Parse(scanner)
 
-	pp.Print(defs)
+	pp.Println(defs)
 }
 
 func DumpIR1(body string) {

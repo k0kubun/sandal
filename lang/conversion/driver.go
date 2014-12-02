@@ -1,8 +1,7 @@
 package conversion
 
 import (
-	"fmt"
-	"github.com/k0kubun/pretty"
+	"github.com/k0kubun/pp"
 	. "github.com/k0kubun/sandal/lang/data"
 	"log"
 	"strings"
@@ -32,7 +31,7 @@ func DumpIR1(defs []Definition) {
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
 	}
-	fmt.Printf("%# v\n", pretty.Formatter(intMods))
+	pp.Println(intMods)
 }
 
 func DumpIR2(defs []Definition) {
@@ -45,5 +44,5 @@ func DumpIR2(defs []Definition) {
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
 	}
-	fmt.Printf("%# v\n", pretty.Formatter(tmplMods))
+	pp.Println(tmplMods)
 }
