@@ -16,11 +16,11 @@ done
 tempfile=`mktemp /tmp/tmp.XXXXXXXXXX`
 trap "rm $tempfile" 0
 
-for filename in `ls test`; do
+for filename in `find test -type f -name '*.sandal'`; do
   case $filename in
     (*.sandal)
-      actual_filename="test/${filename}"
-      expect_filename="test/${filename%.sandal}.smv"
+      actual_filename="${filename}"
+      expect_filename="${filename%.sandal}.smv"
 
       if [ -e $expect_filename ]; then
         err_output=`./sandal ${actual_filename} 2>&1 1>$tempfile`
@@ -46,6 +46,21 @@ for filename in `ls test`; do
             echo "ok      ${actual_filename} -> ${expect_filename}"
             printf "\e[0m"
           fi
+        fi
+      else
+        err_output=`./sandal ${actual_filename} 2>&1 1>$tempfile`
+
+        if [ $? -ne 0 ]; then
+          printf "\e[31m"
+          echo "FAILED: ${actual_filename}"
+          echo "    ${err_output}"
+          printf "\e[0m"
+          exit 1
+        else
+          printf "\e[32m"
+          echo "PASS"
+          echo "ok      ${actual_filename}"
+          printf "\e[0m"
         fi
       fi
   esac
