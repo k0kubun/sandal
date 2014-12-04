@@ -1,0 +1,12 @@
+fault recv(ch channel { bool }, val bool) @omission {
+	// do nothing
+}
+
+proc RecvProc(ch channel { bool }) {
+	recv(ch, true) @omission
+}
+
+init {
+	ch: channel { bool },
+	rp: RecvProc(ch),
+}
