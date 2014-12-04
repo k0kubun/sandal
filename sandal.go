@@ -38,7 +38,7 @@ func run(filePath string, options *Options) {
 
 	compiled, err := lang.CompileFile(string(body))
 	if err != nil {
-		log.Fatal(filePath, err)
+		log.Fatalf("%s: %s", filePath, err.Error())
 	}
 	fmt.Print(compiled)
 }

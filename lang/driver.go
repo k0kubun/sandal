@@ -20,6 +20,8 @@ func CompileFile(body string) (string, error) {
 	return conversion.ConvertASTToNuSMV(defs)
 }
 
+// -- debug functions --
+
 func DumpAST(body string) {
 	scanner := new(parsing.Scanner)
 	scanner.Init([]rune(body), 0)
