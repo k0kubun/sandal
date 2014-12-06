@@ -127,61 +127,61 @@ func (x NullStatement) String() string {
 }
 
 // ========================================
-// Expressions
+// Exprs
 
-func (x IdentifierExpression) String() string {
+func (x IdentifierExpr) String() string {
 	return x.Name
 }
-func (x NumberExpression) String() string {
+func (x NumberExpr) String() string {
 	return x.Lit
 }
-func (x TrueExpression) String() string {
+func (x TrueExpr) String() string {
 	return "true"
 }
-func (x FalseExpression) String() string {
+func (x FalseExpr) String() string {
 	return "false"
 }
-func (x NotExpression) String() string {
+func (x NotExpr) String() string {
 	return "!" + x.SubExpr.String()
 }
-func (x UnarySubExpression) String() string {
+func (x UnarySubExpr) String() string {
 	return "-" + x.SubExpr.String()
 }
-func (x ParenExpression) String() string {
+func (x ParenExpr) String() string {
 	return "(" + x.SubExpr.String() + ")"
 }
-func (x BinOpExpression) String() string {
+func (x BinOpExpr) String() string {
 	return x.LHS.String() + x.Operator + x.RHS.String()
 }
-func (x TimeoutRecvExpression) String() string {
+func (x TimeoutRecvExpr) String() string {
 	params := []string{x.Channel.String()}
 	for _, arg := range x.Args {
 		params = append(params, arg.String())
 	}
 	return "timeout_recv(" + strings.Join(params, ", ") + ")"
 }
-func (x TimeoutPeekExpression) String() string {
+func (x TimeoutPeekExpr) String() string {
 	params := []string{x.Channel.String()}
 	for _, arg := range x.Args {
 		params = append(params, arg.String())
 	}
 	return "timeout_peek(" + strings.Join(params, ", ") + ")"
 }
-func (x NonblockRecvExpression) String() string {
+func (x NonblockRecvExpr) String() string {
 	params := []string{x.Channel.String()}
 	for _, arg := range x.Args {
 		params = append(params, arg.String())
 	}
 	return "nonblock_recv(" + strings.Join(params, ", ") + ")"
 }
-func (x NonblockPeekExpression) String() string {
+func (x NonblockPeekExpr) String() string {
 	params := []string{x.Channel.String()}
 	for _, arg := range x.Args {
 		params = append(params, arg.String())
 	}
 	return "nonblock_peek(" + strings.Join(params, ", ") + ")"
 }
-func (x ArrayExpression) String() string {
+func (x ArrayExpr) String() string {
 	elems := []string{}
 	for _, elem := range x.Elems {
 		elems = append(elems, elem.String())

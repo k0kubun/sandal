@@ -5,8 +5,8 @@ import (
 	"testing"
 )
 
-func TestIdentifierExpressionTypecheck(t *testing.T) {
-	expr := IdentifierExpression{Pos{}, "a"}
+func TestIdentifierExprTypecheck(t *testing.T) {
+	expr := IdentifierExpr{Pos{}, "a"}
 	{
 		env := newTypeEnv()
 		env.add("a", NamedType{"int"})
@@ -15,8 +15,8 @@ func TestIdentifierExpressionTypecheck(t *testing.T) {
 	expectInvalid(t, expr, newTypeEnv())
 }
 
-func TestNotExpressionTypecheck(t *testing.T) {
-	expr := NotExpression{Pos{}, IdentifierExpression{Pos{}, "a"}}
+func TestNotExprTypecheck(t *testing.T) {
+	expr := NotExpr{Pos{}, IdentifierExpr{Pos{}, "a"}}
 	{
 		env := newTypeEnv()
 		env.add("a", NamedType{"bool"})
@@ -30,8 +30,8 @@ func TestNotExpressionTypecheck(t *testing.T) {
 	expectInvalid(t, expr, newTypeEnv())
 }
 
-func TestUnarySubExpressionTypecheck(t *testing.T) {
-	expr := UnarySubExpression{Pos{}, IdentifierExpression{Pos{}, "a"}}
+func TestUnarySubExprTypecheck(t *testing.T) {
+	expr := UnarySubExpr{Pos{}, IdentifierExpr{Pos{}, "a"}}
 	{
 		env := newTypeEnv()
 		env.add("a", NamedType{"int"})
@@ -45,8 +45,8 @@ func TestUnarySubExpressionTypecheck(t *testing.T) {
 	expectInvalid(t, expr, newTypeEnv())
 }
 
-func TestParenExpressionTypecheck(t *testing.T) {
-	expr := ParenExpression{Pos{}, IdentifierExpression{Pos{}, "a"}}
+func TestParenExprTypecheck(t *testing.T) {
+	expr := ParenExpr{Pos{}, IdentifierExpr{Pos{}, "a"}}
 	{
 		env := newTypeEnv()
 		env.add("a", NamedType{"int"})
@@ -55,9 +55,9 @@ func TestParenExpressionTypecheck(t *testing.T) {
 	expectInvalid(t, expr, newTypeEnv())
 }
 
-func TestBinOpExpressionTypecheck(t *testing.T) {
+func TestBinOpExprTypecheck(t *testing.T) {
 	{
-		expr := BinOpExpression{IdentifierExpression{Pos{}, "a"}, "+", IdentifierExpression{Pos{}, "b"}}
+		expr := BinOpExpr{IdentifierExpr{Pos{}, "a"}, "+", IdentifierExpr{Pos{}, "b"}}
 		{
 			env := newTypeEnv()
 			env.add("a", NamedType{"int"})
@@ -78,7 +78,7 @@ func TestBinOpExpressionTypecheck(t *testing.T) {
 		expectInvalid(t, expr, newTypeEnv())
 	}
 	{
-		expr := BinOpExpression{IdentifierExpression{Pos{}, "a"}, "==", IdentifierExpression{Pos{}, "b"}}
+		expr := BinOpExpr{IdentifierExpr{Pos{}, "a"}, "==", IdentifierExpr{Pos{}, "b"}}
 		{
 			env := newTypeEnv()
 			env.add("a", NamedType{"int"})
@@ -94,10 +94,10 @@ func TestBinOpExpressionTypecheck(t *testing.T) {
 	}
 }
 
-func TestTimeoutRecvExpressionTypecheck(t *testing.T) {
-	chExp := IdentifierExpression{Pos{}, "ch"}
+func TestTimeoutRecvExprTypecheck(t *testing.T) {
+	chExp := IdentifierExpr{Pos{}, "ch"}
 	{
-		expr := TimeoutRecvExpression{Pos{}, chExp, []Expression{IdentifierExpression{Pos{}, "a"}}}
+		expr := TimeoutRecvExpr{Pos{}, chExp, []Expr{IdentifierExpr{Pos{}, "a"}}}
 		{
 			env := newTypeEnv()
 			env.add("ch", HandshakeChannelType{[]Type{NamedType{"int"}}})
@@ -122,7 +122,7 @@ func TestTimeoutRecvExpressionTypecheck(t *testing.T) {
 		}
 	}
 	{
-		expr := TimeoutRecvExpression{Pos{}, chExp, []Expression{NumberExpression{Pos{}, "1"}}}
+		expr := TimeoutRecvExpr{Pos{}, chExp, []Expr{NumberExpr{Pos{}, "1"}}}
 		{
 			env := newTypeEnv()
 			env.add("ch", HandshakeChannelType{[]Type{NamedType{"int"}}})
@@ -131,8 +131,8 @@ func TestTimeoutRecvExpressionTypecheck(t *testing.T) {
 	}
 }
 
-func TestArrayExpressionTypecheck(t *testing.T) {
-	expr := ArrayExpression{Pos{}, []Expression{IdentifierExpression{Pos{}, "a"}, NumberExpression{Pos{}, "1"}}}
+func TestArrayExprTypecheck(t *testing.T) {
+	expr := ArrayExpr{Pos{}, []Expr{IdentifierExpr{Pos{}, "a"}, NumberExpr{Pos{}, "1"}}}
 	{
 		env := newTypeEnv()
 		env.add("a", NamedType{"int"})

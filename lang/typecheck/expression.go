@@ -6,60 +6,60 @@ import (
 )
 
 // ========================================
-// typeOfExpression
+// typeOfExpr
 
-func typeOfExpression(x Expression, env *typeEnv) Type {
+func typeOfExpr(x Expr, env *typeEnv) Type {
 	switch x := x.(type) {
-	case IdentifierExpression:
-		return typeOfIdentifierExpression(x, env)
-	case NumberExpression:
-		return typeOfNumberExpression(x, env)
-	case TrueExpression, FalseExpression:
+	case IdentifierExpr:
+		return typeOfIdentifierExpr(x, env)
+	case NumberExpr:
+		return typeOfNumberExpr(x, env)
+	case TrueExpr, FalseExpr:
 		return NamedType{"bool"}
-	case NotExpression:
-		return typeOfNotExpression(x, env)
-	case UnarySubExpression:
-		return typeOfUnarySubExpression(x, env)
-	case ParenExpression:
-		return typeOfParenExpression(x, env)
-	case BinOpExpression:
-		return typeOfBinOpExpression(x, env)
-	case TimeoutRecvExpression:
-		return typeOfTimeoutRecvExpression(x, env)
-	case TimeoutPeekExpression:
-		return typeOfTimeoutPeekExpression(x, env)
-	case NonblockRecvExpression:
-		return typeOfNonblockRecvExpression(x, env)
-	case NonblockPeekExpression:
-		return typeOfNonblockPeekExpression(x, env)
-	case ArrayExpression:
-		return typeOfArrayExpression(x, env)
+	case NotExpr:
+		return typeOfNotExpr(x, env)
+	case UnarySubExpr:
+		return typeOfUnarySubExpr(x, env)
+	case ParenExpr:
+		return typeOfParenExpr(x, env)
+	case BinOpExpr:
+		return typeOfBinOpExpr(x, env)
+	case TimeoutRecvExpr:
+		return typeOfTimeoutRecvExpr(x, env)
+	case TimeoutPeekExpr:
+		return typeOfTimeoutPeekExpr(x, env)
+	case NonblockRecvExpr:
+		return typeOfNonblockRecvExpr(x, env)
+	case NonblockPeekExpr:
+		return typeOfNonblockPeekExpr(x, env)
+	case ArrayExpr:
+		return typeOfArrayExpr(x, env)
 	default:
-		panic("Unknown Expression")
+		panic("Unknown Expr")
 	}
 }
 
-func typeOfIdentifierExpression(x IdentifierExpression, env *typeEnv) Type {
+func typeOfIdentifierExpr(x IdentifierExpr, env *typeEnv) Type {
 	if x.Name == "true" || x.Name == "false" {
 		return NamedType{Name: "bool"}
 	}
 	return env.lookup(x.Name)
 }
 
-func typeOfNumberExpression(x NumberExpression, env *typeEnv) Type {
+func typeOfNumberExpr(x NumberExpr, env *typeEnv) Type {
 	return NamedType{Name: "int"}
 }
 
-func typeOfNotExpression(x NotExpression, env *typeEnv) Type {
-	return typeOfExpression(x.SubExpr, env)
+func typeOfNotExpr(x NotExpr, env *typeEnv) Type {
+	return typeOfExpr(x.SubExpr, env)
 }
 
-func typeOfUnarySubExpression(x UnarySubExpression, env *typeEnv) Type {
-	return typeOfExpression(x.SubExpr, env)
+func typeOfUnarySubExpr(x UnarySubExpr, env *typeEnv) Type {
+	return typeOfExpr(x.SubExpr, env)
 }
 
-func typeOfParenExpression(x ParenExpression, env *typeEnv) Type {
-	return typeOfExpression(x.SubExpr, env)
+func typeOfParenExpr(x ParenExpr, env *typeEnv) Type {
+	return typeOfExpr(x.SubExpr, env)
 }
 
 var operatorResultType = map[string]Type{
@@ -83,7 +83,7 @@ var operatorResultType = map[string]Type{
 	">=": NamedType{"bool"},
 }
 
-func typeOfBinOpExpression(x BinOpExpression, env *typeEnv) Type {
+func typeOfBinOpExpr(x BinOpExpr, env *typeEnv) Type {
 	if ty, exist := operatorResultType[x.Operator]; exist {
 		return ty
 	} else {
@@ -91,63 +91,63 @@ func typeOfBinOpExpression(x BinOpExpression, env *typeEnv) Type {
 	}
 }
 
-func typeOfTimeoutRecvExpression(x TimeoutRecvExpression, env *typeEnv) Type {
+func typeOfTimeoutRecvExpr(x TimeoutRecvExpr, env *typeEnv) Type {
 	return NamedType{Name: "bool"}
 }
 
-func typeOfTimeoutPeekExpression(x TimeoutPeekExpression, env *typeEnv) Type {
+func typeOfTimeoutPeekExpr(x TimeoutPeekExpr, env *typeEnv) Type {
 	return NamedType{Name: "bool"}
 }
 
-func typeOfNonblockRecvExpression(x NonblockRecvExpression, env *typeEnv) Type {
+func typeOfNonblockRecvExpr(x NonblockRecvExpr, env *typeEnv) Type {
 	return NamedType{Name: "bool"}
 }
 
-func typeOfNonblockPeekExpression(x NonblockPeekExpression, env *typeEnv) Type {
+func typeOfNonblockPeekExpr(x NonblockPeekExpr, env *typeEnv) Type {
 	return NamedType{Name: "bool"}
 }
 
-func typeOfArrayExpression(x ArrayExpression, env *typeEnv) Type {
+func typeOfArrayExpr(x ArrayExpr, env *typeEnv) Type {
 	if len(x.Elems) == 0 {
 		panic("An array should have at least one element")
 	}
 	// Every element of an array has the same type.
-	return ArrayType{ElemType: typeOfExpression(x.Elems[0], env)}
+	return ArrayType{ElemType: typeOfExpr(x.Elems[0], env)}
 }
 
 // ========================================
-// typeCheckExpression
+// typeCheckExpr
 
-func typeCheckExpression(x Expression, env *typeEnv) error {
+func typeCheckExpr(x Expr, env *typeEnv) error {
 	switch x := x.(type) {
-	case IdentifierExpression:
-		return typeCheckIdentifierExpression(x, env)
-	case NumberExpression, TrueExpression, FalseExpression:
+	case IdentifierExpr:
+		return typeCheckIdentifierExpr(x, env)
+	case NumberExpr, TrueExpr, FalseExpr:
 		return nil
-	case NotExpression:
-		return typeCheckNotExpression(x, env)
-	case UnarySubExpression:
-		return typeCheckUnarySubExpression(x, env)
-	case ParenExpression:
-		return typeCheckParenExpression(x, env)
-	case BinOpExpression:
-		return typeCheckBinOpExpression(x, env)
-	case TimeoutRecvExpression:
-		return typeCheckTimeoutRecvExpression(x, env)
-	case TimeoutPeekExpression:
-		return typeCheckTimeoutPeekExpression(x, env)
-	case NonblockRecvExpression:
-		return typeCheckNonblockRecvExpression(x, env)
-	case NonblockPeekExpression:
-		return typeCheckNonblockPeekExpression(x, env)
-	case ArrayExpression:
-		return typeCheckArrayExpression(x, env)
+	case NotExpr:
+		return typeCheckNotExpr(x, env)
+	case UnarySubExpr:
+		return typeCheckUnarySubExpr(x, env)
+	case ParenExpr:
+		return typeCheckParenExpr(x, env)
+	case BinOpExpr:
+		return typeCheckBinOpExpr(x, env)
+	case TimeoutRecvExpr:
+		return typeCheckTimeoutRecvExpr(x, env)
+	case TimeoutPeekExpr:
+		return typeCheckTimeoutPeekExpr(x, env)
+	case NonblockRecvExpr:
+		return typeCheckNonblockRecvExpr(x, env)
+	case NonblockPeekExpr:
+		return typeCheckNonblockPeekExpr(x, env)
+	case ArrayExpr:
+		return typeCheckArrayExpr(x, env)
 	default:
-		panic("Unknown Expression")
+		panic("Unknown Expr")
 	}
 }
 
-func typeCheckIdentifierExpression(x IdentifierExpression, env *typeEnv) error {
+func typeCheckIdentifierExpr(x IdentifierExpr, env *typeEnv) error {
 	if x.Name == "true" || x.Name == "false" {
 		return nil
 	}
@@ -157,30 +157,30 @@ func typeCheckIdentifierExpression(x IdentifierExpression, env *typeEnv) error {
 	return nil
 }
 
-func typeCheckNotExpression(x NotExpression, env *typeEnv) error {
-	if err := typeCheckExpression(x.SubExpr, env); err != nil {
+func typeCheckNotExpr(x NotExpr, env *typeEnv) error {
+	if err := typeCheckExpr(x.SubExpr, env); err != nil {
 		return err
 	}
-	if !typeOfExpression(x.SubExpr, env).Equal(NamedType{"bool"}) {
+	if !typeOfExpr(x.SubExpr, env).Equal(NamedType{"bool"}) {
 		return fmt.Errorf("Expect %s to have type bool, but got %s (%s)",
-			x.SubExpr, typeOfExpression(x.SubExpr, env), x.Position())
+			x.SubExpr, typeOfExpr(x.SubExpr, env), x.Position())
 	}
 	return nil
 }
 
-func typeCheckUnarySubExpression(x UnarySubExpression, env *typeEnv) error {
-	if err := typeCheckExpression(x.SubExpr, env); err != nil {
+func typeCheckUnarySubExpr(x UnarySubExpr, env *typeEnv) error {
+	if err := typeCheckExpr(x.SubExpr, env); err != nil {
 		return err
 	}
-	if !typeOfExpression(x.SubExpr, env).Equal(NamedType{"int"}) {
+	if !typeOfExpr(x.SubExpr, env).Equal(NamedType{"int"}) {
 		return fmt.Errorf("Expect %s to have type int, but got %s (%s)",
-			x.SubExpr, typeOfExpression(x.SubExpr, env), x.Position())
+			x.SubExpr, typeOfExpr(x.SubExpr, env), x.Position())
 	}
 	return nil
 }
 
-func typeCheckParenExpression(x ParenExpression, env *typeEnv) error {
-	if err := typeCheckExpression(x.SubExpr, env); err != nil {
+func typeCheckParenExpr(x ParenExpr, env *typeEnv) error {
+	if err := typeCheckExpr(x.SubExpr, env); err != nil {
 		return err
 	}
 	return nil
@@ -207,28 +207,28 @@ var operatorOperandType = map[string]Type{
 	">=": NamedType{"int"},
 }
 
-func typeCheckBinOpExpression(x BinOpExpression, env *typeEnv) error {
-	if err := typeCheckExpression(x.LHS, env); err != nil {
+func typeCheckBinOpExpr(x BinOpExpr, env *typeEnv) error {
+	if err := typeCheckExpr(x.LHS, env); err != nil {
 		return err
 	}
-	if err := typeCheckExpression(x.RHS, env); err != nil {
+	if err := typeCheckExpr(x.RHS, env); err != nil {
 		return err
 	}
 	if ty, exist := operatorOperandType[x.Operator]; exist {
 		if ty != nil {
-			lhsType := typeOfExpression(x.LHS, env)
+			lhsType := typeOfExpr(x.LHS, env)
 			if !lhsType.Equal(ty) {
 				return fmt.Errorf("Expect %s to have type %s, but got %s (%s)",
 					x.LHS, ty, lhsType, x.Position())
 			}
-			rhsType := typeOfExpression(x.RHS, env)
+			rhsType := typeOfExpr(x.RHS, env)
 			if !rhsType.Equal(ty) {
 				return fmt.Errorf("Expect %s to have type %s, but got %s (%s)",
 					x.RHS, ty, rhsType, x.Position())
 			}
 		} else {
-			lhsType := typeOfExpression(x.LHS, env)
-			rhsType := typeOfExpression(x.RHS, env)
+			lhsType := typeOfExpr(x.LHS, env)
+			rhsType := typeOfExpr(x.RHS, env)
 			if !lhsType.Equal(rhsType) {
 				return fmt.Errorf("Expect %s and %s to have the same type but got %s and %s (%s)",
 					x.LHS, x.RHS, lhsType, rhsType, x.Position())
@@ -240,29 +240,29 @@ func typeCheckBinOpExpression(x BinOpExpression, env *typeEnv) error {
 	return nil
 }
 
-func typeCheckTimeoutRecvExpression(x TimeoutRecvExpression, env *typeEnv) error {
+func typeCheckTimeoutRecvExpr(x TimeoutRecvExpr, env *typeEnv) error {
 	return channelExprCheck(x, env, true)
 }
 
-func typeCheckTimeoutPeekExpression(x TimeoutPeekExpression, env *typeEnv) error {
+func typeCheckTimeoutPeekExpr(x TimeoutPeekExpr, env *typeEnv) error {
 	return channelExprCheck(x, env, true)
 }
 
-func typeCheckNonblockRecvExpression(x NonblockRecvExpression, env *typeEnv) error {
+func typeCheckNonblockRecvExpr(x NonblockRecvExpr, env *typeEnv) error {
 	return channelExprCheck(x, env, true)
 }
 
-func typeCheckNonblockPeekExpression(x NonblockPeekExpression, env *typeEnv) error {
+func typeCheckNonblockPeekExpr(x NonblockPeekExpr, env *typeEnv) error {
 	return channelExprCheck(x, env, true)
 }
 
-func typeCheckArrayExpression(x ArrayExpression, env *typeEnv) error {
-	ty := typeOfExpression(x.Elems[0], env)
+func typeCheckArrayExpr(x ArrayExpr, env *typeEnv) error {
+	ty := typeOfExpr(x.Elems[0], env)
 	for _, elem := range x.Elems {
-		if err := typeCheckExpression(elem, env); err != nil {
+		if err := typeCheckExpr(elem, env); err != nil {
 			return err
 		}
-		if !typeOfExpression(elem, env).Equal(ty) {
+		if !typeOfExpr(elem, env).Equal(ty) {
 			return fmt.Errorf("Expect %s to be a %s (%s)", elem, ty, elem.Position())
 		}
 	}

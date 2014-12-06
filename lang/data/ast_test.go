@@ -78,7 +78,7 @@ func TestBufferedChannelTypeEquality(t *testing.T) {
 	chTypeA := BufferedChannelType{nil, []Type{NamedType{"int"}}}
 	chTypeB := BufferedChannelType{nil, []Type{NamedType{"int"}}}
 	chTypeC := BufferedChannelType{nil, []Type{NamedType{"bool"}}}
-	chTypeD := BufferedChannelType{&NumberExpression{Lit: "1"}, []Type{NamedType{"int"}}}
+	chTypeD := BufferedChannelType{&NumberExpr{Lit: "1"}, []Type{NamedType{"int"}}}
 	chTypeE := BufferedChannelType{nil, []Type{NamedType{"int"}, NamedType{"int"}}}
 	handshakeType := HandshakeChannelType{[]Type{NamedType{"int"}}}
 	if !chTypeA.Equal(chTypeB) {

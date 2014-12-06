@@ -19,8 +19,8 @@ type token struct {
 	definition  data.Definition
 	statements  []data.Statement
 	statement   data.Statement
-	expressions []data.Expression
-	expression  data.Expression
+	expressions []data.Expr
+	expression  data.Expr
 	parameters  []data.Parameter
 	parameter   data.Parameter
 	typetypes   []data.Type
@@ -31,8 +31,8 @@ type token struct {
 	blocks      []data.BlockStatement
 	initvars    []data.InitVar
 	initvar     data.InitVar
-	ltlexpr     data.LtlExpression
-	ltlatom     data.LtlAtomExpression
+	ltlexpr     data.LtlExpr
+	ltlatom     data.LtlAtomExpr
 
 	tok         token
 }
@@ -399,123 +399,123 @@ statement
 
 expr	: IDENTIFIER
 	{
-		$$ = data.IdentifierExpression{Pos: $1.pos, Name: $1.lit}
+		$$ = data.IdentifierExpr{Pos: $1.pos, Name: $1.lit}
 	}
 	| NUMBER
 	{
-		$$ = data.NumberExpression{Pos: $1.pos, Lit: $1.lit}
+		$$ = data.NumberExpr{Pos: $1.pos, Lit: $1.lit}
 	}
 	| TRUE
 	{
-		$$ = data.TrueExpression{Pos: $1.pos}
+		$$ = data.TrueExpr{Pos: $1.pos}
 	}
 	| FALSE
 	{
-		$$ = data.FalseExpression{Pos: $1.pos}
+		$$ = data.FalseExpr{Pos: $1.pos}
 	}
 	| NOT expr      %prec UNARY
 	{
-		$$ = data.NotExpression{Pos: $1.pos, SubExpr: $2}
+		$$ = data.NotExpr{Pos: $1.pos, SubExpr: $2}
 	}
 	| SUB expr      %prec UNARY
 	{
-		$$ = data.UnarySubExpression{Pos: $1.pos, SubExpr: $2}
+		$$ = data.UnarySubExpr{Pos: $1.pos, SubExpr: $2}
 	}
 	| '(' expr ')'
 	{
-		$$ = data.ParenExpression{Pos: $1.pos, SubExpr: $2}
+		$$ = data.ParenExpr{Pos: $1.pos, SubExpr: $2}
 	}
 	| expr ADD expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "+", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "+", RHS: $3}
 	}
 	| expr SUB expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "-", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "-", RHS: $3}
 	}
 	| expr MUL expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "*", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "*", RHS: $3}
 	}
 	| expr QUO expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "/", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "/", RHS: $3}
 	}
 	| expr REM expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "%", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "%", RHS: $3}
 	}
 	| expr AND expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "&", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "&", RHS: $3}
 	}
 	| expr OR expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "|", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "|", RHS: $3}
 	}
 	| expr XOR expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "^", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "^", RHS: $3}
 	}
 	| expr SHL expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "<<", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "<<", RHS: $3}
 	}
 	| expr SHR expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: ">>", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: ">>", RHS: $3}
 	}
 	| expr LAND expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "&&", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "&&", RHS: $3}
 	}
 	| expr LOR expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "||", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "||", RHS: $3}
 	}
 	| expr EQL expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "==", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "==", RHS: $3}
 	}
 	| expr LSS expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "<", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "<", RHS: $3}
 	}
 	| expr GTR expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: ">", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: ">", RHS: $3}
 	}
 	| expr NEQ expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "!=", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "!=", RHS: $3}
 	}
 	| expr LEQ expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: "<=", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: "<=", RHS: $3}
 	}
 	| expr GEQ expr
 	{
-		$$ = data.BinOpExpression{LHS: $1, Operator: ">=", RHS: $3}
+		$$ = data.BinOpExpr{LHS: $1, Operator: ">=", RHS: $3}
 	}
 	| TIMEOUT_RECV '(' arguments_one ')'
 	{
-		$$ = data.TimeoutRecvExpression{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
+		$$ = data.TimeoutRecvExpr{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
 	}
 	| TIMEOUT_PEEK '(' arguments_one ')'
 	{
-		$$ = data.TimeoutPeekExpression{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
+		$$ = data.TimeoutPeekExpr{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
 	}
 	| NONBLOCK_RECV '(' arguments_one ')'
 	{
-		$$ = data.NonblockRecvExpression{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
+		$$ = data.NonblockRecvExpr{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
 	}
 	| NONBLOCK_PEEK '(' arguments_one ')'
 	{
-		$$ = data.NonblockPeekExpression{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
+		$$ = data.NonblockPeekExpr{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
 	}
 	| '[' arguments_one ']'
 	{
-		$$ = data.ArrayExpression{Pos: $1.pos, Elems: $2}
+		$$ = data.ArrayExpr{Pos: $1.pos, Elems: $2}
 	}
 
 /* ======================================== */
@@ -526,84 +526,84 @@ ltl_expr: ltl_atom
 	}
 	| '(' ltl_expr ')'
 	{
-		$$ = data.ParenLtlExpression{SubExpr: $2}
+		$$ = data.ParenLtlExpr{SubExpr: $2}
 	}
 	| ltl_expr LAND ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "&", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "&", LHS: $1, RHS: $3}
 	}
 	| ltl_expr LOR ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "|", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "|", LHS: $1, RHS: $3}
 	}
 	| ltl_expr XOR ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "^", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "^", LHS: $1, RHS: $3}
 	}
 	| ltl_expr THEN ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "->", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "->", LHS: $1, RHS: $3}
 	}
 	| ltl_expr EQL ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "=", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "=", LHS: $1, RHS: $3}
 	}
 	| ltl_expr 'U' ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "U", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "U", LHS: $1, RHS: $3}
 	}
 	| ltl_expr 'V' ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "V", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "V", LHS: $1, RHS: $3}
 	}
 	| ltl_expr 'S' ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "S", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "S", LHS: $1, RHS: $3}
 	}
 	| ltl_expr 'T' ltl_expr
 	{
-		$$ = data.BinOpLtlExpression{Operator: "T", LHS: $1, RHS: $3}
+		$$ = data.BinOpLtlExpr{Operator: "T", LHS: $1, RHS: $3}
 	}
 	| NOT ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "!", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "!", SubExpr: $2}
 	}
 	| 'X' ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "X", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "X", SubExpr: $2}
 	}
 	| 'G' ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "G", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "G", SubExpr: $2}
 	}
 	| 'F' ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "F", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "F", SubExpr: $2}
 	}
 	| 'Y' ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "Y", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "Y", SubExpr: $2}
 	}
 	| 'Z' ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "Z", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "Z", SubExpr: $2}
 	}
 	| 'H' ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "H", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "H", SubExpr: $2}
 	}
 	| 'O' ltl_expr      %prec UNARY
 	{
-		$$ = data.UnOpLtlExpression{Operator: "O", SubExpr: $2}
+		$$ = data.UnOpLtlExpr{Operator: "O", SubExpr: $2}
 	}
 
 ltl_atom: IDENTIFIER
 	{
-		$$ = data.LtlAtomExpression{Names: []string{$1.lit}}
+		$$ = data.LtlAtomExpr{Names: []string{$1.lit}}
 	}
 	| IDENTIFIER '.' ltl_atom
 	{
-		$$ = data.LtlAtomExpression{Names: append([]string{$1.lit}, $3.Names...)}
+		$$ = data.LtlAtomExpr{Names: append([]string{$1.lit}, $3.Names...)}
 	}
 
 /* ======================================== */
@@ -655,15 +655,15 @@ parameter
 arguments_one
 	: expr
 	{
-		$$ = []data.Expression{$1}
+		$$ = []data.Expr{$1}
 	}
 	| expr ','
 	{
-		$$ = []data.Expression{$1}
+		$$ = []data.Expr{$1}
 	}
 	| expr ',' arguments_one
 	{
-		$$ = append([]data.Expression{$1}, $3...)
+		$$ = append([]data.Expr{$1}, $3...)
 	}
 
 types_one

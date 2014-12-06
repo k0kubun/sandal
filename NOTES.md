@@ -47,7 +47,7 @@ init { a : M(b) @unstable }
 				Pos{1, 8},
 				"a",
 				"M",
-				[]Expression{IdentifierExpression{Pos{1, 14}, "b"}},
+				[]Expr{IdentifierExpr{Pos{1, 14}, "b"}},
 				[]string{"unstable"},
 			},
 		},

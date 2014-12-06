@@ -46,24 +46,24 @@ func (env *typeEnv) lookup(name string) Type {
 func channelExprCheck(ch ChanExpr, env *typeEnv, recvOrPeek bool) error {
 	chExpr := ch.ChannelExpr()
 	args := ch.ArgExprs()
-	if err := typeCheckExpression(chExpr, env); err != nil {
+	if err := typeCheckExpr(chExpr, env); err != nil {
 		return err
 	}
 	for _, arg := range args {
-		if err := typeCheckExpression(arg, env); err != nil {
+		if err := typeCheckExpr(arg, env); err != nil {
 			return err
 		}
 	}
 
 	var elemTypes []Type
-	switch ty := typeOfExpression(chExpr, env).(type) {
+	switch ty := typeOfExpr(chExpr, env).(type) {
 	case HandshakeChannelType:
 		elemTypes = ty.Elems
 	case BufferedChannelType:
 		elemTypes = ty.Elems
 	default:
 		return fmt.Errorf("Expect the first argument of %s to be a channel but got %s (%s)",
-			ch, typeOfExpression(chExpr, env), ch.Position())
+			ch, typeOfExpr(chExpr, env), ch.Position())
 	}
 
 	if len(elemTypes) != len(args) {
@@ -71,11 +71,11 @@ func channelExprCheck(ch ChanExpr, env *typeEnv, recvOrPeek bool) error {
 			ch, len(elemTypes), ch.Position())
 	}
 	for i := 0; i < len(elemTypes); i++ {
-		if !typeOfExpression(args[i], env).Equal(elemTypes[i]) {
+		if !typeOfExpr(args[i], env).Equal(elemTypes[i]) {
 			return fmt.Errorf("Expect the argument %s to be a %s (%s)", args[i], elemTypes[i], args[i].Position())
 		}
 		if recvOrPeek {
-			if _, isIdentExpr := args[i].(IdentifierExpression); !isIdentExpr {
+			if _, isIdentExpr := args[i].(IdentifierExpr); !isIdentExpr {
 				return fmt.Errorf("Expect the argument %s to be an identifier (%s)", args[i], args[i].Position())
 			}
 		}

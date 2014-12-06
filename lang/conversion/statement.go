@@ -245,8 +245,8 @@ func (x *intStatementConverter) convertAssignment(stmt AssignmentStatement) {
 
 func (x *intStatementConverter) convertOpAssignment(stmt OpAssignmentStatement) {
 	nextState := x.genNextState()
-	intExprObj := expressionToInternalObj(BinOpExpression{
-		IdentifierExpression{Name: stmt.Variable}, stmt.Operator, stmt.Expr,
+	intExprObj := expressionToInternalObj(BinOpExpr{
+		IdentifierExpr{Name: stmt.Variable}, stmt.Operator, stmt.Expr,
 	}, x.env)
 	if intExprObj.Steps() > 1 {
 		panic("Steps constraint violation")

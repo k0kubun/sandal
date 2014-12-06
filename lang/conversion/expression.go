@@ -4,56 +4,56 @@ import (
 	. "github.com/k0kubun/sandal/lang/data"
 )
 
-func expressionToInternalObj(expr Expression, env *varEnv) intInternalExpressionObj {
+func expressionToInternalObj(expr Expr, env *varEnv) intInternalExprObj {
 	// This function does not return nil.
 	switch expr := expr.(type) {
-	case IdentifierExpression:
+	case IdentifierExpr:
 		intObj := env.lookup(expr.Name)
-		if intExprObj, isExprObj := intObj.(intInternalExpressionObj); isExprObj {
+		if intExprObj, isExprObj := intObj.(intInternalExprObj); isExprObj {
 			return intExprObj
 		} else {
 			panic("Referenced name is not expression")
 		}
-	case NumberExpression:
+	case NumberExpr:
 		return intInternalLiteral{Lit: expr.Lit, Type: NamedType{"number"}}
-	case TrueExpression:
+	case TrueExpr:
 		return intInternalLiteral{Lit: "TRUE", Type: NamedType{"bool"}}
-	case FalseExpression:
+	case FalseExpr:
 		return intInternalLiteral{Lit: "FALSE", Type: NamedType{"bool"}}
-	case NotExpression:
+	case NotExpr:
 		return intInternalNot{Sub: expressionToInternalObj(expr.SubExpr, env)}
-	case UnarySubExpression:
+	case UnarySubExpr:
 		return intInternalUnarySub{Sub: expressionToInternalObj(expr.SubExpr, env)}
-	case ParenExpression:
+	case ParenExpr:
 		return intInternalParen{Sub: expressionToInternalObj(expr.SubExpr, env)}
-	case BinOpExpression:
+	case BinOpExpr:
 		intObjLHS := expressionToInternalObj(expr.LHS, env)
 		intObjRHS := expressionToInternalObj(expr.RHS, env)
 		return intInternalBinOp{LHS: intObjLHS, Op: expr.Operator, RHS: intObjRHS}
-	case TimeoutRecvExpression:
+	case TimeoutRecvExpr:
 		ch, args := convertChannelExpr(expr, env)
 		return intInternalTimeoutRecv{Channel: ch, Args: args}
-	case TimeoutPeekExpression:
+	case TimeoutPeekExpr:
 		ch, args := convertChannelExpr(expr, env)
 		return intInternalTimeoutPeek{Channel: ch, Args: args}
-	case NonblockRecvExpression:
+	case NonblockRecvExpr:
 		ch, args := convertChannelExpr(expr, env)
 		return intInternalNonblockRecv{Channel: ch, Args: args}
-	case NonblockPeekExpression:
+	case NonblockPeekExpr:
 		ch, args := convertChannelExpr(expr, env)
 		return intInternalNonblockPeek{Channel: ch, Args: args}
-	case ArrayExpression:
-		elems := []intInternalExpressionObj{}
+	case ArrayExpr:
+		elems := []intInternalExprObj{}
 		for _, subExpr := range expr.Elems {
 			elems = append(elems, expressionToInternalObj(subExpr, env))
 		}
 		return intInternalArrayLiteral{Elems: elems}
 	default:
-		panic("Unknown Expression")
+		panic("Unknown Expr")
 	}
 }
 
-func convertChannelExpr(expr ChanExpr, env *varEnv) (ch intInternalExpressionObj, args []intInternalExpressionObj) {
+func convertChannelExpr(expr ChanExpr, env *varEnv) (ch intInternalExprObj, args []intInternalExprObj) {
 	ch = expressionToInternalObj(expr.ChannelExpr(), env)
 	if ch.Steps() != 0 {
 		panic("Steps constraint violation")

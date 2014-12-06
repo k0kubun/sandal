@@ -22,8 +22,8 @@ type yySymType struct {
 	definition  data.Definition
 	statements  []data.Statement
 	statement   data.Statement
-	expressions []data.Expression
-	expression  data.Expression
+	expressions []data.Expr
+	expression  data.Expr
 	parameters  []data.Parameter
 	parameter   data.Parameter
 	typetypes   []data.Type
@@ -34,8 +34,8 @@ type yySymType struct {
 	blocks      []data.BlockStatement
 	initvars    []data.InitVar
 	initvar     data.InitVar
-	ltlexpr     data.LtlExpression
-	ltlatom     data.LtlAtomExpression
+	ltlexpr     data.LtlExpr
+	ltlatom     data.LtlAtomExpr
 
 	tok token
 }
@@ -1053,152 +1053,152 @@ yydefault:
 	case 63:
 		//line parser.go.y:401
 		{
-			yyVAL.expression = data.IdentifierExpression{Pos: yyS[yypt-0].tok.pos, Name: yyS[yypt-0].tok.lit}
+			yyVAL.expression = data.IdentifierExpr{Pos: yyS[yypt-0].tok.pos, Name: yyS[yypt-0].tok.lit}
 		}
 	case 64:
 		//line parser.go.y:405
 		{
-			yyVAL.expression = data.NumberExpression{Pos: yyS[yypt-0].tok.pos, Lit: yyS[yypt-0].tok.lit}
+			yyVAL.expression = data.NumberExpr{Pos: yyS[yypt-0].tok.pos, Lit: yyS[yypt-0].tok.lit}
 		}
 	case 65:
 		//line parser.go.y:409
 		{
-			yyVAL.expression = data.TrueExpression{Pos: yyS[yypt-0].tok.pos}
+			yyVAL.expression = data.TrueExpr{Pos: yyS[yypt-0].tok.pos}
 		}
 	case 66:
 		//line parser.go.y:413
 		{
-			yyVAL.expression = data.FalseExpression{Pos: yyS[yypt-0].tok.pos}
+			yyVAL.expression = data.FalseExpr{Pos: yyS[yypt-0].tok.pos}
 		}
 	case 67:
 		//line parser.go.y:417
 		{
-			yyVAL.expression = data.NotExpression{Pos: yyS[yypt-1].tok.pos, SubExpr: yyS[yypt-0].expression}
+			yyVAL.expression = data.NotExpr{Pos: yyS[yypt-1].tok.pos, SubExpr: yyS[yypt-0].expression}
 		}
 	case 68:
 		//line parser.go.y:421
 		{
-			yyVAL.expression = data.UnarySubExpression{Pos: yyS[yypt-1].tok.pos, SubExpr: yyS[yypt-0].expression}
+			yyVAL.expression = data.UnarySubExpr{Pos: yyS[yypt-1].tok.pos, SubExpr: yyS[yypt-0].expression}
 		}
 	case 69:
 		//line parser.go.y:425
 		{
-			yyVAL.expression = data.ParenExpression{Pos: yyS[yypt-2].tok.pos, SubExpr: yyS[yypt-1].expression}
+			yyVAL.expression = data.ParenExpr{Pos: yyS[yypt-2].tok.pos, SubExpr: yyS[yypt-1].expression}
 		}
 	case 70:
 		//line parser.go.y:429
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "+", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "+", RHS: yyS[yypt-0].expression}
 		}
 	case 71:
 		//line parser.go.y:433
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "-", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "-", RHS: yyS[yypt-0].expression}
 		}
 	case 72:
 		//line parser.go.y:437
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "*", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "*", RHS: yyS[yypt-0].expression}
 		}
 	case 73:
 		//line parser.go.y:441
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "/", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "/", RHS: yyS[yypt-0].expression}
 		}
 	case 74:
 		//line parser.go.y:445
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "%", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "%", RHS: yyS[yypt-0].expression}
 		}
 	case 75:
 		//line parser.go.y:449
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "&", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "&", RHS: yyS[yypt-0].expression}
 		}
 	case 76:
 		//line parser.go.y:453
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "|", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "|", RHS: yyS[yypt-0].expression}
 		}
 	case 77:
 		//line parser.go.y:457
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "^", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "^", RHS: yyS[yypt-0].expression}
 		}
 	case 78:
 		//line parser.go.y:461
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "<<", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "<<", RHS: yyS[yypt-0].expression}
 		}
 	case 79:
 		//line parser.go.y:465
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: ">>", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: ">>", RHS: yyS[yypt-0].expression}
 		}
 	case 80:
 		//line parser.go.y:469
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "&&", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "&&", RHS: yyS[yypt-0].expression}
 		}
 	case 81:
 		//line parser.go.y:473
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "||", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "||", RHS: yyS[yypt-0].expression}
 		}
 	case 82:
 		//line parser.go.y:477
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "==", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "==", RHS: yyS[yypt-0].expression}
 		}
 	case 83:
 		//line parser.go.y:481
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "<", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "<", RHS: yyS[yypt-0].expression}
 		}
 	case 84:
 		//line parser.go.y:485
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: ">", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: ">", RHS: yyS[yypt-0].expression}
 		}
 	case 85:
 		//line parser.go.y:489
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "!=", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "!=", RHS: yyS[yypt-0].expression}
 		}
 	case 86:
 		//line parser.go.y:493
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: "<=", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: "<=", RHS: yyS[yypt-0].expression}
 		}
 	case 87:
 		//line parser.go.y:497
 		{
-			yyVAL.expression = data.BinOpExpression{LHS: yyS[yypt-2].expression, Operator: ">=", RHS: yyS[yypt-0].expression}
+			yyVAL.expression = data.BinOpExpr{LHS: yyS[yypt-2].expression, Operator: ">=", RHS: yyS[yypt-0].expression}
 		}
 	case 88:
 		//line parser.go.y:501
 		{
-			yyVAL.expression = data.TimeoutRecvExpression{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
+			yyVAL.expression = data.TimeoutRecvExpr{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
 		}
 	case 89:
 		//line parser.go.y:505
 		{
-			yyVAL.expression = data.TimeoutPeekExpression{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
+			yyVAL.expression = data.TimeoutPeekExpr{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
 		}
 	case 90:
 		//line parser.go.y:509
 		{
-			yyVAL.expression = data.NonblockRecvExpression{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
+			yyVAL.expression = data.NonblockRecvExpr{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
 		}
 	case 91:
 		//line parser.go.y:513
 		{
-			yyVAL.expression = data.NonblockPeekExpression{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
+			yyVAL.expression = data.NonblockPeekExpr{Pos: yyS[yypt-3].tok.pos, Channel: yyS[yypt-1].expressions[0], Args: yyS[yypt-1].expressions[1:]}
 		}
 	case 92:
 		//line parser.go.y:517
 		{
-			yyVAL.expression = data.ArrayExpression{Pos: yyS[yypt-2].tok.pos, Elems: yyS[yypt-1].expressions}
+			yyVAL.expression = data.ArrayExpr{Pos: yyS[yypt-2].tok.pos, Elems: yyS[yypt-1].expressions}
 		}
 	case 93:
 		//line parser.go.y:524
@@ -1208,102 +1208,102 @@ yydefault:
 	case 94:
 		//line parser.go.y:528
 		{
-			yyVAL.ltlexpr = data.ParenLtlExpression{SubExpr: yyS[yypt-1].ltlexpr}
+			yyVAL.ltlexpr = data.ParenLtlExpr{SubExpr: yyS[yypt-1].ltlexpr}
 		}
 	case 95:
 		//line parser.go.y:532
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "&", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "&", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 96:
 		//line parser.go.y:536
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "|", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "|", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 97:
 		//line parser.go.y:540
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "^", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "^", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 98:
 		//line parser.go.y:544
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "->", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "->", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 99:
 		//line parser.go.y:548
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "=", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "=", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 100:
 		//line parser.go.y:552
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "U", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "U", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 101:
 		//line parser.go.y:556
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "V", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "V", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 102:
 		//line parser.go.y:560
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "S", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "S", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 103:
 		//line parser.go.y:564
 		{
-			yyVAL.ltlexpr = data.BinOpLtlExpression{Operator: "T", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.BinOpLtlExpr{Operator: "T", LHS: yyS[yypt-2].ltlexpr, RHS: yyS[yypt-0].ltlexpr}
 		}
 	case 104:
 		//line parser.go.y:568
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "!", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "!", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 105:
 		//line parser.go.y:572
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "X", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "X", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 106:
 		//line parser.go.y:576
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "G", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "G", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 107:
 		//line parser.go.y:580
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "F", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "F", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 108:
 		//line parser.go.y:584
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "Y", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "Y", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 109:
 		//line parser.go.y:588
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "Z", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "Z", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 110:
 		//line parser.go.y:592
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "H", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "H", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 111:
 		//line parser.go.y:596
 		{
-			yyVAL.ltlexpr = data.UnOpLtlExpression{Operator: "O", SubExpr: yyS[yypt-0].ltlexpr}
+			yyVAL.ltlexpr = data.UnOpLtlExpr{Operator: "O", SubExpr: yyS[yypt-0].ltlexpr}
 		}
 	case 112:
 		//line parser.go.y:601
 		{
-			yyVAL.ltlatom = data.LtlAtomExpression{Names: []string{yyS[yypt-0].tok.lit}}
+			yyVAL.ltlatom = data.LtlAtomExpr{Names: []string{yyS[yypt-0].tok.lit}}
 		}
 	case 113:
 		//line parser.go.y:605
 		{
-			yyVAL.ltlatom = data.LtlAtomExpression{Names: append([]string{yyS[yypt-2].tok.lit}, yyS[yypt-0].ltlatom.Names...)}
+			yyVAL.ltlatom = data.LtlAtomExpr{Names: append([]string{yyS[yypt-2].tok.lit}, yyS[yypt-0].ltlatom.Names...)}
 		}
 	case 114:
 		//line parser.go.y:613
@@ -1353,17 +1353,17 @@ yydefault:
 	case 123:
 		//line parser.go.y:657
 		{
-			yyVAL.expressions = []data.Expression{yyS[yypt-0].expression}
+			yyVAL.expressions = []data.Expr{yyS[yypt-0].expression}
 		}
 	case 124:
 		//line parser.go.y:661
 		{
-			yyVAL.expressions = []data.Expression{yyS[yypt-1].expression}
+			yyVAL.expressions = []data.Expr{yyS[yypt-1].expression}
 		}
 	case 125:
 		//line parser.go.y:665
 		{
-			yyVAL.expressions = append([]data.Expression{yyS[yypt-2].expression}, yyS[yypt-0].expressions...)
+			yyVAL.expressions = append([]data.Expr{yyS[yypt-2].expression}, yyS[yypt-0].expressions...)
 		}
 	case 126:
 		//line parser.go.y:671

@@ -91,10 +91,10 @@ func typeCheckModuleDefinition(def ModuleDefinition, env *typeEnv) error {
 }
 
 func typeCheckConstantDefinition(def ConstantDefinition, env *typeEnv) error {
-	if err := typeCheckExpression(def.Expr, env); err != nil {
+	if err := typeCheckExpr(def.Expr, env); err != nil {
 		return err
 	}
-	actual := typeOfExpression(def.Expr, env)
+	actual := typeOfExpr(def.Expr, env)
 	if !actual.Equal(def.Type) {
 		return fmt.Errorf("Expect %+#v to have type %+#v but has %+#v (%s)",
 			def.Expr, def.Type, actual, def.Position())
@@ -165,10 +165,10 @@ func typeCheckInitBlock(b InitBlock, env *typeEnv) error {
 					return fmt.Errorf("Argument count mismatch: %d to %d (%s)", len(initVar.Args), len(t.Parameters), initVar.Position())
 				}
 				for i := 0; i < len(t.Parameters); i++ {
-					if err := typeCheckExpression(initVar.Args[i], env); err != nil {
+					if err := typeCheckExpr(initVar.Args[i], env); err != nil {
 						return err
 					}
-					argType := typeOfExpression(initVar.Args[i], env)
+					argType := typeOfExpr(initVar.Args[i], env)
 					if !argType.Equal(t.Parameters[i]) {
 						return fmt.Errorf("Argument type mismatch: %s to %s (%s)", argType, t.Parameters[i], initVar.Position())
 					}

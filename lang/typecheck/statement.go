@@ -76,14 +76,14 @@ func typeCheckBlockStatement(x BlockStatement, env *typeEnv) error {
 }
 func typeCheckVarDeclStatement(x VarDeclStatement, env *typeEnv) error {
 	if x.Initializer != nil {
-		if err := typeCheckExpression(x.Initializer, env); err != nil {
+		if err := typeCheckExpr(x.Initializer, env); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 func typeCheckIfStatement(x IfStatement, env *typeEnv) error {
-	if err := typeCheckExpression(x.Condition, env); err != nil {
+	if err := typeCheckExpr(x.Condition, env); err != nil {
 		return err
 	}
 	if err := typeCheckStatements(x.TrueBranch, env); err != nil {
@@ -95,11 +95,11 @@ func typeCheckIfStatement(x IfStatement, env *typeEnv) error {
 	return nil
 }
 func typeCheckAssignmentStatement(x AssignmentStatement, env *typeEnv) error {
-	if err := typeCheckExpression(x.Expr, env); err != nil {
+	if err := typeCheckExpr(x.Expr, env); err != nil {
 		return err
 	}
 	if ty := env.lookup(x.Variable); ty != nil {
-		if !typeOfExpression(x.Expr, env).Equal(ty) {
+		if !typeOfExpr(x.Expr, env).Equal(ty) {
 			return fmt.Errorf("Expect %s to be a type %s (%s)", x.Expr, ty, x.Expr.Position())
 		}
 	} else {
@@ -108,8 +108,8 @@ func typeCheckAssignmentStatement(x AssignmentStatement, env *typeEnv) error {
 	return nil
 }
 func typeCheckOpAssignmentStatement(x OpAssignmentStatement, env *typeEnv) error {
-	return typeCheckExpression(
-		BinOpExpression{IdentifierExpression{Pos{}, x.Variable}, x.Operator, x.Expr},
+	return typeCheckExpr(
+		BinOpExpr{IdentifierExpr{Pos{}, x.Variable}, x.Operator, x.Expr},
 		env,
 	)
 }
@@ -134,10 +134,10 @@ func typeCheckForStatement(x ForStatement, env *typeEnv) error {
 	return typeCheckStatements(x.Statements, env)
 }
 func typeCheckForInStatement(x ForInStatement, env *typeEnv) error {
-	if err := typeCheckExpression(x.Container, env); err != nil {
+	if err := typeCheckExpr(x.Container, env); err != nil {
 		return err
 	}
-	if ty, isArrayType := typeOfExpression(x.Container, env).(ArrayType); isArrayType {
+	if ty, isArrayType := typeOfExpr(x.Container, env).(ArrayType); isArrayType {
 		blockEnv := newTypeEnvFromUpper(env)
 		blockEnv.add(x.Variable, ty.ElemType)
 		return typeCheckStatements(x.Statements, blockEnv)
@@ -146,16 +146,16 @@ func typeCheckForInStatement(x ForInStatement, env *typeEnv) error {
 	}
 }
 func typeCheckForInRangeStatement(x ForInRangeStatement, env *typeEnv) error {
-	if err := typeCheckExpression(x.FromExpr, env); err != nil {
+	if err := typeCheckExpr(x.FromExpr, env); err != nil {
 		return err
 	}
-	if err := typeCheckExpression(x.ToExpr, env); err != nil {
+	if err := typeCheckExpr(x.ToExpr, env); err != nil {
 		return err
 	}
-	if !typeOfExpression(x.FromExpr, env).Equal(NamedType{"int"}) {
+	if !typeOfExpr(x.FromExpr, env).Equal(NamedType{"int"}) {
 		return fmt.Errorf("Expect %s to be an int (%s)", x.FromExpr, x.FromExpr.Position())
 	}
-	if !typeOfExpression(x.ToExpr, env).Equal(NamedType{"int"}) {
+	if !typeOfExpr(x.ToExpr, env).Equal(NamedType{"int"}) {
 		return fmt.Errorf("Expect %s to be an int (%s)", x.ToExpr, x.ToExpr.Position())
 	}
 	blockEnv := newTypeEnvFromUpper(env)

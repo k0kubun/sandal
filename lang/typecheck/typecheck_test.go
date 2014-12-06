@@ -11,8 +11,8 @@ func universalTypeCheck(x interface{}, env *typeEnv) error {
 		return typeCheckDefinition(x, env)
 	case Statement:
 		return typeCheckStatement(x, env)
-	case Expression:
-		return typeCheckExpression(x, env)
+	case Expr:
+		return typeCheckExpr(x, env)
 	}
 	panic("Unknown value")
 }

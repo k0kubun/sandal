@@ -28,9 +28,9 @@ func TestConvertASTToIntModule(t *testing.T) {
 					Type: NamedType{"int"},
 				},
 				SendStatement{
-					Channel: IdentifierExpression{Pos{}, "ch0"},
-					Args: []Expression{
-						TrueExpression{Pos{}},
+					Channel: IdentifierExpr{Pos{}, "ch0"},
+					Args: []Expr{
+						TrueExpr{Pos{}},
 					},
 				},
 			},
@@ -46,8 +46,8 @@ func TestConvertASTToIntModule(t *testing.T) {
 				InstanceVar{
 					Name:        "proc1",
 					ProcDefName: "ProcA",
-					Args: []Expression{
-						IdentifierExpression{Pos{}, "ch"},
+					Args: []Expr{
+						IdentifierExpr{Pos{}, "ch"},
 					},
 				},
 			},

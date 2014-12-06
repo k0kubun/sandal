@@ -17,7 +17,7 @@ type (
 type (
 	intInternalConstantDef struct {
 		Type Type
-		Expr Expression
+		Expr Expr
 	}
 
 	intInternalDataTypeDef struct {
@@ -32,7 +32,7 @@ type (
 		Name       string
 		ModuleName string
 		Def        intInternalProcDef
-		Args       []intInternalExpressionObj
+		Args       []intInternalExprObj
 		Pid        int
 	}
 
@@ -48,10 +48,10 @@ func (x intInternalProcVar) intinternalobj()     {}
 func (x intInternalFaultDef) intinternalobj()    {}
 
 // ========================================
-// intInternalExpressionObj
+// intInternalExprObj
 
 type (
-	intInternalExpressionObj interface {
+	intInternalExprObj interface {
 		intInternalObj
 		Steps() int
 		Transition(fromState, nextState intState, varName string) []intTransition
@@ -62,7 +62,7 @@ type (
 	intInternalPrimitiveVar struct {
 		RealName string
 		Type     Type
-		RealObj  intInternalExpressionObj
+		RealObj  intInternalExprObj
 	}
 
 	intInternalArrayVar struct {
@@ -76,45 +76,45 @@ type (
 	}
 
 	intInternalNot struct {
-		Sub intInternalExpressionObj
+		Sub intInternalExprObj
 	}
 
 	intInternalUnarySub struct {
-		Sub intInternalExpressionObj
+		Sub intInternalExprObj
 	}
 
 	intInternalParen struct {
-		Sub intInternalExpressionObj
+		Sub intInternalExprObj
 	}
 
 	intInternalBinOp struct {
-		LHS intInternalExpressionObj
+		LHS intInternalExprObj
 		Op  string
-		RHS intInternalExpressionObj
+		RHS intInternalExprObj
 	}
 
 	intInternalTimeoutRecv struct {
-		Channel intInternalExpressionObj
-		Args    []intInternalExpressionObj
+		Channel intInternalExprObj
+		Args    []intInternalExprObj
 	}
 
 	intInternalTimeoutPeek struct {
-		Channel intInternalExpressionObj
-		Args    []intInternalExpressionObj
+		Channel intInternalExprObj
+		Args    []intInternalExprObj
 	}
 
 	intInternalNonblockRecv struct {
-		Channel intInternalExpressionObj
-		Args    []intInternalExpressionObj
+		Channel intInternalExprObj
+		Args    []intInternalExprObj
 	}
 
 	intInternalNonblockPeek struct {
-		Channel intInternalExpressionObj
-		Args    []intInternalExpressionObj
+		Channel intInternalExprObj
+		Args    []intInternalExprObj
 	}
 
 	intInternalArrayLiteral struct {
-		Elems []intInternalExpressionObj
+		Elems []intInternalExprObj
 	}
 
 	intInternalHandshakeChannelVar struct {
@@ -258,7 +258,7 @@ func (x intInternalArrayLiteral) ArgString() (ret []string) {
 // ========================================
 // Transition
 
-func assignByString(x intInternalExpressionObj, fromState, nextState intState, varName string) []intTransition {
+func assignByString(x intInternalExprObj, fromState, nextState intState, varName string) []intTransition {
 	if varName == "" {
 		return []intTransition{{FromState: fromState, NextState: nextState}}
 	} else {
@@ -417,7 +417,7 @@ func (x intInternalBufferedChannelVar) GetType() Type  { return x.Type }
 
 // ========================================
 
-func resolveRealObj(obj intInternalExpressionObj) intInternalExpressionObj {
+func resolveRealObj(obj intInternalExprObj) intInternalExprObj {
 	for {
 		if primVarObj, isPrimVarObj := obj.(intInternalPrimitiveVar); isPrimVarObj {
 			if primVarObj.RealObj != nil {

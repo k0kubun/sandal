@@ -122,9 +122,9 @@ func TestConvertASTToNuSMV1(t *testing.T) {
 					Type: NamedType{"int"},
 				},
 				SendStatement{
-					Channel: IdentifierExpression{Pos{}, "ch0"},
-					Args: []Expression{
-						TrueExpression{Pos{}},
+					Channel: IdentifierExpr{Pos{}, "ch0"},
+					Args: []Expr{
+						TrueExpr{Pos{}},
 					},
 				},
 			},
@@ -140,8 +140,8 @@ func TestConvertASTToNuSMV1(t *testing.T) {
 				InstanceVar{
 					Name:        "proc1",
 					ProcDefName: "ProcA",
-					Args: []Expression{
-						IdentifierExpression{Pos{}, "ch"},
+					Args: []Expr{
+						IdentifierExpr{Pos{}, "ch"},
 					},
 				},
 			},
@@ -280,7 +280,7 @@ func TestConvertASTToNuSMV2(t *testing.T) {
 				{
 					Name: "ch0",
 					Type: BufferedChannelType{
-						BufferSize: NumberExpression{Pos{}, "3"},
+						BufferSize: NumberExpr{Pos{}, "3"},
 						Elems:      []Type{NamedType{"bool"}},
 					},
 				},
@@ -291,9 +291,9 @@ func TestConvertASTToNuSMV2(t *testing.T) {
 					Type: NamedType{"int"},
 				},
 				SendStatement{
-					Channel: IdentifierExpression{Pos{}, "ch0"},
-					Args: []Expression{
-						TrueExpression{Pos{}},
+					Channel: IdentifierExpr{Pos{}, "ch0"},
+					Args: []Expr{
+						TrueExpr{Pos{}},
 					},
 				},
 			},
@@ -303,15 +303,15 @@ func TestConvertASTToNuSMV2(t *testing.T) {
 				ChannelVar{
 					Name: "ch",
 					Type: BufferedChannelType{
-						BufferSize: NumberExpression{Pos{}, "3"},
+						BufferSize: NumberExpr{Pos{}, "3"},
 						Elems:      []Type{NamedType{"bool"}},
 					},
 				},
 				InstanceVar{
 					Name:        "proc1",
 					ProcDefName: "ProcA",
-					Args: []Expression{
-						IdentifierExpression{Pos{}, "ch"},
+					Args: []Expr{
+						IdentifierExpr{Pos{}, "ch"},
 					},
 				},
 			},

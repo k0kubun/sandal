@@ -21,7 +21,7 @@ type (
 		String() string
 	}
 
-	Expression interface {
+	Expr interface {
 		Position() Pos
 		expression()
 		String() string
@@ -30,12 +30,12 @@ type (
 	// For type-checking
 	ChanExpr interface {
 		Position() Pos
-		ChannelExpr() Expression
-		ArgExprs() []Expression
+		ChannelExpr() Expr
+		ArgExprs() []Expr
 		String() string
 	}
 
-	LtlExpression interface {
+	LtlExpr interface {
 		ltlexpression()
 	}
 )
@@ -66,7 +66,7 @@ type (
 		Pos  Pos
 		Name string
 		Type Type
-		Expr Expression
+		Expr Expr
 	}
 
 	ProcDefinition struct {
@@ -90,7 +90,7 @@ type (
 	}
 
 	LtlSpec struct {
-		Expr LtlExpression
+		Expr LtlExpr
 	}
 )
 
@@ -130,12 +130,12 @@ type (
 		Pos         Pos
 		Name        string
 		Type        Type
-		Initializer Expression
+		Initializer Expr
 	}
 
 	IfStatement struct {
 		Pos         Pos
-		Condition   Expression
+		Condition   Expr
 		TrueBranch  []Statement
 		FalseBranch []Statement
 	}
@@ -143,14 +143,14 @@ type (
 	AssignmentStatement struct {
 		Pos      Pos
 		Variable string
-		Expr     Expression
+		Expr     Expr
 	}
 
 	OpAssignmentStatement struct {
 		Pos      Pos
 		Variable string
 		Operator string
-		Expr     Expression
+		Expr     Expr
 	}
 
 	ChoiceStatement struct {
@@ -160,21 +160,21 @@ type (
 
 	RecvStatement struct {
 		Pos     Pos
-		Channel Expression
-		Args    []Expression
+		Channel Expr
+		Args    []Expr
 		Tags    []string
 	}
 
 	PeekStatement struct {
 		Pos     Pos
-		Channel Expression
-		Args    []Expression
+		Channel Expr
+		Args    []Expr
 	}
 
 	SendStatement struct {
 		Pos     Pos
-		Channel Expression
-		Args    []Expression
+		Channel Expr
+		Args    []Expr
 		Tags    []string
 	}
 
@@ -186,15 +186,15 @@ type (
 	ForInStatement struct {
 		Pos        Pos
 		Variable   string
-		Container  Expression
+		Container  Expr
 		Statements []Statement
 	}
 
 	ForInRangeStatement struct {
 		Pos        Pos
 		Variable   string
-		FromExpr   Expression
-		ToExpr     Expression
+		FromExpr   Expr
+		ToExpr     Expr
 		Statements []Statement
 	}
 
@@ -212,7 +212,7 @@ type (
 	}
 
 	ExprStatement struct {
-		Expr Expression
+		Expr Expr
 	}
 
 	NullStatement struct {
@@ -258,122 +258,122 @@ func (x SkipStatement) Position() Pos         { return x.Pos }
 func (x ExprStatement) Position() Pos         { return x.Expr.Position() }
 func (x NullStatement) Position() Pos         { return x.Pos }
 
-func (x RecvStatement) ChannelExpr() Expression { return x.Channel }
-func (x PeekStatement) ChannelExpr() Expression { return x.Channel }
-func (x SendStatement) ChannelExpr() Expression { return x.Channel }
-func (x RecvStatement) ArgExprs() []Expression  { return x.Args }
-func (x PeekStatement) ArgExprs() []Expression  { return x.Args }
-func (x SendStatement) ArgExprs() []Expression  { return x.Args }
+func (x RecvStatement) ChannelExpr() Expr { return x.Channel }
+func (x PeekStatement) ChannelExpr() Expr { return x.Channel }
+func (x SendStatement) ChannelExpr() Expr { return x.Channel }
+func (x RecvStatement) ArgExprs() []Expr  { return x.Args }
+func (x PeekStatement) ArgExprs() []Expr  { return x.Args }
+func (x SendStatement) ArgExprs() []Expr  { return x.Args }
 
 // ========================================
-// Expressions
+// Exprs
 
 type (
-	IdentifierExpression struct {
+	IdentifierExpr struct {
 		Pos  Pos
 		Name string
 	}
 
-	NumberExpression struct {
+	NumberExpr struct {
 		Pos Pos
 		Lit string
 	}
 
-	TrueExpression struct {
+	TrueExpr struct {
 		Pos Pos
 	}
 
-	FalseExpression struct {
+	FalseExpr struct {
 		Pos Pos
 	}
 
-	NotExpression struct {
+	NotExpr struct {
 		Pos     Pos
-		SubExpr Expression
+		SubExpr Expr
 	}
 
-	UnarySubExpression struct {
+	UnarySubExpr struct {
 		Pos     Pos
-		SubExpr Expression
+		SubExpr Expr
 	}
 
-	ParenExpression struct {
+	ParenExpr struct {
 		Pos     Pos
-		SubExpr Expression
+		SubExpr Expr
 	}
 
-	BinOpExpression struct {
-		LHS      Expression
+	BinOpExpr struct {
+		LHS      Expr
 		Operator string
-		RHS      Expression
+		RHS      Expr
 	}
 
-	TimeoutRecvExpression struct {
+	TimeoutRecvExpr struct {
 		Pos     Pos
-		Channel Expression
-		Args    []Expression
+		Channel Expr
+		Args    []Expr
 	}
 
-	TimeoutPeekExpression struct {
+	TimeoutPeekExpr struct {
 		Pos     Pos
-		Channel Expression
-		Args    []Expression
+		Channel Expr
+		Args    []Expr
 	}
 
-	NonblockRecvExpression struct {
+	NonblockRecvExpr struct {
 		Pos     Pos
-		Channel Expression
-		Args    []Expression
+		Channel Expr
+		Args    []Expr
 	}
 
-	NonblockPeekExpression struct {
+	NonblockPeekExpr struct {
 		Pos     Pos
-		Channel Expression
-		Args    []Expression
+		Channel Expr
+		Args    []Expr
 	}
 
-	ArrayExpression struct {
+	ArrayExpr struct {
 		Pos   Pos
-		Elems []Expression
+		Elems []Expr
 	}
 )
 
-func (x TimeoutRecvExpression) ChannelExpr() Expression  { return x.Channel }
-func (x TimeoutPeekExpression) ChannelExpr() Expression  { return x.Channel }
-func (x NonblockRecvExpression) ChannelExpr() Expression { return x.Channel }
-func (x NonblockPeekExpression) ChannelExpr() Expression { return x.Channel }
-func (x TimeoutRecvExpression) ArgExprs() []Expression   { return x.Args }
-func (x TimeoutPeekExpression) ArgExprs() []Expression   { return x.Args }
-func (x NonblockRecvExpression) ArgExprs() []Expression  { return x.Args }
-func (x NonblockPeekExpression) ArgExprs() []Expression  { return x.Args }
+func (x TimeoutRecvExpr) ChannelExpr() Expr  { return x.Channel }
+func (x TimeoutPeekExpr) ChannelExpr() Expr  { return x.Channel }
+func (x NonblockRecvExpr) ChannelExpr() Expr { return x.Channel }
+func (x NonblockPeekExpr) ChannelExpr() Expr { return x.Channel }
+func (x TimeoutRecvExpr) ArgExprs() []Expr   { return x.Args }
+func (x TimeoutPeekExpr) ArgExprs() []Expr   { return x.Args }
+func (x NonblockRecvExpr) ArgExprs() []Expr  { return x.Args }
+func (x NonblockPeekExpr) ArgExprs() []Expr  { return x.Args }
 
-func (x IdentifierExpression) expression()   {}
-func (x NumberExpression) expression()       {}
-func (x TrueExpression) expression()         {}
-func (x FalseExpression) expression()        {}
-func (x NotExpression) expression()          {}
-func (x UnarySubExpression) expression()     {}
-func (x ParenExpression) expression()        {}
-func (x BinOpExpression) expression()        {}
-func (x TimeoutRecvExpression) expression()  {}
-func (x TimeoutPeekExpression) expression()  {}
-func (x NonblockRecvExpression) expression() {}
-func (x NonblockPeekExpression) expression() {}
-func (x ArrayExpression) expression()        {}
+func (x IdentifierExpr) expression()   {}
+func (x NumberExpr) expression()       {}
+func (x TrueExpr) expression()         {}
+func (x FalseExpr) expression()        {}
+func (x NotExpr) expression()          {}
+func (x UnarySubExpr) expression()     {}
+func (x ParenExpr) expression()        {}
+func (x BinOpExpr) expression()        {}
+func (x TimeoutRecvExpr) expression()  {}
+func (x TimeoutPeekExpr) expression()  {}
+func (x NonblockRecvExpr) expression() {}
+func (x NonblockPeekExpr) expression() {}
+func (x ArrayExpr) expression()        {}
 
-func (x IdentifierExpression) Position() Pos   { return x.Pos }
-func (x NumberExpression) Position() Pos       { return x.Pos }
-func (x TrueExpression) Position() Pos         { return x.Pos }
-func (x FalseExpression) Position() Pos        { return x.Pos }
-func (x NotExpression) Position() Pos          { return x.Pos }
-func (x UnarySubExpression) Position() Pos     { return x.Pos }
-func (x ParenExpression) Position() Pos        { return x.Pos }
-func (x BinOpExpression) Position() Pos        { return x.LHS.Position() }
-func (x TimeoutRecvExpression) Position() Pos  { return x.Pos }
-func (x TimeoutPeekExpression) Position() Pos  { return x.Pos }
-func (x NonblockRecvExpression) Position() Pos { return x.Pos }
-func (x NonblockPeekExpression) Position() Pos { return x.Pos }
-func (x ArrayExpression) Position() Pos        { return x.Pos }
+func (x IdentifierExpr) Position() Pos   { return x.Pos }
+func (x NumberExpr) Position() Pos       { return x.Pos }
+func (x TrueExpr) Position() Pos         { return x.Pos }
+func (x FalseExpr) Position() Pos        { return x.Pos }
+func (x NotExpr) Position() Pos          { return x.Pos }
+func (x UnarySubExpr) Position() Pos     { return x.Pos }
+func (x ParenExpr) Position() Pos        { return x.Pos }
+func (x BinOpExpr) Position() Pos        { return x.LHS.Position() }
+func (x TimeoutRecvExpr) Position() Pos  { return x.Pos }
+func (x TimeoutPeekExpr) Position() Pos  { return x.Pos }
+func (x NonblockRecvExpr) Position() Pos { return x.Pos }
+func (x NonblockPeekExpr) Position() Pos { return x.Pos }
+func (x ArrayExpr) Position() Pos        { return x.Pos }
 
 // ========================================
 // Misc
@@ -401,7 +401,7 @@ type (
 		Pos         Pos
 		Name        string
 		ProcDefName string
-		Args        []Expression
+		Args        []Expr
 		Tags        []string
 	}
 
@@ -428,7 +428,7 @@ type (
 	}
 
 	BufferedChannelType struct {
-		BufferSize Expression
+		BufferSize Expr
 		Elems      []Type
 	}
 )
@@ -514,27 +514,27 @@ func (x BufferedChannelType) Equal(ty Type) bool {
 // LtlExpr
 
 type (
-	LtlAtomExpression struct {
+	LtlAtomExpr struct {
 		Names []string
 	}
 
-	ParenLtlExpression struct {
-		SubExpr LtlExpression
+	ParenLtlExpr struct {
+		SubExpr LtlExpr
 	}
 
-	UnOpLtlExpression struct {
+	UnOpLtlExpr struct {
 		Operator string
-		SubExpr  LtlExpression
+		SubExpr  LtlExpr
 	}
 
-	BinOpLtlExpression struct {
-		LHS      LtlExpression
+	BinOpLtlExpr struct {
+		LHS      LtlExpr
 		Operator string
-		RHS      LtlExpression
+		RHS      LtlExpr
 	}
 )
 
-func (x LtlAtomExpression) ltlexpression()  {}
-func (x ParenLtlExpression) ltlexpression() {}
-func (x UnOpLtlExpression) ltlexpression()  {}
-func (x BinOpLtlExpression) ltlexpression() {}
+func (x LtlAtomExpr) ltlexpression()  {}
+func (x ParenLtlExpr) ltlexpression() {}
+func (x UnOpLtlExpr) ltlexpression()  {}
+func (x BinOpLtlExpr) ltlexpression() {}

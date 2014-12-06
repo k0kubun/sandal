@@ -111,7 +111,7 @@ func (x *intModConverter) convertInitBlock(def InitBlock) error {
 }
 
 func (x *intModConverter) convertLtlSpec(def LtlSpec) error {
-	x.ltls = append(x.ltls, convertLtlExpression(def.Expr))
+	x.ltls = append(x.ltls, convertLtlExpr(def.Expr))
 	return nil
 }
 
@@ -195,7 +195,7 @@ func (x *intModConverter) buildChannelVar(name string, ty Type, tags []string) (
 		moduleName := fmt.Sprintf("BufferedChannel%d", chNumber)
 		mod = intBufferedChannel{
 			Name:      moduleName,
-			Length:    x.calculateConstExpression(ty.BufferSize),
+			Length:    x.calculateConstExpr(ty.BufferSize),
 			ValueType: types,
 			ZeroValue: zeroValues,
 		}
@@ -228,7 +228,7 @@ func (x *intModConverter) buildProcVar(initVar InstanceVar) error {
 	}
 
 	x.pid = len(x.procs)
-	args := []intInternalExpressionObj{}
+	args := []intInternalExprObj{}
 	for _, arg := range initVar.Args {
 		args = append(args, expressionToInternalObj(arg, x.env))
 	}
@@ -245,7 +245,7 @@ func (x *intModConverter) buildProcVar(initVar InstanceVar) error {
 	return nil
 }
 
-func (x *intModConverter) instantiateProcDef(def intInternalProcDef, moduleName string, args []intInternalExpressionObj, tags []string) {
+func (x *intModConverter) instantiateProcDef(def intInternalProcDef, moduleName string, args []intInternalExprObj, tags []string) {
 	x.pushEnv()
 	defer x.popEnv()
 	vars := []intVar{}
@@ -354,9 +354,9 @@ func zeroValueOfType(ty Type, env *varEnv) string {
 	}
 }
 
-func (x *intModConverter) calculateConstExpression(expr Expression) int {
+func (x *intModConverter) calculateConstExpr(expr Expr) int {
 	switch expr := expr.(type) {
-	case NumberExpression:
+	case NumberExpr:
 		i, err := strconv.Atoi(expr.Lit)
 		if err != nil {
 			panic("Expect " + expr.Lit + " to be converted to integer")
@@ -374,16 +374,16 @@ func argJoin(args []string) string {
 	return strings.Join(args, ", ")
 }
 
-func convertLtlExpression(expr LtlExpression) string {
+func convertLtlExpr(expr LtlExpr) string {
 	switch expr := expr.(type) {
-	case LtlAtomExpression:
+	case LtlAtomExpr:
 		return strings.Join(expr.Names, ".")
-	case ParenLtlExpression:
-		return "(" + convertLtlExpression(expr.SubExpr) + ")"
-	case UnOpLtlExpression:
-		return expr.Operator + convertLtlExpression(expr.SubExpr)
-	case BinOpLtlExpression:
-		return convertLtlExpression(expr.LHS) + " " + expr.Operator + " " + convertLtlExpression(expr.RHS)
+	case ParenLtlExpr:
+		return "(" + convertLtlExpr(expr.SubExpr) + ")"
+	case UnOpLtlExpr:
+		return expr.Operator + convertLtlExpr(expr.SubExpr)
+	case BinOpLtlExpr:
+		return convertLtlExpr(expr.LHS) + " " + expr.Operator + " " + convertLtlExpr(expr.RHS)
 	default:
 		panic("unknown ltl expression")
 	}
