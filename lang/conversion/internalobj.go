@@ -6,118 +6,118 @@ import (
 )
 
 type (
-	intInternObj interface {
+	ir1Obj interface {
 		intinternalobj()
 	}
 )
 
 // ========================================
-// intInternObj
+// ir1Obj
 
 type (
-	intInternConstantDef struct {
+	ir1ConstantDef struct {
 		Type Type
 		Expr Expr
 	}
 
-	intInternDataTypeDef struct {
+	ir1DataTypeDef struct {
 		Elems []string
 	}
 
-	intInternProcDef struct {
+	ir1ProcDef struct {
 		Def ProcDef
 	}
 
-	intInternProcVar struct {
+	ir1ProcVar struct {
 		Name       string
 		ModuleName string
-		Def        intInternProcDef
-		Args       []intInternExprObj
+		Def        ir1ProcDef
+		Args       []ir1ExprObj
 		Pid        int
 	}
 
-	intInternFaultDef struct {
+	ir1FaultDef struct {
 		Def FaultDef
 	}
 )
 
-func (x intInternConstantDef) intinternalobj() {}
-func (x intInternDataTypeDef) intinternalobj() {}
-func (x intInternProcDef) intinternalobj()     {}
-func (x intInternProcVar) intinternalobj()     {}
-func (x intInternFaultDef) intinternalobj()    {}
+func (x ir1ConstantDef) intinternalobj() {}
+func (x ir1DataTypeDef) intinternalobj() {}
+func (x ir1ProcDef) intinternalobj()     {}
+func (x ir1ProcVar) intinternalobj()     {}
+func (x ir1FaultDef) intinternalobj()    {}
 
 // ========================================
-// intInternExprObj
+// ir1ExprObj
 
 type (
-	intInternExprObj interface {
-		intInternObj
+	ir1ExprObj interface {
+		ir1Obj
 		Steps() int
 		Transition(fromState, nextState intState, varName string) []intTransition
 		String() string
 		GetType() Type
 	}
 
-	intInternPrimitiveVar struct {
+	ir1PrimitiveVar struct {
 		RealName string
 		Type     Type
-		RealObj  intInternExprObj
+		RealObj  ir1ExprObj
 	}
 
-	intInternArrayVar struct {
+	ir1ArrayVar struct {
 		RealName    string
-		RealLiteral intInternArrayLiteral
+		RealLiteral ir1ArrayLiteral
 	}
 
-	intInternLiteral struct {
+	ir1Literal struct {
 		Lit  string
 		Type Type
 	}
 
-	intInternNot struct {
-		Sub intInternExprObj
+	ir1Not struct {
+		Sub ir1ExprObj
 	}
 
-	intInternUnarySub struct {
-		Sub intInternExprObj
+	ir1UnarySub struct {
+		Sub ir1ExprObj
 	}
 
-	intInternParen struct {
-		Sub intInternExprObj
+	ir1Paren struct {
+		Sub ir1ExprObj
 	}
 
-	intInternBinOp struct {
-		LHS intInternExprObj
+	ir1BinOp struct {
+		LHS ir1ExprObj
 		Op  string
-		RHS intInternExprObj
+		RHS ir1ExprObj
 	}
 
-	intInternTimeoutRecv struct {
-		Channel intInternExprObj
-		Args    []intInternExprObj
+	ir1TimeoutRecv struct {
+		Channel ir1ExprObj
+		Args    []ir1ExprObj
 	}
 
-	intInternTimeoutPeek struct {
-		Channel intInternExprObj
-		Args    []intInternExprObj
+	ir1TimeoutPeek struct {
+		Channel ir1ExprObj
+		Args    []ir1ExprObj
 	}
 
-	intInternNonblockRecv struct {
-		Channel intInternExprObj
-		Args    []intInternExprObj
+	ir1NonblockRecv struct {
+		Channel ir1ExprObj
+		Args    []ir1ExprObj
 	}
 
-	intInternNonblockPeek struct {
-		Channel intInternExprObj
-		Args    []intInternExprObj
+	ir1NonblockPeek struct {
+		Channel ir1ExprObj
+		Args    []ir1ExprObj
 	}
 
-	intInternArrayLiteral struct {
-		Elems []intInternExprObj
+	ir1ArrayLiteral struct {
+		Elems []ir1ExprObj
 	}
 
-	intInternHandshakeChannelVar struct {
+	ir1HandshakeChannelVar struct {
 		ModuleName string
 		RealName   string
 		Type       HandshakeChannelType
@@ -125,7 +125,7 @@ type (
 		Pids       map[int]bool
 	}
 
-	intInternBufferedChannelVar struct {
+	ir1BufferedChannelVar struct {
 		ModuleName string
 		RealName   string
 		Type       BufferedChannelType
@@ -134,66 +134,66 @@ type (
 	}
 )
 
-func (x intInternPrimitiveVar) intinternalobj()        {}
-func (x intInternArrayVar) intinternalobj()            {}
-func (x intInternLiteral) intinternalobj()             {}
-func (x intInternNot) intinternalobj()                 {}
-func (x intInternUnarySub) intinternalobj()            {}
-func (x intInternParen) intinternalobj()               {}
-func (x intInternBinOp) intinternalobj()               {}
-func (x intInternTimeoutRecv) intinternalobj()         {}
-func (x intInternTimeoutPeek) intinternalobj()         {}
-func (x intInternNonblockRecv) intinternalobj()        {}
-func (x intInternNonblockPeek) intinternalobj()        {}
-func (x intInternArrayLiteral) intinternalobj()        {}
-func (x intInternHandshakeChannelVar) intinternalobj() {}
-func (x intInternBufferedChannelVar) intinternalobj()  {}
+func (x ir1PrimitiveVar) intinternalobj()        {}
+func (x ir1ArrayVar) intinternalobj()            {}
+func (x ir1Literal) intinternalobj()             {}
+func (x ir1Not) intinternalobj()                 {}
+func (x ir1UnarySub) intinternalobj()            {}
+func (x ir1Paren) intinternalobj()               {}
+func (x ir1BinOp) intinternalobj()               {}
+func (x ir1TimeoutRecv) intinternalobj()         {}
+func (x ir1TimeoutPeek) intinternalobj()         {}
+func (x ir1NonblockRecv) intinternalobj()        {}
+func (x ir1NonblockPeek) intinternalobj()        {}
+func (x ir1ArrayLiteral) intinternalobj()        {}
+func (x ir1HandshakeChannelVar) intinternalobj() {}
+func (x ir1BufferedChannelVar) intinternalobj()  {}
 
 // ========================================
 // Steps
 // Steps requried to determine the evaluated value of expression.
 // TODO: This should be checked beforehand.
 
-func (x intInternPrimitiveVar) Steps() int { return 0 }
-func (x intInternArrayVar) Steps() int     { panic("ArrayVar cannot directly be expressed in NuSMV") }
-func (x intInternLiteral) Steps() int      { return 0 }
-func (x intInternNot) Steps() int          { return x.Sub.Steps() }
-func (x intInternUnarySub) Steps() int     { return x.Sub.Steps() }
-func (x intInternParen) Steps() int        { return x.Sub.Steps() }
-func (x intInternBinOp) Steps() int        { return x.LHS.Steps() + x.RHS.Steps() }
-func (x intInternTimeoutRecv) Steps() int {
+func (x ir1PrimitiveVar) Steps() int { return 0 }
+func (x ir1ArrayVar) Steps() int     { panic("ArrayVar cannot directly be expressed in NuSMV") }
+func (x ir1Literal) Steps() int      { return 0 }
+func (x ir1Not) Steps() int          { return x.Sub.Steps() }
+func (x ir1UnarySub) Steps() int     { return x.Sub.Steps() }
+func (x ir1Paren) Steps() int        { return x.Sub.Steps() }
+func (x ir1BinOp) Steps() int        { return x.LHS.Steps() + x.RHS.Steps() }
+func (x ir1TimeoutRecv) Steps() int {
 	steps := 1 + x.Channel.Steps()
 	for _, arg := range x.Args {
 		steps += arg.Steps()
 	}
 	return steps
 }
-func (x intInternTimeoutPeek) Steps() int {
+func (x ir1TimeoutPeek) Steps() int {
 	steps := 1 + x.Channel.Steps()
 	for _, arg := range x.Args {
 		steps += arg.Steps()
 	}
 	return steps
 }
-func (x intInternNonblockRecv) Steps() int {
+func (x ir1NonblockRecv) Steps() int {
 	steps := 1 + x.Channel.Steps()
 	for _, arg := range x.Args {
 		steps += arg.Steps()
 	}
 	return steps
 }
-func (x intInternNonblockPeek) Steps() int {
+func (x ir1NonblockPeek) Steps() int {
 	steps := 1 + x.Channel.Steps()
 	for _, arg := range x.Args {
 		steps += arg.Steps()
 	}
 	return steps
 }
-func (x intInternArrayLiteral) Steps() int {
+func (x ir1ArrayLiteral) Steps() int {
 	panic("Array literals cannot directly be expressed in NuSMV")
 }
-func (x intInternHandshakeChannelVar) Steps() int { return 0 }
-func (x intInternBufferedChannelVar) Steps() int  { return 0 }
+func (x ir1HandshakeChannelVar) Steps() int { return 0 }
+func (x ir1BufferedChannelVar) Steps() int  { return 0 }
 
 // ========================================
 // String
@@ -220,35 +220,35 @@ var operatorConversionTable = map[string]string{
 	">=": ">=",
 }
 
-func (x intInternPrimitiveVar) String() string { return x.RealName }
-func (x intInternArrayVar) String() string     { panic("ArrayVar cannot directly be expressed in NuSMV") }
-func (x intInternLiteral) String() string      { return x.Lit }
-func (x intInternNot) String() string          { return "!" + x.Sub.String() }
-func (x intInternUnarySub) String() string     { return "-" + x.Sub.String() }
-func (x intInternParen) String() string        { return "(" + x.Sub.String() + ")" }
-func (x intInternBinOp) String() string {
+func (x ir1PrimitiveVar) String() string { return x.RealName }
+func (x ir1ArrayVar) String() string     { panic("ArrayVar cannot directly be expressed in NuSMV") }
+func (x ir1Literal) String() string      { return x.Lit }
+func (x ir1Not) String() string          { return "!" + x.Sub.String() }
+func (x ir1UnarySub) String() string     { return "-" + x.Sub.String() }
+func (x ir1Paren) String() string        { return "(" + x.Sub.String() + ")" }
+func (x ir1BinOp) String() string {
 	// TODO: this cannot encode nonblock_recv(...) && nonblock_recv(...)
 	return x.LHS.String() + operatorConversionTable[x.Op] + x.RHS.String()
 }
-func (x intInternTimeoutRecv) String() string {
+func (x ir1TimeoutRecv) String() string {
 	panic("timeout_recv cannot directly be expressed in NuSMV")
 }
-func (x intInternTimeoutPeek) String() string {
+func (x ir1TimeoutPeek) String() string {
 	panic("timeout_peek cannot directly be expressed in NuSMV")
 }
-func (x intInternNonblockRecv) String() string {
+func (x ir1NonblockRecv) String() string {
 	panic("nonblock_recv cannot directly be expressed in NuSMV")
 }
-func (x intInternNonblockPeek) String() string {
+func (x ir1NonblockPeek) String() string {
 	panic("nonblock_recv cannot directly be expressed in NuSMV")
 }
-func (x intInternArrayLiteral) String() string {
+func (x ir1ArrayLiteral) String() string {
 	panic("Array literals cannot directly be expressed in NuSMV")
 }
-func (x intInternHandshakeChannelVar) String() string { return x.RealName }
-func (x intInternBufferedChannelVar) String() string  { return x.RealName }
+func (x ir1HandshakeChannelVar) String() string { return x.RealName }
+func (x ir1BufferedChannelVar) String() string  { return x.RealName }
 
-func (x intInternArrayLiteral) ArgString() (ret []string) {
+func (x ir1ArrayLiteral) ArgString() (ret []string) {
 	for _, elem := range x.Elems {
 		ret = append(ret, elem.String())
 	}
@@ -258,7 +258,7 @@ func (x intInternArrayLiteral) ArgString() (ret []string) {
 // ========================================
 // Transition
 
-func assignByString(x intInternExprObj, fromState, nextState intState, varName string) []intTransition {
+func assignByString(x ir1ExprObj, fromState, nextState intState, varName string) []intTransition {
 	if varName == "" {
 		return []intTransition{{FromState: fromState, NextState: nextState}}
 	} else {
@@ -272,28 +272,28 @@ func assignByString(x intInternExprObj, fromState, nextState intState, varName s
 	}
 }
 
-func (x intInternPrimitiveVar) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1PrimitiveVar) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
-func (x intInternArrayVar) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1ArrayVar) Transition(fromState, nextState intState, varName string) []intTransition {
 	panic("ArrayVar cannot directly be expressed in NuSMV")
 }
-func (x intInternLiteral) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1Literal) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
-func (x intInternNot) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1Not) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
-func (x intInternUnarySub) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1UnarySub) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
-func (x intInternParen) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1Paren) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
-func (x intInternBinOp) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1BinOp) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
-func (x intInternTimeoutRecv) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1TimeoutRecv) Transition(fromState, nextState intState, varName string) []intTransition {
 	chType := x.Channel.GetType()
 
 	recvedTrans := intTransition{FromState: fromState, NextState: nextState}
@@ -326,10 +326,10 @@ func (x intInternTimeoutRecv) Transition(fromState, nextState intState, varName 
 	}
 	return []intTransition{recvedTrans, timeoutTrans}
 }
-func (x intInternTimeoutPeek) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1TimeoutPeek) Transition(fromState, nextState intState, varName string) []intTransition {
 	panic("Not Implemented")
 }
-func (x intInternNonblockRecv) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1NonblockRecv) Transition(fromState, nextState intState, varName string) []intTransition {
 	chType := x.Channel.GetType()
 
 	recvedTrans := intTransition{FromState: fromState, NextState: nextState}
@@ -363,16 +363,16 @@ func (x intInternNonblockRecv) Transition(fromState, nextState intState, varName
 	}
 	return []intTransition{recvedTrans, notRecvedTrans}
 }
-func (x intInternNonblockPeek) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1NonblockPeek) Transition(fromState, nextState intState, varName string) []intTransition {
 	panic("Not Implemented")
 }
-func (x intInternArrayLiteral) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1ArrayLiteral) Transition(fromState, nextState intState, varName string) []intTransition {
 	panic("Array literals cannot directly be expressed in NuSMV")
 }
-func (x intInternHandshakeChannelVar) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1HandshakeChannelVar) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
-func (x intInternBufferedChannelVar) Transition(fromState, nextState intState, varName string) []intTransition {
+func (x ir1BufferedChannelVar) Transition(fromState, nextState intState, varName string) []intTransition {
 	return assignByString(x, fromState, nextState, varName)
 }
 
@@ -400,26 +400,26 @@ var operatorResultType = map[string]Type{
 	">=": NamedType{"bool"},
 }
 
-func (x intInternPrimitiveVar) GetType() Type        { return x.Type }
-func (x intInternArrayVar) GetType() Type            { return x.RealLiteral.GetType() }
-func (x intInternLiteral) GetType() Type             { return x.Type }
-func (x intInternNot) GetType() Type                 { return x.Sub.GetType() }
-func (x intInternUnarySub) GetType() Type            { return x.Sub.GetType() }
-func (x intInternParen) GetType() Type               { return x.Sub.GetType() }
-func (x intInternBinOp) GetType() Type               { return operatorResultType[x.Op] }
-func (x intInternTimeoutRecv) GetType() Type         { return NamedType{"bool"} }
-func (x intInternTimeoutPeek) GetType() Type         { return NamedType{"bool"} }
-func (x intInternNonblockRecv) GetType() Type        { return NamedType{"bool"} }
-func (x intInternNonblockPeek) GetType() Type        { return NamedType{"bool"} }
-func (x intInternArrayLiteral) GetType() Type        { return ArrayType{x.Elems[0].GetType()} }
-func (x intInternHandshakeChannelVar) GetType() Type { return x.Type }
-func (x intInternBufferedChannelVar) GetType() Type  { return x.Type }
+func (x ir1PrimitiveVar) GetType() Type        { return x.Type }
+func (x ir1ArrayVar) GetType() Type            { return x.RealLiteral.GetType() }
+func (x ir1Literal) GetType() Type             { return x.Type }
+func (x ir1Not) GetType() Type                 { return x.Sub.GetType() }
+func (x ir1UnarySub) GetType() Type            { return x.Sub.GetType() }
+func (x ir1Paren) GetType() Type               { return x.Sub.GetType() }
+func (x ir1BinOp) GetType() Type               { return operatorResultType[x.Op] }
+func (x ir1TimeoutRecv) GetType() Type         { return NamedType{"bool"} }
+func (x ir1TimeoutPeek) GetType() Type         { return NamedType{"bool"} }
+func (x ir1NonblockRecv) GetType() Type        { return NamedType{"bool"} }
+func (x ir1NonblockPeek) GetType() Type        { return NamedType{"bool"} }
+func (x ir1ArrayLiteral) GetType() Type        { return ArrayType{x.Elems[0].GetType()} }
+func (x ir1HandshakeChannelVar) GetType() Type { return x.Type }
+func (x ir1BufferedChannelVar) GetType() Type  { return x.Type }
 
 // ========================================
 
-func resolveRealObj(obj intInternExprObj) intInternExprObj {
+func resolveRealObj(obj ir1ExprObj) ir1ExprObj {
 	for {
-		if primVarObj, isPrimVarObj := obj.(intInternPrimitiveVar); isPrimVarObj {
+		if primVarObj, isPrimVarObj := obj.(ir1PrimitiveVar); isPrimVarObj {
 			if primVarObj.RealObj != nil {
 				obj = primVarObj.RealObj
 			} else {

@@ -180,7 +180,7 @@ func (x *intStmtConverter) convertVarDecl(stmt VarDeclStmt) {
 		})
 	}
 	x.vars = append(x.vars, intVar{realName, convertTypeToString(stmt.Type, x.env)})
-	x.env.add(stmt.Name, intInternPrimitiveVar{realName, stmt.Type, nil})
+	x.env.add(stmt.Name, ir1PrimitiveVar{realName, stmt.Type, nil})
 	x.defaults[nextRealName] = realName
 	x.currentState = nextState
 }
@@ -347,7 +347,7 @@ func (x *intStmtConverter) convertSend(stmt SendStmt) {
 			if faultVar == nil {
 				log.Fatalf("Fault @%s does not exist for send", tag)
 			}
-			faultDef := faultVar.(intInternFaultDef).Def
+			faultDef := faultVar.(ir1FaultDef).Def
 			for _, stmt := range faultDef.Stmts {
 				x.convert(stmt)
 			}
@@ -370,7 +370,7 @@ func (x *intStmtConverter) convertSendWithoutTag(stmt SendStmt) {
 	actions := []intAssign{}
 	switch chType.(type) {
 	case HandshakeChannelType:
-		chVar := resolveRealObj(ch).(intInternHandshakeChannelVar)
+		chVar := resolveRealObj(ch).(ir1HandshakeChannelVar)
 		firstState := x.currentState
 		secondState := x.genNextState()
 		lastState := x.genNextState()
@@ -413,7 +413,7 @@ func (x *intStmtConverter) convertSendWithoutTag(stmt SendStmt) {
 
 		x.currentState = lastState
 	case BufferedChannelType:
-		chVar := resolveRealObj(ch).(intInternBufferedChannelVar)
+		chVar := resolveRealObj(ch).(ir1BufferedChannelVar)
 		nextState := x.genNextState()
 
 		actions = append(actions, intAssign{
@@ -465,12 +465,12 @@ func (x *intStmtConverter) convertFor(stmt ForStmt) {
 
 func (x *intStmtConverter) convertForIn(stmt ForInStmt) {
 	switch container := expressionToInternObj(stmt.Container, x.env).(type) {
-	case intInternArrayVar:
+	case ir1ArrayVar:
 		savedBreakState := x.breakToState
 		x.breakToState = x.genNextState()
 		for i, elem := range container.RealLiteral.Elems {
 			x.pushEnv()
-			x.env.add(stmt.Variable, intInternPrimitiveVar{
+			x.env.add(stmt.Variable, ir1PrimitiveVar{
 				fmt.Sprintf("__elem%d_%s", i, container.RealName),
 				elem.GetType(),
 				elem,

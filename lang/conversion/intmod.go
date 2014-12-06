@@ -64,12 +64,12 @@ type (
 
 type varEnv struct {
 	upper   *varEnv
-	mapping map[string]intInternObj
+	mapping map[string]ir1Obj
 }
 
 func newVarEnv() (ret *varEnv) {
 	ret = new(varEnv)
-	ret.mapping = make(map[string]intInternObj)
+	ret.mapping = make(map[string]ir1Obj)
 	return
 }
 
@@ -79,11 +79,11 @@ func newVarEnvFromUpper(upper *varEnv) (ret *varEnv) {
 	return
 }
 
-func (env *varEnv) add(name string, intVar intInternObj) {
+func (env *varEnv) add(name string, intVar ir1Obj) {
 	env.mapping[name] = intVar
 }
 
-func (env *varEnv) lookup(name string) intInternObj {
+func (env *varEnv) lookup(name string) ir1Obj {
 	if intVar, found := env.mapping[name]; found {
 		return intVar
 	}

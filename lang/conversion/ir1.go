@@ -13,27 +13,27 @@ func astToIr1(defs []Def) (error, []intModule) {
 		switch def := def.(type) {
 		case DataDef:
 			for _, elem := range def.Elems {
-				converter.env.add(elem, intInternLiteral{
+				converter.env.add(elem, ir1Literal{
 					Lit:  elem,
 					Type: NamedType{def.Name},
 				})
 			}
-			converter.env.add(def.Name, intInternDataTypeDef{
+			converter.env.add(def.Name, ir1DataTypeDef{
 				Elems: def.Elems,
 			})
 		case ModuleDef:
 			// TODO
 		case ConstantDef:
-			converter.env.add(def.Name, intInternConstantDef{
+			converter.env.add(def.Name, ir1ConstantDef{
 				Type: def.Type,
 				Expr: def.Expr,
 			})
 		case ProcDef:
-			converter.env.add(def.Name, intInternProcDef{
+			converter.env.add(def.Name, ir1ProcDef{
 				Def: def,
 			})
 		case FaultDef:
-			converter.env.add(def.Name+"@"+def.Tag, intInternFaultDef{
+			converter.env.add(def.Name+"@"+def.Tag, ir1FaultDef{
 				Def: def,
 			})
 		case InitBlock:
@@ -58,8 +58,8 @@ func astToIr1(defs []Def) (error, []intModule) {
 
 type intModConverter struct {
 	env      *varEnv
-	channels []intInternObj
-	procs    []intInternProcVar
+	channels []ir1Obj
+	procs    []ir1ProcVar
 	modules  []intModule
 	ltls     []string
 	pid      int
@@ -124,12 +124,12 @@ func (x *intModConverter) buildMainModule() error {
 	// Vars
 	for _, chVar := range x.channels {
 		switch chVar := chVar.(type) {
-		case intInternHandshakeChannelVar:
+		case ir1HandshakeChannelVar:
 			module.Vars = append(module.Vars, intVar{
 				Name: chVar.RealName,
 				Type: chVar.ModuleName,
 			})
-		case intInternBufferedChannelVar:
+		case ir1BufferedChannelVar:
 			module.Vars = append(module.Vars, intVar{
 				Name: chVar.RealName,
 				Type: chVar.ModuleName,
@@ -141,7 +141,7 @@ func (x *intModConverter) buildMainModule() error {
 	for _, procVal := range x.procs {
 		args := []string{}
 		for _, arg := range procVal.Args {
-			if arrayArg, isArrayLit := arg.(intInternArrayLiteral); isArrayLit {
+			if arrayArg, isArrayLit := arg.(ir1ArrayLiteral); isArrayLit {
 				args = append(args, arrayArg.ArgString()...)
 			} else {
 				args = append(args, arg.String())
@@ -160,10 +160,10 @@ func (x *intModConverter) buildMainModule() error {
 	return nil
 }
 
-func (x *intModConverter) buildChannelVar(name string, ty Type, tags []string) (error, intInternObj) {
+func (x *intModConverter) buildChannelVar(name string, ty Type, tags []string) (error, ir1Obj) {
 	chNumber := len(x.channels)
 	var mod intModule
-	var chVar intInternObj
+	var chVar ir1Obj
 	switch ty := ty.(type) {
 	case HandshakeChannelType:
 		types := []string{}
@@ -178,7 +178,7 @@ func (x *intModConverter) buildChannelVar(name string, ty Type, tags []string) (
 			ValueType: types,
 			ZeroValue: zeroValues,
 		}
-		chVar = intInternHandshakeChannelVar{
+		chVar = ir1HandshakeChannelVar{
 			ModuleName: moduleName,
 			RealName:   name,
 			Type:       ty,
@@ -199,7 +199,7 @@ func (x *intModConverter) buildChannelVar(name string, ty Type, tags []string) (
 			ValueType: types,
 			ZeroValue: zeroValues,
 		}
-		chVar = intInternBufferedChannelVar{
+		chVar = ir1BufferedChannelVar{
 			ModuleName: moduleName,
 			RealName:   name,
 			Type:       ty,
@@ -215,26 +215,26 @@ func (x *intModConverter) buildChannelVar(name string, ty Type, tags []string) (
 }
 
 func (x *intModConverter) buildProcVar(initVar InstanceVar) error {
-	// Find intInternProcDef from ProcDefName
+	// Find ir1ProcDef from ProcDefName
 	intVal := x.env.lookup(initVar.ProcDefName)
 	if intVal == nil {
 		panic(initVar.ProcDefName + " should be found in env")
 	}
-	var intProcDef intInternProcDef
-	if def, ok := intVal.(intInternProcDef); ok {
+	var intProcDef ir1ProcDef
+	if def, ok := intVal.(ir1ProcDef); ok {
 		intProcDef = def
 	} else {
-		panic(initVar.ProcDefName + " should be a intInternProcDef")
+		panic(initVar.ProcDefName + " should be a ir1ProcDef")
 	}
 
 	x.pid = len(x.procs)
-	args := []intInternExprObj{}
+	args := []ir1ExprObj{}
 	for _, arg := range initVar.Args {
 		args = append(args, expressionToInternObj(arg, x.env))
 	}
 	moduleName := fmt.Sprintf("__pid%d_%s", x.pid, initVar.ProcDefName)
 	x.instantiateProcDef(intProcDef, moduleName, args, initVar.Tags)
-	procvar := intInternProcVar{
+	procvar := ir1ProcVar{
 		Name:       initVar.Name,
 		ModuleName: moduleName,
 		Def:        intProcDef,
@@ -245,7 +245,7 @@ func (x *intModConverter) buildProcVar(initVar InstanceVar) error {
 	return nil
 }
 
-func (x *intModConverter) instantiateProcDef(def intInternProcDef, moduleName string, args []intInternExprObj, tags []string) {
+func (x *intModConverter) instantiateProcDef(def ir1ProcDef, moduleName string, args []ir1ExprObj, tags []string) {
 	x.pushEnv()
 	defer x.popEnv()
 	vars := []intVar{}
@@ -272,28 +272,28 @@ func (x *intModConverter) instantiateProcDef(def intInternProcDef, moduleName st
 	for idx, arg := range args {
 		param := def.Def.Parameters[idx]
 		switch arg := arg.(type) {
-		case intInternArrayLiteral:
+		case ir1ArrayLiteral:
 			for i := 0; i < len(arg.Elems); i++ {
 				paramName := fmt.Sprintf("__elem%d_%s", i, param.Name)
 				switch elem := arg.Elems[i].(type) {
-				case intInternHandshakeChannelVar:
+				case ir1HandshakeChannelVar:
 					processHandshakeChannel(paramName, elem.ModuleName, len(elem.Type.Elems))
-				case intInternBufferedChannelVar:
+				case ir1BufferedChannelVar:
 					processBufferedChannel(paramName, elem.ModuleName, len(elem.Type.Elems))
 				default:
 					params = append(params, paramName)
 				}
 			}
-			x.env.add(param.Name, intInternArrayVar{param.Name, arg})
-		case intInternHandshakeChannelVar:
+			x.env.add(param.Name, ir1ArrayVar{param.Name, arg})
+		case ir1HandshakeChannelVar:
 			processHandshakeChannel(param.Name, arg.ModuleName, len(arg.Type.Elems))
-			x.env.add(param.Name, intInternPrimitiveVar{param.Name, param.Type, arg})
-		case intInternBufferedChannelVar:
+			x.env.add(param.Name, ir1PrimitiveVar{param.Name, param.Type, arg})
+		case ir1BufferedChannelVar:
 			processBufferedChannel(param.Name, arg.ModuleName, len(arg.Type.Elems))
-			x.env.add(param.Name, intInternPrimitiveVar{param.Name, param.Type, arg})
-		case intInternLiteral, intInternNot, intInternUnarySub, intInternParen, intInternBinOp:
+			x.env.add(param.Name, ir1PrimitiveVar{param.Name, param.Type, arg})
+		case ir1Literal, ir1Not, ir1UnarySub, ir1Paren, ir1BinOp:
 			params = append(params, param.Name)
-			x.env.add(param.Name, intInternPrimitiveVar{param.Name, param.Type, nil})
+			x.env.add(param.Name, ir1PrimitiveVar{param.Name, param.Type, nil})
 		default:
 			panic("unexpected")
 		}
@@ -321,7 +321,7 @@ func convertTypeToString(ty Type, env *varEnv) string {
 			return "0..8"
 		default:
 			switch intObj := env.lookup(ty.Name).(type) {
-			case intInternDataTypeDef:
+			case ir1DataTypeDef:
 				return "{" + argJoin(intObj.Elems) + "}"
 			default:
 				panic("unknown type")
@@ -343,7 +343,7 @@ func zeroValueOfType(ty Type, env *varEnv) string {
 			return "0"
 		default:
 			switch intObj := env.lookup(ty.Name).(type) {
-			case intInternDataTypeDef:
+			case ir1DataTypeDef:
 				return intObj.Elems[0]
 			default:
 				panic("unknown type")
