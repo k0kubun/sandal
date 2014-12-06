@@ -10,22 +10,12 @@ func (x *stmtConverter) convertSend(stmt SendStmt) {
 		x.convertSendWithoutTag(stmt)
 	} else {
 		nextState := x.genNextState()
+
+		x.branched(nextState, func(x *stmtConverter) {
+			x.convertSendWithoutTag(stmt)
+		})
+
 		currentState := x.currentState
-
-		choicedState := x.genNextState()
-		x.trans = append(x.trans, intTransition{
-			FromState: currentState,
-			NextState: choicedState,
-		})
-		x.currentState = choicedState
-		x.pushEnv()
-		x.convertSendWithoutTag(stmt)
-		x.popEnv()
-		x.trans = append(x.trans, intTransition{
-			FromState: x.currentState,
-			NextState: nextState,
-		})
-
 		for _, tag := range stmt.Tags {
 			x.convertTags(stmt, tag, currentState, nextState)
 		}

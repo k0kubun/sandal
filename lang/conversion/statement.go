@@ -256,20 +256,9 @@ func (x *stmtConverter) convertOpAssignment(stmt OpAssignmentStmt) {
 
 func (x *stmtConverter) convertChoice(stmt ChoiceStmt) {
 	nextState := x.genNextState()
-	currentState := x.currentState
 	for _, block := range stmt.Blocks {
-		choicedState := x.genNextState()
-		x.trans = append(x.trans, intTransition{
-			FromState: currentState,
-			NextState: choicedState,
-		})
-		x.currentState = choicedState
-		x.pushEnv()
-		x.convert(block)
-		x.popEnv()
-		x.trans = append(x.trans, intTransition{
-			FromState: x.currentState,
-			NextState: nextState,
+		x.branched(nextState, func(x *stmtConverter) {
+			x.convert(block)
 		})
 	}
 	x.currentState = nextState
@@ -396,4 +385,24 @@ func (x *stmtConverter) pushEnv() {
 
 func (x *stmtConverter) popEnv() {
 	x.env = x.env.upper
+}
+
+func (x *stmtConverter) branched(nextState intState, f func(*stmtConverter)) {
+	currentState := x.currentState
+	choicedState := x.genNextState()
+	x.trans = append(x.trans, intTransition{
+		FromState: currentState,
+		NextState: choicedState,
+	})
+	x.currentState = choicedState
+	x.pushEnv()
+
+	f(x)
+
+	x.popEnv()
+	x.trans = append(x.trans, intTransition{
+		FromState: x.currentState,
+		NextState: nextState,
+	})
+	x.currentState = currentState
 }
