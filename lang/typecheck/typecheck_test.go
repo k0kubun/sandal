@@ -9,8 +9,8 @@ func universalTypeCheck(x interface{}, env *typeEnv) error {
 	switch x := x.(type) {
 	case Def:
 		return typeCheckDef(x, env)
-	case Statement:
-		return typeCheckStatement(x, env)
+	case Stmt:
+		return typeCheckStmt(x, env)
 	case Expr:
 		return typeCheckExpr(x, env)
 	}

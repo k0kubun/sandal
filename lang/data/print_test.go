@@ -18,32 +18,32 @@ func TestDefStringify(t *testing.T) {
 	expectString(t, ConstantDef{Pos{}, "a", NamedType{"int"}, NumberExpr{Pos{}, "1"}}, "const a int = 1;")
 }
 
-func TestStatementStringify(t *testing.T) {
-	expectString(t, LabelledStatement{Pos{}, "label", ExprStatement{NumberExpr{Pos{}, "1"}}}, "label: 1;")
-	expectString(t, BlockStatement{Pos{}, []Statement{SkipStatement{}, NullStatement{}}}, "{ skip; ; };")
-	expectString(t, VarDeclStatement{Pos{}, "a", NamedType{"int"}, NumberExpr{Pos{}, "1"}}, "var a int = 1;")
-	expectString(t, VarDeclStatement{Pos{}, "a", NamedType{"int"}, nil}, "var a int;")
-	expectString(t, IfStatement{Pos{}, IdentifierExpr{Pos{}, "a"}, []Statement{SkipStatement{}}, nil}, "if a { skip; };")
-	expectString(t, IfStatement{Pos{}, IdentifierExpr{Pos{}, "a"}, []Statement{SkipStatement{}}, []Statement{}}, "if a { skip; } else {  };")
-	expectString(t, IfStatement{Pos{}, IdentifierExpr{Pos{}, "a"}, []Statement{SkipStatement{}}, []Statement{SkipStatement{}}}, "if a { skip; } else { skip; };")
-	expectString(t, AssignmentStatement{Pos{}, "a", NumberExpr{Pos{}, "1"}}, "a = 1;")
-	expectString(t, OpAssignmentStatement{Pos{}, "a", "+", NumberExpr{Pos{}, "1"}}, "a += 1;")
+func TestStmtStringify(t *testing.T) {
+	expectString(t, LabelledStmt{Pos{}, "label", ExprStmt{NumberExpr{Pos{}, "1"}}}, "label: 1;")
+	expectString(t, BlockStmt{Pos{}, []Stmt{SkipStmt{}, NullStmt{}}}, "{ skip; ; };")
+	expectString(t, VarDeclStmt{Pos{}, "a", NamedType{"int"}, NumberExpr{Pos{}, "1"}}, "var a int = 1;")
+	expectString(t, VarDeclStmt{Pos{}, "a", NamedType{"int"}, nil}, "var a int;")
+	expectString(t, IfStmt{Pos{}, IdentifierExpr{Pos{}, "a"}, []Stmt{SkipStmt{}}, nil}, "if a { skip; };")
+	expectString(t, IfStmt{Pos{}, IdentifierExpr{Pos{}, "a"}, []Stmt{SkipStmt{}}, []Stmt{}}, "if a { skip; } else {  };")
+	expectString(t, IfStmt{Pos{}, IdentifierExpr{Pos{}, "a"}, []Stmt{SkipStmt{}}, []Stmt{SkipStmt{}}}, "if a { skip; } else { skip; };")
+	expectString(t, AssignmentStmt{Pos{}, "a", NumberExpr{Pos{}, "1"}}, "a = 1;")
+	expectString(t, OpAssignmentStmt{Pos{}, "a", "+", NumberExpr{Pos{}, "1"}}, "a += 1;")
 	expectString(t,
-		ChoiceStatement{Pos{}, []BlockStatement{
-			BlockStatement{Pos{}, []Statement{SkipStatement{}}},
-			BlockStatement{Pos{}, []Statement{ExprStatement{NumberExpr{Pos{}, "1"}}}}}},
+		ChoiceStmt{Pos{}, []BlockStmt{
+			BlockStmt{Pos{}, []Stmt{SkipStmt{}}},
+			BlockStmt{Pos{}, []Stmt{ExprStmt{NumberExpr{Pos{}, "1"}}}}}},
 		"choice { skip; }, { 1; };")
-	expectString(t, RecvStatement{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}, []string{}}, "recv(ch, a);")
-	expectString(t, PeekStatement{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}}, "peek(ch, a);")
-	expectString(t, SendStatement{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}, []string{}}, "send(ch, a);")
-	expectString(t, ForStatement{Pos{}, []Statement{SkipStatement{}}}, "for { skip; };")
-	expectString(t, ForInStatement{Pos{}, "ch", IdentifierExpr{Pos{}, "chs"}, []Statement{SkipStatement{}}}, "for ch in chs { skip; };")
-	expectString(t, ForInRangeStatement{Pos{}, "i", NumberExpr{Pos{}, "1"}, NumberExpr{Pos{}, "5"}, []Statement{SkipStatement{}}}, "for i in range 1 to 5 { skip; };")
-	expectString(t, BreakStatement{}, "break;")
-	expectString(t, GotoStatement{Pos{}, "label"}, "goto label;")
-	expectString(t, SkipStatement{}, "skip;")
-	expectString(t, ExprStatement{NumberExpr{Pos{}, "1"}}, "1;")
-	expectString(t, NullStatement{}, ";")
+	expectString(t, RecvStmt{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}, []string{}}, "recv(ch, a);")
+	expectString(t, PeekStmt{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}}, "peek(ch, a);")
+	expectString(t, SendStmt{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}, []string{}}, "send(ch, a);")
+	expectString(t, ForStmt{Pos{}, []Stmt{SkipStmt{}}}, "for { skip; };")
+	expectString(t, ForInStmt{Pos{}, "ch", IdentifierExpr{Pos{}, "chs"}, []Stmt{SkipStmt{}}}, "for ch in chs { skip; };")
+	expectString(t, ForInRangeStmt{Pos{}, "i", NumberExpr{Pos{}, "1"}, NumberExpr{Pos{}, "5"}, []Stmt{SkipStmt{}}}, "for i in range 1 to 5 { skip; };")
+	expectString(t, BreakStmt{}, "break;")
+	expectString(t, GotoStmt{Pos{}, "label"}, "goto label;")
+	expectString(t, SkipStmt{}, "skip;")
+	expectString(t, ExprStmt{NumberExpr{Pos{}, "1"}}, "1;")
+	expectString(t, NullStmt{}, ";")
 }
 
 func TestExprStringify(t *testing.T) {

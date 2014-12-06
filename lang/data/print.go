@@ -13,26 +13,26 @@ func (x ConstantDef) String() string {
 }
 
 // ========================================
-// Statements
+// Stmts
 
-func (x LabelledStatement) String() string {
-	return x.Label + ": " + x.Statement.String()
+func (x LabelledStmt) String() string {
+	return x.Label + ": " + x.Stmt.String()
 }
-func (x BlockStatement) String() string {
+func (x BlockStmt) String() string {
 	stmts := []string{}
-	for _, stmt := range x.Statements {
+	for _, stmt := range x.Stmts {
 		stmts = append(stmts, stmt.String())
 	}
 	return "{ " + strings.Join(stmts, " ") + " };"
 }
-func (x VarDeclStatement) String() string {
+func (x VarDeclStmt) String() string {
 	if x.Initializer != nil {
 		return fmt.Sprintf("var %s %s = %s;", x.Name, x.Type, x.Initializer)
 	} else {
 		return fmt.Sprintf("var %s %s;", x.Name, x.Type)
 	}
 }
-func (x IfStatement) String() string {
+func (x IfStmt) String() string {
 	cond := x.Condition.String()
 	tBranch := []string{}
 	for _, stmt := range x.TrueBranch {
@@ -49,80 +49,80 @@ func (x IfStatement) String() string {
 			strings.Join(tBranch, " "), strings.Join(fBranch, " "))
 	}
 }
-func (x AssignmentStatement) String() string {
+func (x AssignmentStmt) String() string {
 	return fmt.Sprintf("%s = %s;", x.Variable, x.Expr)
 }
-func (x OpAssignmentStatement) String() string {
+func (x OpAssignmentStmt) String() string {
 	return fmt.Sprintf("%s %s= %s;", x.Variable, x.Operator, x.Expr)
 }
-func (x ChoiceStatement) String() string {
+func (x ChoiceStmt) String() string {
 	blocks := []string{}
 	for _, block := range x.Blocks {
 		stmts := []string{}
-		for _, stmt := range block.Statements {
+		for _, stmt := range block.Stmts {
 			stmts = append(stmts, stmt.String())
 		}
 		blocks = append(blocks, "{ "+strings.Join(stmts, " ")+" }")
 	}
 	return "choice " + strings.Join(blocks, ", ") + ";"
 }
-func (x RecvStatement) String() string {
+func (x RecvStmt) String() string {
 	args := []string{x.Channel.String()}
 	for _, arg := range x.Args {
 		args = append(args, arg.String())
 	}
 	return "recv(" + strings.Join(args, ", ") + ");"
 }
-func (x PeekStatement) String() string {
+func (x PeekStmt) String() string {
 	args := []string{x.Channel.String()}
 	for _, arg := range x.Args {
 		args = append(args, arg.String())
 	}
 	return "peek(" + strings.Join(args, ", ") + ");"
 }
-func (x SendStatement) String() string {
+func (x SendStmt) String() string {
 	args := []string{x.Channel.String()}
 	for _, arg := range x.Args {
 		args = append(args, arg.String())
 	}
 	return "send(" + strings.Join(args, ", ") + ");"
 }
-func (x ForStatement) String() string {
+func (x ForStmt) String() string {
 	stmts := []string{}
-	for _, stmt := range x.Statements {
+	for _, stmt := range x.Stmts {
 		stmts = append(stmts, stmt.String())
 	}
 	return fmt.Sprintf("for { %s };", strings.Join(stmts, " "))
 }
-func (x ForInStatement) String() string {
+func (x ForInStmt) String() string {
 	stmts := []string{}
-	for _, stmt := range x.Statements {
+	for _, stmt := range x.Stmts {
 		stmts = append(stmts, stmt.String())
 	}
 	return fmt.Sprintf("for %s in %s { %s };", x.Variable, x.Container,
 		strings.Join(stmts, " "))
 }
-func (x ForInRangeStatement) String() string {
+func (x ForInRangeStmt) String() string {
 	stmts := []string{}
-	for _, stmt := range x.Statements {
+	for _, stmt := range x.Stmts {
 		stmts = append(stmts, stmt.String())
 	}
 	return fmt.Sprintf("for %s in range %s to %s { %s };", x.Variable,
 		x.FromExpr, x.ToExpr, strings.Join(stmts, " "))
 }
-func (x BreakStatement) String() string {
+func (x BreakStmt) String() string {
 	return "break;"
 }
-func (x GotoStatement) String() string {
+func (x GotoStmt) String() string {
 	return "goto " + x.Label + ";"
 }
-func (x SkipStatement) String() string {
+func (x SkipStmt) String() string {
 	return "skip;"
 }
-func (x ExprStatement) String() string {
+func (x ExprStmt) String() string {
 	return x.Expr.String() + ";"
 }
-func (x NullStatement) String() string {
+func (x NullStmt) String() string {
 	return ";"
 }
 

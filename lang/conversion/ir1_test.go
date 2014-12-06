@@ -22,12 +22,12 @@ func TestConvertASTToIntModule(t *testing.T) {
 					},
 				},
 			},
-			Statements: []Statement{
-				VarDeclStatement{
+			Stmts: []Stmt{
+				VarDeclStmt{
 					Name: "b",
 					Type: NamedType{"int"},
 				},
-				SendStatement{
+				SendStmt{
 					Channel: IdentifierExpr{Pos{}, "ch0"},
 					Args: []Expr{
 						TrueExpr{Pos{}},

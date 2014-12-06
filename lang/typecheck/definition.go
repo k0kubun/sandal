@@ -107,14 +107,14 @@ func typeCheckProcDef(def ProcDef, env *typeEnv) error {
 	for _, param := range def.Parameters {
 		env.add(param.Name, param.Type)
 	}
-	for _, stmt := range def.Statements {
-		if err := typeCheckStatement(stmt, procEnv); err != nil {
+	for _, stmt := range def.Stmts {
+		if err := typeCheckStmt(stmt, procEnv); err != nil {
 			return err
 		}
 		switch s := stmt.(type) {
 		case ConstantDef:
 			env.add(s.Name, s.Type)
-		case VarDeclStatement:
+		case VarDeclStmt:
 			env.add(s.Name, s.Type)
 		}
 	}

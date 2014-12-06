@@ -6,75 +6,75 @@ import (
 )
 
 // ========================================
-// typeCheckStatement
+// typeCheckStmt
 
-func typeCheckStatement(x Statement, env *typeEnv) error {
+func typeCheckStmt(x Stmt, env *typeEnv) error {
 	switch x := x.(type) {
 	case ConstantDef:
 		return typeCheckConstantDef(x, env)
-	case LabelledStatement:
-		return typeCheckLabelledStatement(x, env)
-	case BlockStatement:
-		return typeCheckBlockStatement(x, env)
-	case VarDeclStatement:
-		return typeCheckVarDeclStatement(x, env)
-	case IfStatement:
-		return typeCheckIfStatement(x, env)
-	case AssignmentStatement:
-		return typeCheckAssignmentStatement(x, env)
-	case OpAssignmentStatement:
-		return typeCheckOpAssignmentStatement(x, env)
-	case ChoiceStatement:
-		return typeCheckChoiceStatement(x, env)
-	case RecvStatement:
-		return typeCheckRecvStatement(x, env)
-	case PeekStatement:
-		return typeCheckPeekStatement(x, env)
-	case SendStatement:
-		return typeCheckSendStatement(x, env)
-	case ForStatement:
-		return typeCheckForStatement(x, env)
-	case ForInStatement:
-		return typeCheckForInStatement(x, env)
-	case ForInRangeStatement:
-		return typeCheckForInRangeStatement(x, env)
-	case BreakStatement:
-		return typeCheckBreakStatement(x, env)
-	case GotoStatement:
-		return typeCheckGotoStatement(x, env)
-	case SkipStatement:
-		return typeCheckSkipStatement(x, env)
-	case ExprStatement:
-		return typeCheckExprStatement(x, env)
-	case NullStatement:
-		return typeCheckNullStatement(x, env)
+	case LabelledStmt:
+		return typeCheckLabelledStmt(x, env)
+	case BlockStmt:
+		return typeCheckBlockStmt(x, env)
+	case VarDeclStmt:
+		return typeCheckVarDeclStmt(x, env)
+	case IfStmt:
+		return typeCheckIfStmt(x, env)
+	case AssignmentStmt:
+		return typeCheckAssignmentStmt(x, env)
+	case OpAssignmentStmt:
+		return typeCheckOpAssignmentStmt(x, env)
+	case ChoiceStmt:
+		return typeCheckChoiceStmt(x, env)
+	case RecvStmt:
+		return typeCheckRecvStmt(x, env)
+	case PeekStmt:
+		return typeCheckPeekStmt(x, env)
+	case SendStmt:
+		return typeCheckSendStmt(x, env)
+	case ForStmt:
+		return typeCheckForStmt(x, env)
+	case ForInStmt:
+		return typeCheckForInStmt(x, env)
+	case ForInRangeStmt:
+		return typeCheckForInRangeStmt(x, env)
+	case BreakStmt:
+		return typeCheckBreakStmt(x, env)
+	case GotoStmt:
+		return typeCheckGotoStmt(x, env)
+	case SkipStmt:
+		return typeCheckSkipStmt(x, env)
+	case ExprStmt:
+		return typeCheckExprStmt(x, env)
+	case NullStmt:
+		return typeCheckNullStmt(x, env)
 	}
-	panic("Unknown Statement")
+	panic("Unknown Stmt")
 }
 
-func typeCheckStatements(stmts []Statement, env *typeEnv) error {
+func typeCheckStmts(stmts []Stmt, env *typeEnv) error {
 	env = newTypeEnvFromUpper(env)
 	for _, stmt := range stmts {
-		if err := typeCheckStatement(stmt, env); err != nil {
+		if err := typeCheckStmt(stmt, env); err != nil {
 			return err
 		}
 		switch s := stmt.(type) {
 		case ConstantDef:
 			env.add(s.Name, s.Type)
-		case VarDeclStatement:
+		case VarDeclStmt:
 			env.add(s.Name, s.Type)
 		}
 	}
 	return nil
 }
 
-func typeCheckLabelledStatement(x LabelledStatement, env *typeEnv) error {
-	return typeCheckStatement(x.Statement, env)
+func typeCheckLabelledStmt(x LabelledStmt, env *typeEnv) error {
+	return typeCheckStmt(x.Stmt, env)
 }
-func typeCheckBlockStatement(x BlockStatement, env *typeEnv) error {
-	return typeCheckStatements(x.Statements, env)
+func typeCheckBlockStmt(x BlockStmt, env *typeEnv) error {
+	return typeCheckStmts(x.Stmts, env)
 }
-func typeCheckVarDeclStatement(x VarDeclStatement, env *typeEnv) error {
+func typeCheckVarDeclStmt(x VarDeclStmt, env *typeEnv) error {
 	if x.Initializer != nil {
 		if err := typeCheckExpr(x.Initializer, env); err != nil {
 			return err
@@ -82,19 +82,19 @@ func typeCheckVarDeclStatement(x VarDeclStatement, env *typeEnv) error {
 	}
 	return nil
 }
-func typeCheckIfStatement(x IfStatement, env *typeEnv) error {
+func typeCheckIfStmt(x IfStmt, env *typeEnv) error {
 	if err := typeCheckExpr(x.Condition, env); err != nil {
 		return err
 	}
-	if err := typeCheckStatements(x.TrueBranch, env); err != nil {
+	if err := typeCheckStmts(x.TrueBranch, env); err != nil {
 		return err
 	}
-	if err := typeCheckStatements(x.FalseBranch, env); err != nil {
+	if err := typeCheckStmts(x.FalseBranch, env); err != nil {
 		return err
 	}
 	return nil
 }
-func typeCheckAssignmentStatement(x AssignmentStatement, env *typeEnv) error {
+func typeCheckAssignmentStmt(x AssignmentStmt, env *typeEnv) error {
 	if err := typeCheckExpr(x.Expr, env); err != nil {
 		return err
 	}
@@ -107,45 +107,45 @@ func typeCheckAssignmentStatement(x AssignmentStatement, env *typeEnv) error {
 	}
 	return nil
 }
-func typeCheckOpAssignmentStatement(x OpAssignmentStatement, env *typeEnv) error {
+func typeCheckOpAssignmentStmt(x OpAssignmentStmt, env *typeEnv) error {
 	return typeCheckExpr(
 		BinOpExpr{IdentifierExpr{Pos{}, x.Variable}, x.Operator, x.Expr},
 		env,
 	)
 }
-func typeCheckChoiceStatement(x ChoiceStatement, env *typeEnv) error {
+func typeCheckChoiceStmt(x ChoiceStmt, env *typeEnv) error {
 	for _, block := range x.Blocks {
-		if err := typeCheckStatement(block, env); err != nil {
+		if err := typeCheckStmt(block, env); err != nil {
 			return err
 		}
 	}
 	return nil
 }
-func typeCheckRecvStatement(x RecvStatement, env *typeEnv) error {
+func typeCheckRecvStmt(x RecvStmt, env *typeEnv) error {
 	return channelExprCheck(x, env, true)
 }
-func typeCheckPeekStatement(x PeekStatement, env *typeEnv) error {
+func typeCheckPeekStmt(x PeekStmt, env *typeEnv) error {
 	return channelExprCheck(x, env, true)
 }
-func typeCheckSendStatement(x SendStatement, env *typeEnv) error {
+func typeCheckSendStmt(x SendStmt, env *typeEnv) error {
 	return channelExprCheck(x, env, false)
 }
-func typeCheckForStatement(x ForStatement, env *typeEnv) error {
-	return typeCheckStatements(x.Statements, env)
+func typeCheckForStmt(x ForStmt, env *typeEnv) error {
+	return typeCheckStmts(x.Stmts, env)
 }
-func typeCheckForInStatement(x ForInStatement, env *typeEnv) error {
+func typeCheckForInStmt(x ForInStmt, env *typeEnv) error {
 	if err := typeCheckExpr(x.Container, env); err != nil {
 		return err
 	}
 	if ty, isArrayType := typeOfExpr(x.Container, env).(ArrayType); isArrayType {
 		blockEnv := newTypeEnvFromUpper(env)
 		blockEnv.add(x.Variable, ty.ElemType)
-		return typeCheckStatements(x.Statements, blockEnv)
+		return typeCheckStmts(x.Stmts, blockEnv)
 	} else {
 		return fmt.Errorf("Expect %s to be an array (%s)", x.Container, x.Container.Position())
 	}
 }
-func typeCheckForInRangeStatement(x ForInRangeStatement, env *typeEnv) error {
+func typeCheckForInRangeStmt(x ForInRangeStmt, env *typeEnv) error {
 	if err := typeCheckExpr(x.FromExpr, env); err != nil {
 		return err
 	}
@@ -160,10 +160,10 @@ func typeCheckForInRangeStatement(x ForInRangeStatement, env *typeEnv) error {
 	}
 	blockEnv := newTypeEnvFromUpper(env)
 	blockEnv.add(x.Variable, NamedType{"int"})
-	return typeCheckStatements(x.Statements, blockEnv)
+	return typeCheckStmts(x.Stmts, blockEnv)
 }
-func typeCheckBreakStatement(x BreakStatement, env *typeEnv) error { return nil }
-func typeCheckGotoStatement(x GotoStatement, env *typeEnv) error   { return nil }
-func typeCheckSkipStatement(x SkipStatement, env *typeEnv) error   { return nil }
-func typeCheckExprStatement(x ExprStatement, env *typeEnv) error   { return nil }
-func typeCheckNullStatement(x NullStatement, env *typeEnv) error   { return nil }
+func typeCheckBreakStmt(x BreakStmt, env *typeEnv) error { return nil }
+func typeCheckGotoStmt(x GotoStmt, env *typeEnv) error   { return nil }
+func typeCheckSkipStmt(x SkipStmt, env *typeEnv) error   { return nil }
+func typeCheckExprStmt(x ExprStmt, env *typeEnv) error   { return nil }
+func typeCheckNullStmt(x NullStmt, env *typeEnv) error   { return nil }

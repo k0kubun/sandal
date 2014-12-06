@@ -298,7 +298,7 @@ func (x *intModConverter) instantiateProcDef(def intInternalProcDef, moduleName 
 			panic("unexpected")
 		}
 	}
-	vars, initState, trans := x.convertStatements(def.Def.Statements, defaults, tags, vars)
+	vars, initState, trans := x.convertStmts(def.Def.Stmts, defaults, tags, vars)
 
 	x.modules = append(x.modules, intProcModule{
 		Name:      moduleName,

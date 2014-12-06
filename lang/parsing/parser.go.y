@@ -17,8 +17,8 @@ type token struct {
 %union{
 	definitions []data.Def
 	definition  data.Def
-	statements  []data.Statement
-	statement   data.Statement
+	statements  []data.Stmt
+	statement   data.Stmt
 	expressions []data.Expr
 	expression  data.Expr
 	parameters  []data.Parameter
@@ -28,7 +28,7 @@ type token struct {
 	identifiers []string
 	tags        []string
 	tag         string
-	blocks      []data.BlockStatement
+	blocks      []data.BlockStmt
 	initvars    []data.InitVar
 	initvar     data.InitVar
 	ltlexpr     data.LtlExpr
@@ -203,13 +203,13 @@ const_def
 proc_def
 	: PROC IDENTIFIER '(' parameters_zero ')' '{' statements_zero '}' ';'
 	{
-		$$ = data.ProcDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Statements: $7}
+		$$ = data.ProcDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Stmts: $7}
 	}
 
 fault_def
 	: FAULT SEND '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
-		$$ = data.FaultDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Tag: $6, Statements: $8}
+		$$ = data.FaultDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Tag: $6, Stmts: $8}
 	}
 	| FAULT RECV '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
@@ -272,129 +272,129 @@ statements_zero
 	}
 	| statement statements_zero
 	{
-		$$ = append([]data.Statement{$1}, $2...)
+		$$ = append([]data.Stmt{$1}, $2...)
 	}
 
 statement
 	: IDENTIFIER ':' statement /* no semicolon */
 	{
-		$$ = data.LabelledStatement{Pos: $1.pos, Label: $1.lit, Statement: $3}
+		$$ = data.LabelledStmt{Pos: $1.pos, Label: $1.lit, Stmt: $3}
 	}
 	| '{' statements_zero '}' ';'
 	{
-		$$ = data.BlockStatement{Pos: $1.pos, Statements: $2}
+		$$ = data.BlockStmt{Pos: $1.pos, Stmts: $2}
 	}
 	| VAR IDENTIFIER type ';'
 	{
-		$$ = data.VarDeclStatement{Pos: $1.pos, Name: $2.lit, Type: $3}
+		$$ = data.VarDeclStmt{Pos: $1.pos, Name: $2.lit, Type: $3}
 	}
 	| VAR IDENTIFIER type ASSIGN expr ';'
 	{
-		$$ = data.VarDeclStatement{Pos: $1.pos, Name: $2.lit, Type: $3, Initializer: $5}
+		$$ = data.VarDeclStmt{Pos: $1.pos, Name: $2.lit, Type: $3, Initializer: $5}
 	}
 	| IF expr '{' statements_zero '}' ';'
 	{
-		$$ = data.IfStatement{Pos: $1.pos, Condition: $2, TrueBranch: $4}
+		$$ = data.IfStmt{Pos: $1.pos, Condition: $2, TrueBranch: $4}
 	}
 	| IF expr '{' statements_zero '}' ELSE '{' statements_zero '}' ';'
 	{
-		$$ = data.IfStatement{Pos: $1.pos, Condition: $2, TrueBranch: $4, FalseBranch: $8}
+		$$ = data.IfStmt{Pos: $1.pos, Condition: $2, TrueBranch: $4, FalseBranch: $8}
 	}
 	| IDENTIFIER ASSIGN expr ';'
 	{
-		$$ = data.AssignmentStatement{Pos: $1.pos, Variable: $1.lit, Expr: $3}
+		$$ = data.AssignmentStmt{Pos: $1.pos, Variable: $1.lit, Expr: $3}
 	}
 	| IDENTIFIER ADD_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "+", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "+", Expr: $3}
 	}
 	| IDENTIFIER SUB_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "-", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "-", Expr: $3}
 	}
 	| IDENTIFIER MUL_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "*", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "*", Expr: $3}
 	}
 	| IDENTIFIER QUO_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "/", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "/", Expr: $3}
 	}
 	| IDENTIFIER REM_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "%", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "%", Expr: $3}
 	}
 	| IDENTIFIER AND_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "&", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "&", Expr: $3}
 	}
 	| IDENTIFIER OR_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "|", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "|", Expr: $3}
 	}
 	| IDENTIFIER XOR_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "^", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "^", Expr: $3}
 	}
 	| IDENTIFIER SHL_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: "<<", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: "<<", Expr: $3}
 	}
 	| IDENTIFIER SHR_ASSIGN expr ';'
 	{
-		$$ = data.OpAssignmentStatement{Pos: $1.pos, Variable: $1.lit, Operator: ">>", Expr: $3}
+		$$ = data.OpAssignmentStmt{Pos: $1.pos, Variable: $1.lit, Operator: ">>", Expr: $3}
 	}
 	| CHOICE blocks_one ';'
 	{
-		$$ = data.ChoiceStatement{Pos: $1.pos, Blocks: $2}
+		$$ = data.ChoiceStmt{Pos: $1.pos, Blocks: $2}
 	}
 	| RECV '(' arguments_one ')' tags_zero ';'
 	{
-		$$ = data.RecvStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:], Tags: $5}
+		$$ = data.RecvStmt{Pos: $1.pos, Channel: $3[0], Args: $3[1:], Tags: $5}
 	}
 	| PEEK '(' arguments_one ')' ';'
 	{
-		$$ = data.PeekStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
+		$$ = data.PeekStmt{Pos: $1.pos, Channel: $3[0], Args: $3[1:]}
 	}
 	| SEND '(' arguments_one ')' tags_zero ';'
 	{
-		$$ = data.SendStatement{Pos: $1.pos, Channel: $3[0], Args: $3[1:], Tags: $5}
+		$$ = data.SendStmt{Pos: $1.pos, Channel: $3[0], Args: $3[1:], Tags: $5}
 	}
 	| FOR '{' statements_zero '}' ';'
 	{
-		$$ = data.ForStatement{Pos: $1.pos, Statements: $3}
+		$$ = data.ForStmt{Pos: $1.pos, Stmts: $3}
 	}
 	| FOR IDENTIFIER IN expr '{' statements_zero '}' ';'
 	{
-		$$ = data.ForInStatement{Pos: $1.pos, Variable: $2.lit, Container: $4, Statements: $6}
+		$$ = data.ForInStmt{Pos: $1.pos, Variable: $2.lit, Container: $4, Stmts: $6}
 	}
 	| FOR IDENTIFIER IN RANGE expr TO expr '{' statements_zero '}' ';'
 	{
-		$$ = data.ForInRangeStatement{Pos: $1.pos, Variable: $2.lit, FromExpr: $5, ToExpr: $7, Statements: $9}
+		$$ = data.ForInRangeStmt{Pos: $1.pos, Variable: $2.lit, FromExpr: $5, ToExpr: $7, Stmts: $9}
 	}
 	| BREAK ';'
 	{
-		$$ = data.BreakStatement{Pos: $1.pos}
+		$$ = data.BreakStmt{Pos: $1.pos}
 	}
 	| GOTO IDENTIFIER ';'
 	{
-		$$ = data.GotoStatement{Pos: $1.pos, Label: $2.lit}
+		$$ = data.GotoStmt{Pos: $1.pos, Label: $2.lit}
 	}
 	| SKIP ';'
 	{
-		$$ = data.SkipStatement{Pos: $1.pos}
+		$$ = data.SkipStmt{Pos: $1.pos}
 	}
 	| expr ';'
 	{
-		$$ = data.ExprStatement{Expr: $1}
+		$$ = data.ExprStmt{Expr: $1}
 	}
 	| ';'
 	{
-		$$ = data.NullStatement{Pos: $1.pos}
+		$$ = data.NullStmt{Pos: $1.pos}
 	}
 	| const_def
 	{
-		$$ = $1.(data.Statement)
+		$$ = $1.(data.Stmt)
 	}
 
 expr	: IDENTIFIER
@@ -730,15 +730,15 @@ tag
 blocks_one
 	: '{' statements_zero '}'
 	{
-		$$ = []data.BlockStatement{data.BlockStatement{Pos: $1.pos, Statements: $2}}
+		$$ = []data.BlockStmt{data.BlockStmt{Pos: $1.pos, Stmts: $2}}
 	}
 	| '{' statements_zero '}' ','
 	{
-		$$ = []data.BlockStatement{data.BlockStatement{Pos: $1.pos, Statements: $2}}
+		$$ = []data.BlockStmt{data.BlockStmt{Pos: $1.pos, Stmts: $2}}
 	}
 	| '{' statements_zero '}' ',' blocks_one
 	{
-		$$ = append([]data.BlockStatement{data.BlockStatement{Pos: $1.pos, Statements: $2}}, $5...)
+		$$ = append([]data.BlockStmt{data.BlockStmt{Pos: $1.pos, Stmts: $2}}, $5...)
 	}
 
 %%
