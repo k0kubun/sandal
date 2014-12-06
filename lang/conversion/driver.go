@@ -62,7 +62,12 @@ func DumpGraph(defs []Definition) {
 		case intProcModule:
 			mod := intMod.(intProcModule)
 			for _, trans := range mod.Trans {
-				fmt.Printf("	%s -> %s\n", trans.FromState, trans.NextState)
+				cond := trans.Condition
+				if len(cond) > 0 {
+					fmt.Printf("	%s -> %s [label=\"%s\"]\n", trans.FromState, trans.NextState, trans.Condition)
+				} else {
+					fmt.Printf("	%s -> %s\n", trans.FromState, trans.NextState)
+				}
 			}
 		}
 	}
