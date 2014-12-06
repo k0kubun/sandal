@@ -13,6 +13,7 @@ type Options struct {
 	Ast bool `short:"a" long:"ast" default:"false" description:"dump parsed ast"`
 	Ir1 bool `short:"1" long:"ir1" default:"false" description:"dump IR1"`
 	Ir2 bool `short:"2" long:"ir2" default:"false" description:"dump IR2"`
+	Graph bool `short:"g" long:"graph" default:"false" description:"dump state transition to dot lang"`
 }
 
 func run(filePath string, options *Options) {
@@ -33,6 +34,11 @@ func run(filePath string, options *Options) {
 
 	if options.Ir2 {
 		lang.DumpIR2(string(body))
+		return
+	}
+
+	if options.Graph {
+		lang.DumpGraph(string(body))
 		return
 	}
 

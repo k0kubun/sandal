@@ -53,3 +53,15 @@ func DumpIR2(body string) {
 
 	conversion.DumpIR2(defs)
 }
+
+func DumpGraph(body string) {
+	scanner := new(parsing.Scanner)
+	scanner.Init([]rune(body), 0)
+	defs := parsing.Parse(scanner)
+
+	if err := typecheck.TypeCheck(defs); err != nil {
+		log.Fatal("TypeCheck error:", err)
+	}
+
+	conversion.DumpGraph(defs)
+}

@@ -1,6 +1,7 @@
 package conversion
 
 import (
+	"fmt"
 	"github.com/k0kubun/pp"
 	. "github.com/k0kubun/sandal/lang/data"
 	"log"
@@ -26,6 +27,8 @@ func ConvertASTToNuSMV(defs []Definition) (string, error) {
 	return strings.Join(mods, ""), nil
 }
 
+// -- debug functions --
+
 func DumpIR1(defs []Definition) {
 	err, intMods := convertASTToIntModule(defs)
 	if err != nil {
@@ -45,4 +48,23 @@ func DumpIR2(defs []Definition) {
 		log.Fatal("Conversion error: ", err)
 	}
 	pp.Println(tmplMods)
+}
+
+func DumpGraph(defs []Definition) {
+	err, intMods := convertASTToIntModule(defs)
+	if err != nil {
+		log.Fatal("Conversion error: ", err)
+	}
+
+	fmt.Println("digraph MyGraph {")
+	for _, intMod := range intMods {
+		switch intMod.(type) {
+		case intProcModule:
+			mod := intMod.(intProcModule)
+			for _, trans := range mod.Trans {
+				fmt.Printf("	%s -> %s\n", trans.FromState, trans.NextState)
+			}
+		}
+	}
+	fmt.Println("}")
 }
