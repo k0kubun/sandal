@@ -1,32 +1,36 @@
 #!/usr/bin/env bash
 
+function green() {
+  printf "\e[32m"
+  echo "$1"
+  printf "\e[0m"
+}
+
+function red() {
+  printf "\e[31m"
+  echo "$1"
+  printf "\e[0m"
+}
+
 pushd lang/parsing > /dev/null
 make clean
 make
 if [ $? -ne 0 ]; then
-  printf "\e[31m"
-  echo "FAILED: make"
-  printf "\e[0m"
+  red "FAILED: make"
   exit 1
 else
-  printf "\e[32m"
-  echo "PASS"
-  echo "ok      make"
-  printf "\e[0m"
+  green "PASS"
+  green "ok      make"
 fi
 popd > /dev/null
 
 go build
 if [ $? -ne 0 ]; then
-  printf "\e[31m"
-  echo "FAILED: build"
-  printf "\e[0m"
+  red "FAILED: build"
   exit 1
 else
-  printf "\e[32m"
-  echo "PASS"
-  echo "ok      build"
-  printf "\e[0m"
+  green "PASS"
+  green "ok      build"
 fi
 
 testdirs=$(find . -type f -name "*\_test.go" | grep -v "\.gondler" | sed -e "s/[^\/]*$//" | uniq)
@@ -55,41 +59,31 @@ for filename in `find test -type f -name '*.sandal'`; do
         err_output=`./sandal ${actual_filename} 2>&1 1>$tempfile`
 
         if [ $? -ne 0 ]; then
-          printf "\e[31m"
-          echo "FAILED: ${actual_filename}"
-          echo "    ${err_output}"
-          printf "\e[0m"
+          red "FAILED: ${actual_filename}"
+          red "    ${err_output}"
           exit 1
         else
           diff_output=`diff -u $expect_filename $tempfile`
 
           if [ $? -ne 0 ]; then
-            printf "\e[31m"
-            echo "FAILED: ${actual_filename}"
-            echo "${diff_output}" | awk '{ print "    " $0 }'
-            printf "\e[0m"
+            red "FAILED: ${actual_filename}"
+            red "${diff_output}" | awk '{ print "    " $0 }'
             exit 1
           else
-            printf "\e[32m"
-            echo "PASS"
-            echo "ok      ${actual_filename} -> ${expect_filename}"
-            printf "\e[0m"
+            green "PASS"
+            green "ok      ${actual_filename} -> ${expect_filename}"
           fi
         fi
       else
         err_output=`./sandal ${actual_filename} 2>&1 1>$tempfile`
 
         if [ $? -ne 0 ]; then
-          printf "\e[31m"
-          echo "FAILED: ${actual_filename}"
-          echo "    ${err_output}"
-          printf "\e[0m"
+          red "FAILED: ${actual_filename}"
+          red "    ${err_output}"
           exit 1
         else
-          printf "\e[32m"
-          echo "PASS"
-          echo "ok      ${actual_filename}"
-          printf "\e[0m"
+          green "PASS"
+          green "ok      ${actual_filename}"
         fi
       fi
   esac
