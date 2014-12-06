@@ -4,7 +4,7 @@ import (
 	. "github.com/k0kubun/sandal/lang/data"
 )
 
-func expressionToInternObj(expr Expr, env *varEnv) ir1ExprObj {
+func exprToInternObj(expr Expr, env *varEnv) ir1ExprObj {
 	// This function does not return nil.
 	switch expr := expr.(type) {
 	case IdentifierExpr:
@@ -21,14 +21,14 @@ func expressionToInternObj(expr Expr, env *varEnv) ir1ExprObj {
 	case FalseExpr:
 		return ir1Literal{Lit: "FALSE", Type: NamedType{"bool"}}
 	case NotExpr:
-		return ir1Not{Sub: expressionToInternObj(expr.SubExpr, env)}
+		return ir1Not{Sub: exprToInternObj(expr.SubExpr, env)}
 	case UnarySubExpr:
-		return ir1UnarySub{Sub: expressionToInternObj(expr.SubExpr, env)}
+		return ir1UnarySub{Sub: exprToInternObj(expr.SubExpr, env)}
 	case ParenExpr:
-		return ir1Paren{Sub: expressionToInternObj(expr.SubExpr, env)}
+		return ir1Paren{Sub: exprToInternObj(expr.SubExpr, env)}
 	case BinOpExpr:
-		intObjLHS := expressionToInternObj(expr.LHS, env)
-		intObjRHS := expressionToInternObj(expr.RHS, env)
+		intObjLHS := exprToInternObj(expr.LHS, env)
+		intObjRHS := exprToInternObj(expr.RHS, env)
 		return ir1BinOp{LHS: intObjLHS, Op: expr.Operator, RHS: intObjRHS}
 	case TimeoutRecvExpr:
 		ch, args := convertChannelExpr(expr, env)
@@ -45,7 +45,7 @@ func expressionToInternObj(expr Expr, env *varEnv) ir1ExprObj {
 	case ArrayExpr:
 		elems := []ir1ExprObj{}
 		for _, subExpr := range expr.Elems {
-			elems = append(elems, expressionToInternObj(subExpr, env))
+			elems = append(elems, exprToInternObj(subExpr, env))
 		}
 		return ir1ArrayLiteral{Elems: elems}
 	default:
@@ -54,12 +54,12 @@ func expressionToInternObj(expr Expr, env *varEnv) ir1ExprObj {
 }
 
 func convertChannelExpr(expr ChanExpr, env *varEnv) (ch ir1ExprObj, args []ir1ExprObj) {
-	ch = expressionToInternObj(expr.ChannelExpr(), env)
+	ch = exprToInternObj(expr.ChannelExpr(), env)
 	if ch.Steps() != 0 {
 		panic("Steps constraint violation")
 	}
 	for _, arg := range expr.ArgExprs() {
-		argObj := expressionToInternObj(arg, env)
+		argObj := exprToInternObj(arg, env)
 		if argObj.Steps() != 0 {
 			panic("Steps constraint violation")
 		}

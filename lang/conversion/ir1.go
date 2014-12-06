@@ -230,7 +230,7 @@ func (x *intModConverter) buildProcVar(initVar InstanceVar) error {
 	x.pid = len(x.procs)
 	args := []ir1ExprObj{}
 	for _, arg := range initVar.Args {
-		args = append(args, expressionToInternObj(arg, x.env))
+		args = append(args, exprToInternObj(arg, x.env))
 	}
 	moduleName := fmt.Sprintf("__pid%d_%s", x.pid, initVar.ProcDefName)
 	x.instantiateProcDef(intProcDef, moduleName, args, initVar.Tags)
