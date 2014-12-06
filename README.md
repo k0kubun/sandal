@@ -38,7 +38,7 @@ $ sandal -2 your_model.sandal
 You can dump transition (experimental)
 
 ```
-$ sandal -g your_model.sandal | dotdot -o -Tpng -o trans.png
+$ sandal -g your_model.sandal | dot -Tpng -o trans.png
 ```
 
 ## Testing
