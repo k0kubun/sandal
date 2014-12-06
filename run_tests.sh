@@ -1,5 +1,34 @@
 #!/usr/bin/env bash
 
+pushd lang/parsing > /dev/null
+make clean
+make
+if [ $? -ne 0 ]; then
+  printf "\e[31m"
+  echo "FAILED: make"
+  printf "\e[0m"
+  exit 1
+else
+  printf "\e[32m"
+  echo "PASS"
+  echo "ok      make"
+  printf "\e[0m"
+fi
+popd > /dev/null
+
+go build
+if [ $? -ne 0 ]; then
+  printf "\e[31m"
+  echo "FAILED: build"
+  printf "\e[0m"
+  exit 1
+else
+  printf "\e[32m"
+  echo "PASS"
+  echo "ok      build"
+  printf "\e[0m"
+fi
+
 testdirs=$(find . -type f -name "*\_test.go" | grep -v "\.gondler" | sed -e "s/[^\/]*$//" | uniq)
 
 for testdir in $testdirs; do
