@@ -10,36 +10,16 @@ import (
 )
 
 type Options struct {
-	Ast bool `short:"a" long:"ast" default:"false" description:"dump parsed ast"`
-	Ir1 bool `short:"1" long:"ir1" default:"false" description:"dump IR1"`
-	Ir2 bool `short:"2" long:"ir2" default:"false" description:"dump IR2"`
+	Ast   bool `short:"a" long:"ast" default:"false" description:"dump parsed ast"`
+	Ir1   bool `short:"1" long:"ir1" default:"false" description:"dump IR1"`
+	Ir2   bool `short:"2" long:"ir2" default:"false" description:"dump IR2"`
 	Graph bool `short:"g" long:"graph" default:"false" description:"dump state transition to dot lang"`
 }
 
-func run(filePath string, options *Options) {
+func run(filePath string) {
 	body, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		log.Fatal(filePath, err)
-	}
-
-	if options.Ast {
-		lang.DumpAST(string(body))
-		return
-	}
-
-	if options.Ir1 {
-		lang.DumpIR1(string(body))
-		return
-	}
-
-	if options.Ir2 {
-		lang.DumpIR2(string(body))
-		return
-	}
-
-	if options.Graph {
-		lang.DumpGraph(string(body))
-		return
 	}
 
 	compiled, err := lang.CompileFile(string(body))
@@ -47,6 +27,35 @@ func run(filePath string, options *Options) {
 		log.Fatalf("%s: %s", filePath, err.Error())
 	}
 	fmt.Print(compiled)
+}
+
+func processOptions(filePath string, options *Options) bool {
+	body, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		log.Fatal(filePath, err)
+	}
+
+	if options.Ast {
+		lang.DumpAST(string(body))
+		return true
+	}
+
+	if options.Ir1 {
+		lang.DumpIR1(string(body))
+		return true
+	}
+
+	if options.Ir2 {
+		lang.DumpIR2(string(body))
+		return true
+	}
+
+	if options.Graph {
+		lang.DumpGraph(string(body))
+		return true
+	}
+
+	return false
 }
 
 func main() {
@@ -61,5 +70,9 @@ func main() {
 		os.Exit(1)
 	}
 
-	run(args[0], options)
+	if processOptions(args[0], options) {
+		return
+	}
+
+	run(args[0])
 }
