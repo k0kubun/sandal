@@ -171,7 +171,7 @@ func (x *intStmtConverter) convertVarDecl(stmt VarDeclStmt) {
 	realName := x.genRealName(stmt.Name)
 	nextRealName := fmt.Sprintf("next(%s)", realName)
 	if stmt.Initializer != nil {
-		intExprObj := expressionToInternalObj(stmt.Initializer, x.env)
+		intExprObj := expressionToInternObj(stmt.Initializer, x.env)
 		x.trans = append(x.trans, intExprObj.Transition(x.currentState, nextState, nextRealName)...)
 	} else {
 		x.trans = append(x.trans, intTransition{
@@ -180,7 +180,7 @@ func (x *intStmtConverter) convertVarDecl(stmt VarDeclStmt) {
 		})
 	}
 	x.vars = append(x.vars, intVar{realName, convertTypeToString(stmt.Type, x.env)})
-	x.env.add(stmt.Name, intInternalPrimitiveVar{realName, stmt.Type, nil})
+	x.env.add(stmt.Name, intInternPrimitiveVar{realName, stmt.Type, nil})
 	x.defaults[nextRealName] = realName
 	x.currentState = nextState
 }
@@ -191,7 +191,7 @@ func (x *intStmtConverter) convertIf(stmt IfStmt) {
 	falseBranchState := x.genNextState()
 
 	{
-		intExprObj := expressionToInternalObj(stmt.Condition, x.env)
+		intExprObj := expressionToInternObj(stmt.Condition, x.env)
 		if intExprObj.Steps() != 0 {
 			panic("Steps constraint violation")
 		}
@@ -235,7 +235,7 @@ func (x *intStmtConverter) convertIf(stmt IfStmt) {
 
 func (x *intStmtConverter) convertAssignment(stmt AssignmentStmt) {
 	nextState := x.genNextState()
-	intExprObj := expressionToInternalObj(stmt.Expr, x.env)
+	intExprObj := expressionToInternObj(stmt.Expr, x.env)
 	if intExprObj.Steps() > 1 {
 		panic("Steps constraint violation")
 	}
@@ -245,7 +245,7 @@ func (x *intStmtConverter) convertAssignment(stmt AssignmentStmt) {
 
 func (x *intStmtConverter) convertOpAssignment(stmt OpAssignmentStmt) {
 	nextState := x.genNextState()
-	intExprObj := expressionToInternalObj(BinOpExpr{
+	intExprObj := expressionToInternObj(BinOpExpr{
 		IdentifierExpr{Name: stmt.Variable}, stmt.Operator, stmt.Expr,
 	}, x.env)
 	if intExprObj.Steps() > 1 {
@@ -347,7 +347,7 @@ func (x *intStmtConverter) convertSend(stmt SendStmt) {
 			if faultVar == nil {
 				log.Fatalf("Fault @%s does not exist for send", tag)
 			}
-			faultDef := faultVar.(intInternalFaultDef).Def
+			faultDef := faultVar.(intInternFaultDef).Def
 			for _, stmt := range faultDef.Stmts {
 				x.convert(stmt)
 			}
@@ -370,7 +370,7 @@ func (x *intStmtConverter) convertSendWithoutTag(stmt SendStmt) {
 	actions := []intAssign{}
 	switch chType.(type) {
 	case HandshakeChannelType:
-		chVar := resolveRealObj(ch).(intInternalHandshakeChannelVar)
+		chVar := resolveRealObj(ch).(intInternHandshakeChannelVar)
 		firstState := x.currentState
 		secondState := x.genNextState()
 		lastState := x.genNextState()
@@ -413,7 +413,7 @@ func (x *intStmtConverter) convertSendWithoutTag(stmt SendStmt) {
 
 		x.currentState = lastState
 	case BufferedChannelType:
-		chVar := resolveRealObj(ch).(intInternalBufferedChannelVar)
+		chVar := resolveRealObj(ch).(intInternBufferedChannelVar)
 		nextState := x.genNextState()
 
 		actions = append(actions, intAssign{
@@ -464,13 +464,13 @@ func (x *intStmtConverter) convertFor(stmt ForStmt) {
 }
 
 func (x *intStmtConverter) convertForIn(stmt ForInStmt) {
-	switch container := expressionToInternalObj(stmt.Container, x.env).(type) {
-	case intInternalArrayVar:
+	switch container := expressionToInternObj(stmt.Container, x.env).(type) {
+	case intInternArrayVar:
 		savedBreakState := x.breakToState
 		x.breakToState = x.genNextState()
 		for i, elem := range container.RealLiteral.Elems {
 			x.pushEnv()
-			x.env.add(stmt.Variable, intInternalPrimitiveVar{
+			x.env.add(stmt.Variable, intInternPrimitiveVar{
 				fmt.Sprintf("__elem%d_%s", i, container.RealName),
 				elem.GetType(),
 				elem,
@@ -532,7 +532,7 @@ func (x *intStmtConverter) convertSkip(stmt SkipStmt) {
 
 func (x *intStmtConverter) convertExpr(stmt ExprStmt) {
 	nextState := x.genNextState()
-	intExprObj := expressionToInternalObj(stmt.Expr, x.env)
+	intExprObj := expressionToInternObj(stmt.Expr, x.env)
 	if intExprObj.Steps() > 1 {
 		panic("Steps constraint violation")
 	}
