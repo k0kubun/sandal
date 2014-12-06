@@ -10,7 +10,7 @@ func (x *intModConverter) convertStatements(statements []Statement, defaults map
 	converter := newIntStatementConverter(x.env, defaults, tags, vars)
 
 	for _, stmt := range statements {
-		converter.convertStatement(stmt)
+		converter.convert(stmt)
 	}
 
 	return converter.vars, "state0", converter.trans
@@ -67,7 +67,7 @@ func hasTag(tags []string, tag string) bool {
 	return false
 }
 
-func (x *intStatementConverter) convertStatement(stmt Statement) {
+func (x *intStatementConverter) convert(stmt Statement) {
 	if x.unstable {
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
@@ -80,41 +80,41 @@ func (x *intStatementConverter) convertStatement(stmt Statement) {
 	case ConstantDefinition:
 		x.convertConstantDefinition(stmt)
 	case LabelledStatement:
-		x.convertLabelledStatement(stmt)
+		x.convertLabelled(stmt)
 	case BlockStatement:
-		x.convertBlockStatement(stmt)
+		x.convertBlock(stmt)
 	case VarDeclStatement:
-		x.convertVarDeclStatement(stmt)
+		x.convertVarDecl(stmt)
 	case IfStatement:
-		x.convertIfStatement(stmt)
+		x.convertIf(stmt)
 	case AssignmentStatement:
-		x.convertAssignmentStatement(stmt)
+		x.convertAssignment(stmt)
 	case OpAssignmentStatement:
-		x.convertOpAssignmentStatement(stmt)
+		x.convertOpAssignment(stmt)
 	case ChoiceStatement:
-		x.convertChoiceStatement(stmt)
+		x.convertChoice(stmt)
 	case RecvStatement:
-		x.convertRecvStatement(stmt)
+		x.convertRecv(stmt)
 	case PeekStatement:
-		x.convertPeekStatement(stmt)
+		x.convertPeek(stmt)
 	case SendStatement:
-		x.convertSendStatement(stmt)
+		x.convertSend(stmt)
 	case ForStatement:
-		x.convertForStatement(stmt)
+		x.convertFor(stmt)
 	case ForInStatement:
-		x.convertForInStatement(stmt)
+		x.convertForIn(stmt)
 	case ForInRangeStatement:
-		x.convertForInRangeStatement(stmt)
+		x.convertForInRange(stmt)
 	case BreakStatement:
-		x.convertBreakStatement(stmt)
+		x.convertBreak(stmt)
 	case GotoStatement:
-		x.convertGotoStatement(stmt)
+		x.convertGoto(stmt)
 	case SkipStatement:
-		x.convertSkipStatement(stmt)
+		x.convertSkip(stmt)
 	case ExprStatement:
-		x.convertExprStatement(stmt)
+		x.convertExpr(stmt)
 	case NullStatement:
-		x.convertNullStatement(stmt)
+		x.convertNull(stmt)
 	}
 }
 
@@ -146,16 +146,16 @@ func (x *intStatementConverter) convertConstantDefinition(stmt ConstantDefinitio
 	panic("not implemented")
 }
 
-func (x *intStatementConverter) convertLabelledStatement(stmt LabelledStatement) {
+func (x *intStatementConverter) convertLabelled(stmt LabelledStatement) {
 	x.labelToState[stmt.Label] = x.currentState
-	x.convertStatement(stmt.Statement)
+	x.convert(stmt.Statement)
 }
 
-func (x *intStatementConverter) convertBlockStatement(stmt BlockStatement) {
+func (x *intStatementConverter) convertBlock(stmt BlockStatement) {
 	nextState := x.genNextState()
 	x.pushEnv()
 	for _, stmt := range stmt.Statements {
-		x.convertStatement(stmt)
+		x.convert(stmt)
 	}
 	x.popEnv()
 	x.trans = append(x.trans, intTransition{
@@ -165,7 +165,7 @@ func (x *intStatementConverter) convertBlockStatement(stmt BlockStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertVarDeclStatement(stmt VarDeclStatement) {
+func (x *intStatementConverter) convertVarDecl(stmt VarDeclStatement) {
 	nextState := x.genNextState()
 
 	realName := x.genRealName(stmt.Name)
@@ -185,7 +185,7 @@ func (x *intStatementConverter) convertVarDeclStatement(stmt VarDeclStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertIfStatement(stmt IfStatement) {
+func (x *intStatementConverter) convertIf(stmt IfStatement) {
 	nextState := x.genNextState()
 	trueBranchState := x.genNextState()
 	falseBranchState := x.genNextState()
@@ -210,7 +210,7 @@ func (x *intStatementConverter) convertIfStatement(stmt IfStatement) {
 		x.currentState = trueBranchState
 		x.pushEnv()
 		for _, stmt := range stmt.TrueBranch {
-			x.convertStatement(stmt)
+			x.convert(stmt)
 		}
 		x.popEnv()
 		x.trans = append(x.trans, intTransition{
@@ -222,7 +222,7 @@ func (x *intStatementConverter) convertIfStatement(stmt IfStatement) {
 		x.currentState = falseBranchState
 		x.pushEnv()
 		for _, stmt := range stmt.FalseBranch {
-			x.convertStatement(stmt)
+			x.convert(stmt)
 		}
 		x.popEnv()
 		x.trans = append(x.trans, intTransition{
@@ -233,7 +233,7 @@ func (x *intStatementConverter) convertIfStatement(stmt IfStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertAssignmentStatement(stmt AssignmentStatement) {
+func (x *intStatementConverter) convertAssignment(stmt AssignmentStatement) {
 	nextState := x.genNextState()
 	intExprObj := expressionToInternalObj(stmt.Expr, x.env)
 	if intExprObj.Steps() > 1 {
@@ -243,7 +243,7 @@ func (x *intStatementConverter) convertAssignmentStatement(stmt AssignmentStatem
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertOpAssignmentStatement(stmt OpAssignmentStatement) {
+func (x *intStatementConverter) convertOpAssignment(stmt OpAssignmentStatement) {
 	nextState := x.genNextState()
 	intExprObj := expressionToInternalObj(BinOpExpression{
 		IdentifierExpression{Name: stmt.Variable}, stmt.Operator, stmt.Expr,
@@ -255,7 +255,7 @@ func (x *intStatementConverter) convertOpAssignmentStatement(stmt OpAssignmentSt
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertChoiceStatement(stmt ChoiceStatement) {
+func (x *intStatementConverter) convertChoice(stmt ChoiceStatement) {
 	nextState := x.genNextState()
 	currentState := x.currentState
 	for _, block := range stmt.Blocks {
@@ -266,7 +266,7 @@ func (x *intStatementConverter) convertChoiceStatement(stmt ChoiceStatement) {
 		})
 		x.currentState = choicedState
 		x.pushEnv()
-		x.convertStatement(block)
+		x.convert(block)
 		x.popEnv()
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
@@ -276,7 +276,7 @@ func (x *intStatementConverter) convertChoiceStatement(stmt ChoiceStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertRecvStatement(stmt RecvStatement) {
+func (x *intStatementConverter) convertRecv(stmt RecvStatement) {
 	nextState := x.genNextState()
 
 	ch, args := convertChannelExpr(stmt, x.env)
@@ -309,13 +309,13 @@ func (x *intStatementConverter) convertRecvStatement(stmt RecvStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertPeekStatement(stmt PeekStatement) {
+func (x *intStatementConverter) convertPeek(stmt PeekStatement) {
 	panic("not implemented")
 }
 
-func (x *intStatementConverter) convertSendStatement(stmt SendStatement) {
+func (x *intStatementConverter) convertSend(stmt SendStatement) {
 	if len(stmt.Tags) == 0 {
-		x.convertSendStatementWithoutTag(stmt)
+		x.convertSendWithoutTag(stmt)
 	} else {
 		nextState := x.genNextState()
 		currentState := x.currentState
@@ -327,7 +327,7 @@ func (x *intStatementConverter) convertSendStatement(stmt SendStatement) {
 		})
 		x.currentState = choicedState
 		x.pushEnv()
-		x.convertSendStatementWithoutTag(stmt)
+		x.convertSendWithoutTag(stmt)
 		x.popEnv()
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
@@ -349,7 +349,7 @@ func (x *intStatementConverter) convertSendStatement(stmt SendStatement) {
 			}
 			faultDef := faultVar.(intInternalFaultDef).Def
 			for _, stmt := range faultDef.Statements {
-				x.convertStatement(stmt)
+				x.convert(stmt)
 			}
 
 			x.popEnv()
@@ -363,7 +363,7 @@ func (x *intStatementConverter) convertSendStatement(stmt SendStatement) {
 	}
 }
 
-func (x *intStatementConverter) convertSendStatementWithoutTag(stmt SendStatement) {
+func (x *intStatementConverter) convertSendWithoutTag(stmt SendStatement) {
 	ch, args := convertChannelExpr(stmt, x.env)
 	chType := ch.GetType()
 
@@ -446,13 +446,13 @@ func (x *intStatementConverter) convertSendStatementWithoutTag(stmt SendStatemen
 	}
 }
 
-func (x *intStatementConverter) convertForStatement(stmt ForStatement) {
+func (x *intStatementConverter) convertFor(stmt ForStatement) {
 	savedCurrentState := x.currentState
 	savedBreakState := x.breakToState
 	x.breakToState = x.genNextState()
 	x.pushEnv()
 	for _, stmt := range stmt.Statements {
-		x.convertStatement(stmt)
+		x.convert(stmt)
 	}
 	x.popEnv()
 	x.trans = append(x.trans, intTransition{
@@ -463,7 +463,7 @@ func (x *intStatementConverter) convertForStatement(stmt ForStatement) {
 	x.breakToState = savedBreakState
 }
 
-func (x *intStatementConverter) convertForInStatement(stmt ForInStatement) {
+func (x *intStatementConverter) convertForIn(stmt ForInStatement) {
 	switch container := expressionToInternalObj(stmt.Container, x.env).(type) {
 	case intInternalArrayVar:
 		savedBreakState := x.breakToState
@@ -476,7 +476,7 @@ func (x *intStatementConverter) convertForInStatement(stmt ForInStatement) {
 				elem,
 			})
 			for _, stmt := range stmt.Statements {
-				x.convertStatement(stmt)
+				x.convert(stmt)
 			}
 			x.popEnv()
 		}
@@ -492,11 +492,11 @@ func (x *intStatementConverter) convertForInStatement(stmt ForInStatement) {
 	}
 }
 
-func (x *intStatementConverter) convertForInRangeStatement(stmt ForInRangeStatement) {
+func (x *intStatementConverter) convertForInRange(stmt ForInRangeStatement) {
 	panic("not implemented")
 }
 
-func (x *intStatementConverter) convertBreakStatement(stmt BreakStatement) {
+func (x *intStatementConverter) convertBreak(stmt BreakStatement) {
 	nextState := x.genNextState()
 	if x.breakToState == "" {
 		panic("Invalid break statement")
@@ -508,7 +508,7 @@ func (x *intStatementConverter) convertBreakStatement(stmt BreakStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertGotoStatement(stmt GotoStatement) {
+func (x *intStatementConverter) convertGoto(stmt GotoStatement) {
 	nextState := x.genNextState()
 	jumpState := x.labelToState[stmt.Label]
 	if jumpState == "" {
@@ -521,7 +521,7 @@ func (x *intStatementConverter) convertGotoStatement(stmt GotoStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertSkipStatement(stmt SkipStatement) {
+func (x *intStatementConverter) convertSkip(stmt SkipStatement) {
 	nextState := x.genNextState()
 	x.trans = append(x.trans, intTransition{
 		FromState: x.currentState,
@@ -530,7 +530,7 @@ func (x *intStatementConverter) convertSkipStatement(stmt SkipStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertExprStatement(stmt ExprStatement) {
+func (x *intStatementConverter) convertExpr(stmt ExprStatement) {
 	nextState := x.genNextState()
 	intExprObj := expressionToInternalObj(stmt.Expr, x.env)
 	if intExprObj.Steps() > 1 {
@@ -540,7 +540,7 @@ func (x *intStatementConverter) convertExprStatement(stmt ExprStatement) {
 	x.currentState = nextState
 }
 
-func (x *intStatementConverter) convertNullStatement(stmt NullStatement) {
+func (x *intStatementConverter) convertNull(stmt NullStatement) {
 	nextState := x.genNextState()
 	x.trans = append(x.trans, intTransition{
 		FromState: x.currentState,
