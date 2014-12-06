@@ -8,7 +8,7 @@ import (
 	"text/template"
 )
 
-func convertIntermediateModuleToTemplate(mods []intModule) (error, []tmplModule) {
+func ir1ToIr2(mods []intModule) (error, []tmplModule) {
 	retTmplMods := []tmplModule{}
 	for _, mod := range mods {
 		var tmplMods []tmplModule

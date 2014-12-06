@@ -107,7 +107,7 @@ func TestConvertASTToIntModule(t *testing.T) {
 			},
 		},
 	}
-	err, intMods := convertASTToIntModule(defs)
+	err, intMods := astToIr1(defs)
 	if err != nil {
 		t.Fatalf("Unexpected error: %s", err)
 	}
@@ -227,7 +227,7 @@ func TestConvertASTToIntModuleForSend(t *testing.T) {
 	scanner.Init([]rune(sendWithTagSource), 0)
 	defs := parsing.Parse(scanner)
 
-	err, intMods := convertASTToIntModule(defs)
+	err, intMods := astToIr1(defs)
 	if err != nil {
 		t.Fatalf("Unexpected error: %s", err)
 	}

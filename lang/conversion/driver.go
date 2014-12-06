@@ -9,19 +9,19 @@ import (
 )
 
 func ConvertASTToNuSMV(defs []Definition) (string, error) {
-	err, intMods := convertASTToIntModule(defs)
+	err, ir1 := astToIr1(defs)
 	if err != nil {
 		return "", err
 	}
 
-	err, tmplMods := convertIntermediateModuleToTemplate(intMods)
+	err, ir2s := ir1ToIr2(ir1)
 	if err != nil {
 		return "", err
 	}
 
 	mods := []string{}
-	for _, tmplMod := range tmplMods {
-		mods = append(mods, instantiateTemplate(tmplMod))
+	for _, ir2 := range ir2s {
+		mods = append(mods, instantiateTemplate(ir2))
 	}
 
 	return strings.Join(mods, ""), nil
@@ -30,7 +30,7 @@ func ConvertASTToNuSMV(defs []Definition) (string, error) {
 // -- debug functions --
 
 func DumpIR1(defs []Definition) {
-	err, intMods := convertASTToIntModule(defs)
+	err, intMods := astToIr1(defs)
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
 	}
@@ -38,12 +38,12 @@ func DumpIR1(defs []Definition) {
 }
 
 func DumpIR2(defs []Definition) {
-	err, intMods := convertASTToIntModule(defs)
+	err, intMods := astToIr1(defs)
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
 	}
 
-	err, tmplMods := convertIntermediateModuleToTemplate(intMods)
+	err, tmplMods := ir1ToIr2(intMods)
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
 	}
@@ -51,7 +51,7 @@ func DumpIR2(defs []Definition) {
 }
 
 func DumpGraph(defs []Definition) {
-	err, intMods := convertASTToIntModule(defs)
+	err, intMods := astToIr1(defs)
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
 	}

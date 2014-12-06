@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func convertASTToIntModule(defs []Definition) (error, []intModule) {
+func astToIr1(defs []Definition) (error, []intModule) {
 	converter := newIntModConverter()
 	for _, def := range defs {
 		switch def := def.(type) {
