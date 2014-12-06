@@ -1,0 +1,117 @@
+
+MODULE HandshakeChannel0()
+  VAR
+    filled : boolean;
+    received : boolean;
+    value_0 : boolean;
+  ASSIGN
+    init(filled) := FALSE;
+    init(received) := FALSE;
+    init(value_0) := FALSE;
+
+MODULE HandshakeChannel0Proxy(ch)
+  VAR
+    recv_received : boolean;
+    send_filled : boolean;
+    send_leaving : boolean;
+    send_value_0 : boolean;
+  ASSIGN
+    next(ch.filled) :=
+      case
+        send_filled : TRUE;
+        send_leaving : FALSE;
+        TRUE : ch.filled;
+      esac;
+    next(ch.received) :=
+      case
+        send_filled : FALSE;
+        send_leaving : FALSE;
+        recv_received : TRUE;
+        TRUE : ch.received;
+      esac;
+    next(ch.value_0) :=
+      case
+        send_filled : send_value_0;
+        TRUE : ch.value_0;
+      esac;
+  DEFINE
+    ready := ch.filled;
+    received := ch.received;
+    value_0 := ch.value_0;
+
+MODULE __pid0_SendProc(__orig_ch)
+  JUSTICE
+    running
+  VAR
+    ch : HandshakeChannel0Proxy(__orig_ch);
+    result : boolean;
+    state : {state0, state1, state2, state3, state4, state5, state6, state7, state8};
+    transition : {notrans, trans0, trans1, trans2, trans3, trans4, trans5, trans6, trans7, trans8, trans9};
+  TRANS transition = trans0 -> (TRUE);
+  TRANS transition = trans1 -> (!(ch.ready));
+  TRANS transition = trans2 -> ((ch.ready) & (ch.received));
+  TRANS transition = trans3 -> (TRUE);
+  TRANS transition = trans4 -> (TRUE);
+  TRANS transition = trans5 -> (TRUE);
+  TRANS transition = trans6 -> (TRUE);
+  TRANS transition = trans7 -> (TRUE);
+  TRANS transition = trans8 -> (ch.ready & !ch.received);
+  TRANS transition = trans9 -> (TRUE);
+  ASSIGN
+    ch.recv_received :=
+      case
+        transition = trans8 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch.send_filled :=
+      case
+        transition = trans1 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch.send_leaving :=
+      case
+        transition = trans2 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch.send_value_0 :=
+      case
+        transition = trans1 : TRUE;
+        TRUE : ch.value_0;
+      esac;
+    init(state) := state0;
+    next(result) :=
+      case
+        transition = trans8 : ch.value_0;
+        TRUE : result;
+      esac;
+    next(state) :=
+      case
+        transition = trans0 : state2;
+        transition = trans1 : state3;
+        transition = trans2 : state4;
+        transition = trans3 : state1;
+        transition = trans4 : state5;
+        transition = trans5 : state1;
+        transition = trans6 : state6;
+        transition = trans7 : state7;
+        transition = trans8 : state8;
+        transition = trans9 : state1;
+        TRUE : state;
+      esac;
+    transition :=
+      case
+        state = state0 & ((TRUE)) : {trans0, trans4, trans6};
+        state = state2 & ((!(ch.ready))) : {trans1};
+        state = state3 & (((ch.ready) & (ch.received))) : {trans2};
+        state = state4 & ((TRUE)) : {trans3};
+        state = state5 & ((TRUE)) : {trans5};
+        state = state6 & ((TRUE)) : {trans7};
+        state = state7 & ((ch.ready & !ch.received)) : {trans8};
+        state = state8 & ((TRUE)) : {trans9};
+        TRUE : notrans;
+      esac;
+
+MODULE main()
+  VAR
+    ch : HandshakeChannel0;
+    sp : process __pid0_SendProc(ch);

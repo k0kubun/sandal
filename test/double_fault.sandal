@@ -1,0 +1,17 @@
+fault send(ch channel { bool }, val bool) @omission {
+	// do nothing
+}
+
+fault send(ch channel { bool }, val bool) @bug {
+	var result bool
+	recv(ch, result)
+}
+
+proc SendProc(ch channel { bool }) {
+	send(ch, true) @omission @bug
+}
+
+init {
+	ch: channel { bool },
+	sp: SendProc(ch),
+}
