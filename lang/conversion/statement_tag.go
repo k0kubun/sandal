@@ -21,28 +21,15 @@ func tagPrefixByStmt(stmt Stmt) string {
 	return ""
 }
 
-func (x *stmtConverter) convertTags(stmt Stmt, tag string, startState, endState intState) {
-	choicedState := x.genNextState()
-	x.trans = append(x.trans, intTransition{
-		FromState: startState,
-		NextState: choicedState,
-	})
-	x.currentState = choicedState
-	x.pushEnv()
-
+func (x *stmtConverter) convertTags(stmt Stmt, tag string) {
 	prefix := tagPrefixByStmt(stmt)
 	faultVar := x.env.lookup(prefix + "@" + tag)
 	if faultVar == nil {
 		log.Fatalf("Fault @%s does not exist for %s", tag, prefix)
 	}
+
 	faultDef := faultVar.(ir1FaultDef).Def
 	for _, stmt := range faultDef.Stmts {
 		x.convert(stmt)
 	}
-
-	x.popEnv()
-	x.trans = append(x.trans, intTransition{
-		FromState: x.currentState,
-		NextState: endState,
-	})
 }

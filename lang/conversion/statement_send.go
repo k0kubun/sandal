@@ -15,9 +15,10 @@ func (x *stmtConverter) convertSend(stmt SendStmt) {
 			x.convertSendWithoutTag(stmt)
 		})
 
-		currentState := x.currentState
 		for _, tag := range stmt.Tags {
-			x.convertTags(stmt, tag, currentState, nextState)
+			x.branched(nextState, func(x *stmtConverter) {
+				x.convertTags(stmt, tag)
+			})
 		}
 
 		x.currentState = nextState
