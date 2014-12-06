@@ -29,10 +29,10 @@ You can dump AST, IR1 and IR2 with this forked version.
 $ sandal -a your_model.sandal
 
 # Dump IR1
-$ sandal -i your_model.sandal
+$ sandal -1 your_model.sandal
 
 # Dump IR2
-$ sandal -t your_model.sandal
+$ sandal -2 your_model.sandal
 ```
 
 ## Testing

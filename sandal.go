@@ -11,8 +11,8 @@ import (
 
 type Options struct {
 	Ast bool `short:"a" long:"ast" default:"false" description:"dump parsed ast"`
-	Int bool `short:"i" long:"int" default:"false" description:"dump IR1"`
-	Tmp bool `short:"t" long:"tmp" default:"false" description:"dump IR2"`
+	Ir1 bool `short:"1" long:"ir1" default:"false" description:"dump IR1"`
+	Ir2 bool `short:"2" long:"ir2" default:"false" description:"dump IR2"`
 }
 
 func run(filePath string, options *Options) {
@@ -26,12 +26,12 @@ func run(filePath string, options *Options) {
 		return
 	}
 
-	if options.Int {
+	if options.Ir1 {
 		lang.DumpIR1(string(body))
 		return
 	}
 
-	if options.Tmp {
+	if options.Ir2 {
 		lang.DumpIR2(string(body))
 		return
 	}
