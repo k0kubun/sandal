@@ -10,7 +10,7 @@ type (
 		Column int
 	}
 
-	Definition interface {
+	Def interface {
 		Position() Pos
 		definition()
 	}
@@ -45,38 +45,38 @@ func (x Pos) String() string {
 }
 
 // ========================================
-// Definitions
+// Defs
 
 type (
-	DataDefinition struct {
+	DataDef struct {
 		Pos   Pos
 		Name  string
 		Elems []string
 	}
 
-	ModuleDefinition struct {
+	ModuleDef struct {
 		Pos         Pos
 		Name        string
 		Parameters  []Parameter
-		Definitions []Definition
+		Defs []Def
 	}
 
-	// ConstantDefinition is a definition but also is a statement.
-	ConstantDefinition struct {
+	// ConstantDef is a definition but also is a statement.
+	ConstantDef struct {
 		Pos  Pos
 		Name string
 		Type Type
 		Expr Expr
 	}
 
-	ProcDefinition struct {
+	ProcDef struct {
 		Pos        Pos
 		Name       string
 		Parameters []Parameter
 		Statements []Statement
 	}
 
-	FaultDefinition struct {
+	FaultDef struct {
 		Pos        Pos
 		Name       string
 		Tag        string
@@ -94,20 +94,20 @@ type (
 	}
 )
 
-func (x DataDefinition) definition()     {}
-func (x ModuleDefinition) definition()   {}
-func (x ConstantDefinition) definition() {}
-func (x ConstantDefinition) statement()  {}
-func (x ProcDefinition) definition()     {}
-func (x FaultDefinition) definition()    {}
+func (x DataDef) definition()     {}
+func (x ModuleDef) definition()   {}
+func (x ConstantDef) definition() {}
+func (x ConstantDef) statement()  {}
+func (x ProcDef) definition()     {}
+func (x FaultDef) definition()    {}
 func (x InitBlock) definition()          {}
 func (x LtlSpec) definition()            {}
 
-func (x DataDefinition) Position() Pos     { return x.Pos }
-func (x ModuleDefinition) Position() Pos   { return x.Pos }
-func (x ConstantDefinition) Position() Pos { return x.Pos }
-func (x ProcDefinition) Position() Pos     { return x.Pos }
-func (x FaultDefinition) Position() Pos    { return x.Pos }
+func (x DataDef) Position() Pos     { return x.Pos }
+func (x ModuleDef) Position() Pos   { return x.Pos }
+func (x ConstantDef) Position() Pos { return x.Pos }
+func (x ProcDef) Position() Pos     { return x.Pos }
+func (x FaultDef) Position() Pos    { return x.Pos }
 func (x InitBlock) Position() Pos          { return x.Pos }
 func (x LtlSpec) Position() Pos            { panic("not implemented") }
 

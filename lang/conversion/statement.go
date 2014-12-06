@@ -77,8 +77,8 @@ func (x *intStatementConverter) convert(stmt Statement) {
 	}
 
 	switch stmt := stmt.(type) {
-	case ConstantDefinition:
-		x.convertConstantDefinition(stmt)
+	case ConstantDef:
+		x.convertConstantDef(stmt)
 	case LabelledStatement:
 		x.convertLabelled(stmt)
 	case BlockStatement:
@@ -142,7 +142,7 @@ func (x *intStatementConverter) genRealName(name string) string {
 
 // ========================================
 
-func (x *intStatementConverter) convertConstantDefinition(stmt ConstantDefinition) {
+func (x *intStatementConverter) convertConstantDef(stmt ConstantDef) {
 	panic("not implemented")
 }
 

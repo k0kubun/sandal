@@ -25,7 +25,7 @@ type (
 	}
 
 	intInternalProcDef struct {
-		Def ProcDefinition
+		Def ProcDef
 	}
 
 	intInternalProcVar struct {
@@ -37,7 +37,7 @@ type (
 	}
 
 	intInternalFaultDef struct {
-		Def FaultDefinition
+		Def FaultDef
 	}
 )
 

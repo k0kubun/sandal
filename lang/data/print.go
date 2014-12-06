@@ -6,9 +6,9 @@ import (
 )
 
 // ========================================
-// Definitions
+// Defs
 
-func (x ConstantDefinition) String() string {
+func (x ConstantDef) String() string {
 	return fmt.Sprintf("const %s %s = %s;", x.Name, x.Type, x.Expr)
 }
 

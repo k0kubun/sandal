@@ -6,33 +6,33 @@ import (
 )
 
 // ========================================
-// typeCheckDefinition
+// typeCheckDef
 
-func typeCheckDefinitions(defs []Definition, env *typeEnv) error {
+func typeCheckDefs(defs []Def, env *typeEnv) error {
 	// Put all definitions to the env first. Module and toplevel definition
 	// has a scope that can see all names within the block.
 	for _, def := range defs {
 		switch def := def.(type) {
-		case DataDefinition:
+		case DataDef:
 			namedType := NamedType{Name: def.Name}
 			for _, elem := range def.Elems {
 				env.add(elem, namedType)
 			}
-		case ModuleDefinition:
+		case ModuleDef:
 			params := make([]Type, len(def.Parameters))
 			for i, p := range def.Parameters {
 				params[i] = p.Type
 			}
 			env.add(def.Name, CallableType{Parameters: params})
-		case ConstantDefinition:
+		case ConstantDef:
 			env.add(def.Name, def.Type)
-		case ProcDefinition:
+		case ProcDef:
 			params := make([]Type, len(def.Parameters))
 			for i, p := range def.Parameters {
 				params[i] = p.Type
 			}
 			env.add(def.Name, CallableType{Parameters: params})
-		case FaultDefinition:
+		case FaultDef:
 			// TODO: some type check necessary?
 			// Do nothing
 		case InitBlock:
@@ -45,52 +45,52 @@ func typeCheckDefinitions(defs []Definition, env *typeEnv) error {
 	}
 
 	for _, def := range defs {
-		if err := typeCheckDefinition(def, env); err != nil {
+		if err := typeCheckDef(def, env); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func typeCheckDefinition(x Definition, env *typeEnv) error {
+func typeCheckDef(x Def, env *typeEnv) error {
 	switch x := x.(type) {
-	case DataDefinition:
-		return typeCheckDataDefinition(x, env)
-	case ModuleDefinition:
-		return typeCheckModuleDefinition(x, env)
-	case ConstantDefinition:
-		return typeCheckConstantDefinition(x, env)
-	case ProcDefinition:
-		return typeCheckProcDefinition(x, env)
-	case FaultDefinition:
-		return typeCheckFaultDefinition(x, env)
+	case DataDef:
+		return typeCheckDataDef(x, env)
+	case ModuleDef:
+		return typeCheckModuleDef(x, env)
+	case ConstantDef:
+		return typeCheckConstantDef(x, env)
+	case ProcDef:
+		return typeCheckProcDef(x, env)
+	case FaultDef:
+		return typeCheckFaultDef(x, env)
 	case InitBlock:
 		return typeCheckInitBlock(x, env)
 	case LtlSpec:
 		// TODO
 		return nil
 	}
-	panic("Unknown Definition")
+	panic("Unknown Def")
 }
 
-func typeCheckDataDefinition(def DataDefinition, env *typeEnv) error {
+func typeCheckDataDef(def DataDef, env *typeEnv) error {
 	return nil
 }
 
-func typeCheckModuleDefinition(def ModuleDefinition, env *typeEnv) error {
+func typeCheckModuleDef(def ModuleDef, env *typeEnv) error {
 	env = newTypeEnvFromUpper(env)
 	for _, param := range def.Parameters {
 		env.add(param.Name, param.Type)
 	}
-	for _, def := range def.Definitions {
-		if err := typeCheckDefinition(def, env); err != nil {
+	for _, def := range def.Defs {
+		if err := typeCheckDef(def, env); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func typeCheckConstantDefinition(def ConstantDefinition, env *typeEnv) error {
+func typeCheckConstantDef(def ConstantDef, env *typeEnv) error {
 	if err := typeCheckExpr(def.Expr, env); err != nil {
 		return err
 	}
@@ -102,7 +102,7 @@ func typeCheckConstantDefinition(def ConstantDefinition, env *typeEnv) error {
 	return nil
 }
 
-func typeCheckProcDefinition(def ProcDefinition, env *typeEnv) error {
+func typeCheckProcDef(def ProcDef, env *typeEnv) error {
 	procEnv := newTypeEnvFromUpper(env)
 	for _, param := range def.Parameters {
 		env.add(param.Name, param.Type)
@@ -112,7 +112,7 @@ func typeCheckProcDefinition(def ProcDefinition, env *typeEnv) error {
 			return err
 		}
 		switch s := stmt.(type) {
-		case ConstantDefinition:
+		case ConstantDef:
 			env.add(s.Name, s.Type)
 		case VarDeclStatement:
 			env.add(s.Name, s.Type)
@@ -121,7 +121,7 @@ func typeCheckProcDefinition(def ProcDefinition, env *typeEnv) error {
 	return nil
 }
 
-func typeCheckFaultDefinition(def FaultDefinition, env *typeEnv) error {
+func typeCheckFaultDef(def FaultDef, env *typeEnv) error {
 	// TODO: type check
 	return nil
 }

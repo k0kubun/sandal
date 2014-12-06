@@ -18,26 +18,26 @@ func parse(t *testing.T, src string, expect interface{}) {
 	}
 }
 
-func TestDataDefinition(t *testing.T) {
+func TestDataDef(t *testing.T) {
 	parse(t, "data Maybe { Just, Nothing };",
-		[]Definition{DataDefinition{Pos{1, 1}, "Maybe", []string{"Just", "Nothing"}}})
+		[]Def{DataDef{Pos{1, 1}, "Maybe", []string{"Just", "Nothing"}}})
 }
 
-func TestParseModuleDefinition(t *testing.T) {
+func TestParseModuleDef(t *testing.T) {
 	parse(t, "module A(ch channel { bool }, chs []channel { bit }) { init { }; };",
-		[]Definition{ModuleDefinition{Pos{1, 1}, "A",
+		[]Def{ModuleDef{Pos{1, 1}, "A",
 			[]Parameter{Parameter{"ch", HandshakeChannelType{[]Type{NamedType{"bool"}}}},
 				Parameter{"chs", ArrayType{HandshakeChannelType{[]Type{NamedType{"bit"}}}}}},
-			[]Definition{InitBlock{Pos: Pos{1, 56}}}}})
+			[]Def{InitBlock{Pos: Pos{1, 56}}}}})
 }
 
-func TestParseConstantDefinition(t *testing.T) {
-	parse(t, "const a int = 1;", []Definition{ConstantDefinition{Pos{1, 1}, "a", NamedType{"int"}, NumberExpr{Pos{1, 15}, "1"}}})
+func TestParseConstantDef(t *testing.T) {
+	parse(t, "const a int = 1;", []Def{ConstantDef{Pos{1, 1}, "a", NamedType{"int"}, NumberExpr{Pos{1, 15}, "1"}}})
 }
 
-func TestParseProcDefinition(t *testing.T) {
+func TestParseProcDef(t *testing.T) {
 	parse(t, "proc A(ch channel { bool }, chs []channel { bit }) { ; };",
-		[]Definition{ProcDefinition{Pos{1, 1}, "A",
+		[]Def{ProcDef{Pos{1, 1}, "A",
 			[]Parameter{Parameter{"ch", HandshakeChannelType{[]Type{NamedType{"bool"}}}},
 				Parameter{"chs", ArrayType{HandshakeChannelType{[]Type{NamedType{"bit"}}}}}},
 			[]Statement{NullStatement{Pos{1, 54}}}}})
@@ -47,7 +47,7 @@ func TestParseInitBlock(t *testing.T) {
 	parse(
 		t,
 		"init { };",
-		[]Definition{
+		[]Def{
 			InitBlock{
 				Pos: Pos{1, 1},
 			},
@@ -57,7 +57,7 @@ func TestParseInitBlock(t *testing.T) {
 	parse(
 		t,
 		"init { a : M(b) };",
-		[]Definition{
+		[]Def{
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
@@ -76,7 +76,7 @@ func TestParseInitBlock(t *testing.T) {
 	parse(
 		t,
 		"init { a : M(b) @unstable };",
-		[]Definition{
+		[]Def{
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
@@ -95,7 +95,7 @@ func TestParseInitBlock(t *testing.T) {
 	parse(
 		t,
 		"init { a : channel { bool } };",
-		[]Definition{
+		[]Def{
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
@@ -113,7 +113,7 @@ func TestParseInitBlock(t *testing.T) {
 	parse(
 		t,
 		"init { a : channel { bool } @unstable };",
-		[]Definition{
+		[]Def{
 			InitBlock{
 				Pos{1, 1},
 				[]InitVar{
@@ -139,9 +139,9 @@ func parseInBlock(t *testing.T, src string, expect interface{}) {
 		t.Errorf("Expect %q to be parsed", src)
 		return
 	}
-	if procDef, isProcDef := definitions[0].(ProcDefinition); isProcDef {
+	if procDef, isProcDef := definitions[0].(ProcDef); isProcDef {
 		if len(procDef.Statements) != 1 {
-			t.Errorf("Expect %q to be parsed in ProcDefinition", src)
+			t.Errorf("Expect %q to be parsed in ProcDef", src)
 			return
 		}
 		if !reflect.DeepEqual(procDef.Statements[0], expect) {
@@ -149,7 +149,7 @@ func parseInBlock(t *testing.T, src string, expect interface{}) {
 			return
 		}
 	} else {
-		t.Errorf("Expect %q to be parsed in ProcDefinition", src)
+		t.Errorf("Expect %q to be parsed in ProcDef", src)
 		return
 	}
 }
@@ -188,7 +188,7 @@ func TestParseStatement(t *testing.T) {
 	parseInBlock(t, "skip;", SkipStatement{Pos{1, 1 + parseBlockOffset}})
 	parseInBlock(t, ";", NullStatement{Pos{1, 1 + parseBlockOffset}})
 	parseInBlock(t, "1;", ExprStatement{NumberExpr{Pos{1, 1 + parseBlockOffset}, "1"}})
-	parseInBlock(t, "const a int = 1;", ConstantDefinition{Pos{1, 1 + parseBlockOffset}, "a", NamedType{"int"}, NumberExpr{Pos{1, 15 + parseBlockOffset}, "1"}})
+	parseInBlock(t, "const a int = 1;", ConstantDef{Pos{1, 1 + parseBlockOffset}, "a", NamedType{"int"}, NumberExpr{Pos{1, 15 + parseBlockOffset}, "1"}})
 }
 
 func TestParseExpr(t *testing.T) {
@@ -241,9 +241,9 @@ func parseType(t *testing.T, src string, expect interface{}) {
 		t.Errorf("Expect %q to be parsed", src)
 		return
 	}
-	if procDef, isInitBlock := definitions[0].(ProcDefinition); isInitBlock {
+	if procDef, isInitBlock := definitions[0].(ProcDef); isInitBlock {
 		if len(procDef.Statements) != 1 {
-			t.Errorf("Expect %q to be parsed in ProcDefinition", src)
+			t.Errorf("Expect %q to be parsed in ProcDef", src)
 			return
 		}
 		if stmt, isVarDecl := procDef.Statements[0].(VarDeclStatement); isVarDecl {
@@ -252,11 +252,11 @@ func parseType(t *testing.T, src string, expect interface{}) {
 				return
 			}
 		} else {
-			t.Errorf("Expect %q to be parsed in ProcDefinition", src)
+			t.Errorf("Expect %q to be parsed in ProcDef", src)
 			return
 		}
 	} else {
-		t.Errorf("Expect %q to be parsed in ProcDefinition", src)
+		t.Errorf("Expect %q to be parsed in ProcDef", src)
 		return
 	}
 }

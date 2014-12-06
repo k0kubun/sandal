@@ -10,8 +10,8 @@ import (
 
 func typeCheckStatement(x Statement, env *typeEnv) error {
 	switch x := x.(type) {
-	case ConstantDefinition:
-		return typeCheckConstantDefinition(x, env)
+	case ConstantDef:
+		return typeCheckConstantDef(x, env)
 	case LabelledStatement:
 		return typeCheckLabelledStatement(x, env)
 	case BlockStatement:
@@ -59,7 +59,7 @@ func typeCheckStatements(stmts []Statement, env *typeEnv) error {
 			return err
 		}
 		switch s := stmt.(type) {
-		case ConstantDefinition:
+		case ConstantDef:
 			env.add(s.Name, s.Type)
 		case VarDeclStatement:
 			env.add(s.Name, s.Type)

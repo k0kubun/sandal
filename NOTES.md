@@ -39,7 +39,7 @@ init {
 init { a : M(b) @unstable }
 
 // Output
-[]Definition{
+[]Def{
 	InitBlock{
 		Pos{1, 1},
 		[]InitVar{
@@ -60,7 +60,7 @@ init { a : M(b) @unstable }
 init { a : channel { bool } @unstable }
 
 // Output
-[]Definition{
+[]Def{
 	InitBlock{
 		Pos{1, 1},
 		[]InitVar{

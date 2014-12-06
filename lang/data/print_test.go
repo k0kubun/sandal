@@ -14,8 +14,8 @@ func expectString(t *testing.T, printable Printable, expected string) {
 	}
 }
 
-func TestDefinitionStringify(t *testing.T) {
-	expectString(t, ConstantDefinition{Pos{}, "a", NamedType{"int"}, NumberExpr{Pos{}, "1"}}, "const a int = 1;")
+func TestDefStringify(t *testing.T) {
+	expectString(t, ConstantDef{Pos{}, "a", NamedType{"int"}, NumberExpr{Pos{}, "1"}}, "const a int = 1;")
 }
 
 func TestStatementStringify(t *testing.T) {

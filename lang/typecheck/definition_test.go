@@ -5,13 +5,13 @@ import (
 	"testing"
 )
 
-func TestConstantDefinitionTypeCheck(t *testing.T) {
+func TestConstantDefTypeCheck(t *testing.T) {
 	intType := NamedType{"int"}
 	boolType := NamedType{"bool"}
 	numberExpr := NumberExpr{Pos{}, "1"}
 
-	expectValid(t, ConstantDefinition{Pos{}, "a", intType, numberExpr}, newTypeEnv())
-	expectInvalid(t, ConstantDefinition{Pos{}, "a", boolType, numberExpr}, newTypeEnv())
+	expectValid(t, ConstantDef{Pos{}, "a", intType, numberExpr}, newTypeEnv())
+	expectInvalid(t, ConstantDef{Pos{}, "a", boolType, numberExpr}, newTypeEnv())
 }
 
 func TestInitBlockTypeCheck(t *testing.T) {

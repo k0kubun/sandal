@@ -7,8 +7,8 @@ import (
 
 func universalTypeCheck(x interface{}, env *typeEnv) error {
 	switch x := x.(type) {
-	case Definition:
-		return typeCheckDefinition(x, env)
+	case Def:
+		return typeCheckDef(x, env)
 	case Statement:
 		return typeCheckStatement(x, env)
 	case Expr:

@@ -7,11 +7,11 @@ import (
 	"strings"
 )
 
-func astToIr1(defs []Definition) (error, []intModule) {
+func astToIr1(defs []Def) (error, []intModule) {
 	converter := newIntModConverter()
 	for _, def := range defs {
 		switch def := def.(type) {
-		case DataDefinition:
+		case DataDef:
 			for _, elem := range def.Elems {
 				converter.env.add(elem, intInternalLiteral{
 					Lit:  elem,
@@ -21,18 +21,18 @@ func astToIr1(defs []Definition) (error, []intModule) {
 			converter.env.add(def.Name, intInternalDataTypeDef{
 				Elems: def.Elems,
 			})
-		case ModuleDefinition:
+		case ModuleDef:
 			// TODO
-		case ConstantDefinition:
+		case ConstantDef:
 			converter.env.add(def.Name, intInternalConstantDef{
 				Type: def.Type,
 				Expr: def.Expr,
 			})
-		case ProcDefinition:
+		case ProcDef:
 			converter.env.add(def.Name, intInternalProcDef{
 				Def: def,
 			})
-		case FaultDefinition:
+		case FaultDef:
 			converter.env.add(def.Name+"@"+def.Tag, intInternalFaultDef{
 				Def: def,
 			})

@@ -11,8 +11,8 @@ import (
 func TestConvertASTToIntModule(t *testing.T) {
 	return // FIXME: pending because it fails
 
-	defs := []Definition{
-		ProcDefinition{
+	defs := []Def{
+		ProcDef{
 			Name: "ProcA",
 			Parameters: []Parameter{
 				{

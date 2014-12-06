@@ -5,8 +5,8 @@ import (
 	. "github.com/k0kubun/sandal/lang/data"
 )
 
-func TypeCheck(defs []Definition) error {
-	return typeCheckDefinitions(defs, newTypeEnv())
+func TypeCheck(defs []Def) error {
+	return typeCheckDefs(defs, newTypeEnv())
 }
 
 // ========================================

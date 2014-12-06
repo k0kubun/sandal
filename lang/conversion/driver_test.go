@@ -105,8 +105,8 @@ MODULE main()
 `
 
 func TestConvertASTToNuSMV1(t *testing.T) {
-	defs := []Definition{
-		ProcDefinition{
+	defs := []Def{
+		ProcDef{
 			Name: "ProcA",
 			Parameters: []Parameter{
 				{
@@ -273,8 +273,8 @@ MODULE main()
 `
 
 func TestConvertASTToNuSMV2(t *testing.T) {
-	defs := []Definition{
-		ProcDefinition{
+	defs := []Def{
+		ProcDef{
 			Name: "ProcA",
 			Parameters: []Parameter{
 				{

@@ -18,8 +18,8 @@ type token struct {
 //line parser.go.y:17
 type yySymType struct {
 	yys         int
-	definitions []data.Definition
-	definition  data.Definition
+	definitions []data.Def
+	definition  data.Def
 	statements  []data.Statement
 	statement   data.Statement
 	expressions []data.Expr
@@ -194,7 +194,7 @@ const yyMaxDepth = 200
 
 type lexerWrapper struct {
 	s           *Scanner
-	definitions []data.Definition
+	definitions []data.Def
 	recentLit   string
 	recentPos   data.Pos
 }
@@ -218,7 +218,7 @@ func (l *lexerWrapper) Error(e string) {
 		l.recentPos.Line, l.recentPos.Column, l.recentLit, e)
 }
 
-func Parse(s *Scanner) []data.Definition {
+func Parse(s *Scanner) []data.Def {
 	l := lexerWrapper{s: s}
 	if yyParse(&l) != 0 {
 		panic("Parse error")
@@ -767,7 +767,7 @@ yydefault:
 	case 1:
 		//line parser.go.y:147
 		{
-			yyVAL.definitions = []data.Definition{yyS[yypt-0].definition}
+			yyVAL.definitions = []data.Def{yyS[yypt-0].definition}
 			if l, isLexerWrapper := yylex.(*lexerWrapper); isLexerWrapper {
 				l.definitions = yyVAL.definitions
 			}
@@ -775,7 +775,7 @@ yydefault:
 	case 2:
 		//line parser.go.y:154
 		{
-			yyVAL.definitions = append([]data.Definition{yyS[yypt-1].definition}, yyS[yypt-0].definitions...)
+			yyVAL.definitions = append([]data.Def{yyS[yypt-1].definition}, yyS[yypt-0].definitions...)
 			if l, isLexerWrapper := yylex.(*lexerWrapper); isLexerWrapper {
 				l.definitions = yyVAL.definitions
 			}
@@ -797,12 +797,12 @@ yydefault:
 	case 10:
 		//line parser.go.y:172
 		{
-			yyVAL.definition = data.DataDefinition{Pos: yyS[yypt-5].tok.pos, Name: yyS[yypt-4].tok.lit, Elems: yyS[yypt-2].identifiers}
+			yyVAL.definition = data.DataDef{Pos: yyS[yypt-5].tok.pos, Name: yyS[yypt-4].tok.lit, Elems: yyS[yypt-2].identifiers}
 		}
 	case 11:
 		//line parser.go.y:178
 		{
-			yyVAL.definition = data.ModuleDefinition{Pos: yyS[yypt-8].tok.pos, Name: yyS[yypt-7].tok.lit, Parameters: yyS[yypt-5].parameters, Definitions: yyS[yypt-2].definitions}
+			yyVAL.definition = data.ModuleDef{Pos: yyS[yypt-8].tok.pos, Name: yyS[yypt-7].tok.lit, Parameters: yyS[yypt-5].parameters, Defs: yyS[yypt-2].definitions}
 		}
 	case 12:
 		//line parser.go.y:184
@@ -812,7 +812,7 @@ yydefault:
 	case 13:
 		//line parser.go.y:188
 		{
-			yyVAL.definitions = append([]data.Definition{yyS[yypt-1].definition}, yyS[yypt-0].definitions...)
+			yyVAL.definitions = append([]data.Def{yyS[yypt-1].definition}, yyS[yypt-0].definitions...)
 		}
 	case 14:
 		yyVAL.definition = yyS[yypt-0].definition
@@ -823,22 +823,22 @@ yydefault:
 	case 17:
 		//line parser.go.y:199
 		{
-			yyVAL.definition = data.ConstantDefinition{Pos: yyS[yypt-5].tok.pos, Name: yyS[yypt-4].tok.lit, Type: yyS[yypt-3].typetype, Expr: yyS[yypt-1].expression}
+			yyVAL.definition = data.ConstantDef{Pos: yyS[yypt-5].tok.pos, Name: yyS[yypt-4].tok.lit, Type: yyS[yypt-3].typetype, Expr: yyS[yypt-1].expression}
 		}
 	case 18:
 		//line parser.go.y:205
 		{
-			yyVAL.definition = data.ProcDefinition{Pos: yyS[yypt-8].tok.pos, Name: yyS[yypt-7].tok.lit, Parameters: yyS[yypt-5].parameters, Statements: yyS[yypt-2].statements}
+			yyVAL.definition = data.ProcDef{Pos: yyS[yypt-8].tok.pos, Name: yyS[yypt-7].tok.lit, Parameters: yyS[yypt-5].parameters, Statements: yyS[yypt-2].statements}
 		}
 	case 19:
 		//line parser.go.y:211
 		{
-			yyVAL.definition = data.FaultDefinition{Pos: yyS[yypt-9].tok.pos, Name: yyS[yypt-8].tok.lit, Parameters: yyS[yypt-6].parameters, Tag: yyS[yypt-4].tag, Statements: yyS[yypt-2].statements}
+			yyVAL.definition = data.FaultDef{Pos: yyS[yypt-9].tok.pos, Name: yyS[yypt-8].tok.lit, Parameters: yyS[yypt-6].parameters, Tag: yyS[yypt-4].tag, Statements: yyS[yypt-2].statements}
 		}
 	case 20:
 		//line parser.go.y:215
 		{
-			yyVAL.definition = data.FaultDefinition{}
+			yyVAL.definition = data.FaultDef{}
 		}
 	case 21:
 		//line parser.go.y:221

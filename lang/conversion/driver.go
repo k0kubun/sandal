@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func ConvertASTToNuSMV(defs []Definition) (string, error) {
+func ConvertASTToNuSMV(defs []Def) (string, error) {
 	err, ir1 := astToIr1(defs)
 	if err != nil {
 		return "", err
@@ -29,7 +29,7 @@ func ConvertASTToNuSMV(defs []Definition) (string, error) {
 
 // -- debug functions --
 
-func DumpIR1(defs []Definition) {
+func DumpIR1(defs []Def) {
 	err, intMods := astToIr1(defs)
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
@@ -37,7 +37,7 @@ func DumpIR1(defs []Definition) {
 	pp.Println(intMods)
 }
 
-func DumpIR2(defs []Definition) {
+func DumpIR2(defs []Def) {
 	err, intMods := astToIr1(defs)
 	if err != nil {
 		log.Fatal("Conversion error: ", err)
@@ -50,7 +50,7 @@ func DumpIR2(defs []Definition) {
 	pp.Println(tmplMods)
 }
 
-func DumpGraph(defs []Definition) {
+func DumpGraph(defs []Def) {
 	err, intMods := astToIr1(defs)
 	if err != nil {
 		log.Fatal("Conversion error: ", err)

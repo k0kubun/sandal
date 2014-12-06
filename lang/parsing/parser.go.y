@@ -15,8 +15,8 @@ type token struct {
 %}
 
 %union{
-	definitions []data.Definition
-	definition  data.Definition
+	definitions []data.Def
+	definition  data.Def
 	statements  []data.Statement
 	statement   data.Statement
 	expressions []data.Expr
@@ -145,14 +145,14 @@ type token struct {
 
 spec	: toplevel_body
 	{
-		$$ = []data.Definition{$1}
+		$$ = []data.Def{$1}
 		if l, isLexerWrapper := yylex.(*lexerWrapper); isLexerWrapper {
 			l.definitions = $$
 		}
 	}
 	| toplevel_body spec
 	{
-		$$ = append([]data.Definition{$1}, $2...)
+		$$ = append([]data.Def{$1}, $2...)
 		if l, isLexerWrapper := yylex.(*lexerWrapper); isLexerWrapper {
 			l.definitions = $$
 		}
@@ -170,13 +170,13 @@ toplevel_body
 data_def
 	: DATA IDENTIFIER '{' idents_one '}' ';'
 	{
-		$$ = data.DataDefinition{Pos: $1.pos, Name: $2.lit, Elems: $4}
+		$$ = data.DataDef{Pos: $1.pos, Name: $2.lit, Elems: $4}
 	}
 
 module_def
 	: MODULE IDENTIFIER '(' parameters_zero ')' '{' module_body_zero '}' ';'
 	{
-		$$ = data.ModuleDefinition{Pos: $1.pos, Name: $2.lit, Parameters: $4, Definitions: $7}
+		$$ = data.ModuleDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Defs: $7}
 	}
 
 module_body_zero
@@ -186,7 +186,7 @@ module_body_zero
 	}
 	| module_body module_body_zero
 	{
-		$$ = append([]data.Definition{$1}, $2...)
+		$$ = append([]data.Def{$1}, $2...)
 	}
 
 module_body
@@ -197,23 +197,23 @@ module_body
 const_def
 	: CONST IDENTIFIER type ASSIGN expr ';' /* This should be a const expression. */
 	{
-		$$ = data.ConstantDefinition{Pos: $1.pos, Name: $2.lit, Type: $3, Expr: $5}
+		$$ = data.ConstantDef{Pos: $1.pos, Name: $2.lit, Type: $3, Expr: $5}
 	}
 
 proc_def
 	: PROC IDENTIFIER '(' parameters_zero ')' '{' statements_zero '}' ';'
 	{
-		$$ = data.ProcDefinition{Pos: $1.pos, Name: $2.lit, Parameters: $4, Statements: $7}
+		$$ = data.ProcDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Statements: $7}
 	}
 
 fault_def
 	: FAULT SEND '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
-		$$ = data.FaultDefinition{Pos: $1.pos, Name: $2.lit, Parameters: $4, Tag: $6, Statements: $8}
+		$$ = data.FaultDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Tag: $6, Statements: $8}
 	}
 	| FAULT RECV '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
-		$$ = data.FaultDefinition{}
+		$$ = data.FaultDef{}
 	}
 
 init_block
@@ -745,7 +745,7 @@ blocks_one
 
 type lexerWrapper struct {
 	s           *Scanner
-	definitions []data.Definition
+	definitions []data.Def
 	recentLit   string
 	recentPos   data.Pos
 }
@@ -769,7 +769,7 @@ func (l *lexerWrapper) Error(e string) {
 		l.recentPos.Line, l.recentPos.Column, l.recentLit, e)
 }
 
-func Parse(s *Scanner) []data.Definition {
+func Parse(s *Scanner) []data.Def {
 	l := lexerWrapper{s: s}
 	if yyParse(&l) != 0 {
 		panic("Parse error")
