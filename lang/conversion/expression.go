@@ -4,7 +4,7 @@ import (
 	. "github.com/k0kubun/sandal/lang/data"
 )
 
-func exprToInternObj(expr Expr, env *varEnv) ir1ExprObj {
+func exprToIr1Obj(expr Expr, env *varEnv) ir1ExprObj {
 	// This function does not return nil.
 	switch expr := expr.(type) {
 	case IdentifierExpr:
@@ -21,14 +21,14 @@ func exprToInternObj(expr Expr, env *varEnv) ir1ExprObj {
 	case FalseExpr:
 		return ir1Literal{Lit: "FALSE", Type: NamedType{"bool"}}
 	case NotExpr:
-		return ir1Not{Sub: exprToInternObj(expr.SubExpr, env)}
+		return ir1Not{Sub: exprToIr1Obj(expr.SubExpr, env)}
 	case UnarySubExpr:
-		return ir1UnarySub{Sub: exprToInternObj(expr.SubExpr, env)}
+		return ir1UnarySub{Sub: exprToIr1Obj(expr.SubExpr, env)}
 	case ParenExpr:
-		return ir1Paren{Sub: exprToInternObj(expr.SubExpr, env)}
+		return ir1Paren{Sub: exprToIr1Obj(expr.SubExpr, env)}
 	case BinOpExpr:
-		intObjLHS := exprToInternObj(expr.LHS, env)
-		intObjRHS := exprToInternObj(expr.RHS, env)
+		intObjLHS := exprToIr1Obj(expr.LHS, env)
+		intObjRHS := exprToIr1Obj(expr.RHS, env)
 		return ir1BinOp{LHS: intObjLHS, Op: expr.Operator, RHS: intObjRHS}
 	case TimeoutRecvExpr:
 		ch, args := convertChannelExpr(expr, env)
@@ -45,7 +45,7 @@ func exprToInternObj(expr Expr, env *varEnv) ir1ExprObj {
 	case ArrayExpr:
 		elems := []ir1ExprObj{}
 		for _, subExpr := range expr.Elems {
-			elems = append(elems, exprToInternObj(subExpr, env))
+			elems = append(elems, exprToIr1Obj(subExpr, env))
 		}
 		return ir1ArrayLiteral{Elems: elems}
 	default:
@@ -54,12 +54,12 @@ func exprToInternObj(expr Expr, env *varEnv) ir1ExprObj {
 }
 
 func convertChannelExpr(expr ChanExpr, env *varEnv) (ch ir1ExprObj, args []ir1ExprObj) {
-	ch = exprToInternObj(expr.ChannelExpr(), env)
+	ch = exprToIr1Obj(expr.ChannelExpr(), env)
 	if ch.Steps() != 0 {
 		panic("Steps constraint violation")
 	}
 	for _, arg := range expr.ArgExprs() {
-		argObj := exprToInternObj(arg, env)
+		argObj := exprToIr1Obj(arg, env)
 		if argObj.Steps() != 0 {
 			panic("Steps constraint violation")
 		}

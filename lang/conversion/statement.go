@@ -171,7 +171,7 @@ func (x *stmtConverter) convertVarDecl(stmt VarDeclStmt) {
 	realName := x.genRealName(stmt.Name)
 	nextRealName := fmt.Sprintf("next(%s)", realName)
 	if stmt.Initializer != nil {
-		intExprObj := exprToInternObj(stmt.Initializer, x.env)
+		intExprObj := exprToIr1Obj(stmt.Initializer, x.env)
 		x.trans = append(x.trans, intExprObj.Transition(x.currentState, nextState, nextRealName)...)
 	} else {
 		x.trans = append(x.trans, intTransition{
@@ -191,7 +191,7 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 	falseBranchState := x.genNextState()
 
 	{
-		intExprObj := exprToInternObj(stmt.Condition, x.env)
+		intExprObj := exprToIr1Obj(stmt.Condition, x.env)
 		if intExprObj.Steps() != 0 {
 			panic("Steps constraint violation")
 		}
@@ -235,7 +235,7 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 
 func (x *stmtConverter) convertAssignment(stmt AssignmentStmt) {
 	nextState := x.genNextState()
-	intExprObj := exprToInternObj(stmt.Expr, x.env)
+	intExprObj := exprToIr1Obj(stmt.Expr, x.env)
 	if intExprObj.Steps() > 1 {
 		panic("Steps constraint violation")
 	}
@@ -245,7 +245,7 @@ func (x *stmtConverter) convertAssignment(stmt AssignmentStmt) {
 
 func (x *stmtConverter) convertOpAssignment(stmt OpAssignmentStmt) {
 	nextState := x.genNextState()
-	intExprObj := exprToInternObj(BinOpExpr{
+	intExprObj := exprToIr1Obj(BinOpExpr{
 		IdentifierExpr{Name: stmt.Variable}, stmt.Operator, stmt.Expr,
 	}, x.env)
 	if intExprObj.Steps() > 1 {
@@ -464,7 +464,7 @@ func (x *stmtConverter) convertFor(stmt ForStmt) {
 }
 
 func (x *stmtConverter) convertForIn(stmt ForInStmt) {
-	switch container := exprToInternObj(stmt.Container, x.env).(type) {
+	switch container := exprToIr1Obj(stmt.Container, x.env).(type) {
 	case ir1ArrayVar:
 		savedBreakState := x.breakToState
 		x.breakToState = x.genNextState()
@@ -532,7 +532,7 @@ func (x *stmtConverter) convertSkip(stmt SkipStmt) {
 
 func (x *stmtConverter) convertExpr(stmt ExprStmt) {
 	nextState := x.genNextState()
-	intExprObj := exprToInternObj(stmt.Expr, x.env)
+	intExprObj := exprToIr1Obj(stmt.Expr, x.env)
 	if intExprObj.Steps() > 1 {
 		panic("Steps constraint violation")
 	}
