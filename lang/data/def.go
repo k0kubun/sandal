@@ -64,7 +64,6 @@ type (
 func (x DataDef) definition()     {}
 func (x ModuleDef) definition()   {}
 func (x ConstantDef) definition() {}
-func (x ConstantDef) statement()  {}
 func (x ProcDef) definition()     {}
 func (x FaultDef) definition()    {}
 func (x InitBlock) definition()   {}

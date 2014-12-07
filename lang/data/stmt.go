@@ -10,6 +10,7 @@ type (
 		Position() Pos
 		statement()
 		String() string
+		FaultMarkers() []string
 	}
 
 	LabelledStmt struct {
@@ -59,7 +60,7 @@ type (
 		Pos
 		Channel Expr
 		Args    []Expr
-		Tags    []string
+		Tags
 	}
 
 	PeekStmt struct {
@@ -72,7 +73,7 @@ type (
 		Pos
 		Channel Expr
 		Args    []Expr
-		Tags    []string
+		Tags
 	}
 
 	ForStmt struct {
@@ -115,7 +116,28 @@ type (
 	NullStmt struct {
 		Pos
 	}
+
+	Tags []string
 )
+
+func (x Tags) FaultMarkers() []string             { return []string(x) }
+func (x LabelledStmt) FaultMarkers() []string     { return []string{} }
+func (x BlockStmt) FaultMarkers() []string        { return []string{} }
+func (x VarDeclStmt) FaultMarkers() []string      { return []string{} }
+func (x IfStmt) FaultMarkers() []string           { return []string{} }
+func (x AssignmentStmt) FaultMarkers() []string   { return []string{} }
+func (x OpAssignmentStmt) FaultMarkers() []string { return []string{} }
+func (x ChoiceStmt) FaultMarkers() []string       { return []string{} }
+func (x PeekStmt) FaultMarkers() []string         { return []string{} }
+func (x ForStmt) FaultMarkers() []string          { return []string{} }
+func (x ForInStmt) FaultMarkers() []string        { return []string{} }
+func (x ForInRangeStmt) FaultMarkers() []string   { return []string{} }
+func (x BreakStmt) FaultMarkers() []string        { return []string{} }
+func (x GotoStmt) FaultMarkers() []string         { return []string{} }
+func (x SkipStmt) FaultMarkers() []string         { return []string{} }
+func (x ExprStmt) FaultMarkers() []string         { return []string{} }
+func (x NullStmt) FaultMarkers() []string         { return []string{} }
+func (x ConstantDef) FaultMarkers() []string      { return []string{} }
 
 func (x LabelledStmt) statement()     {}
 func (x BlockStmt) statement()        {}
@@ -135,6 +157,7 @@ func (x GotoStmt) statement()         {}
 func (x SkipStmt) statement()         {}
 func (x ExprStmt) statement()         {}
 func (x NullStmt) statement()         {}
+func (x ConstantDef) statement()      {}
 
 func (x RecvStmt) ChannelExpr() Expr { return x.Channel }
 func (x PeekStmt) ChannelExpr() Expr { return x.Channel }

@@ -6,7 +6,7 @@ import (
 )
 
 func (x *stmtConverter) convertSend(stmt SendStmt) {
-	if len(stmt.Tags) == 0 {
+	if len(stmt.FaultMarkers()) == 0 {
 		x.convertSendWithoutTag(stmt)
 	} else {
 		nextState := x.genNextState()
@@ -15,7 +15,7 @@ func (x *stmtConverter) convertSend(stmt SendStmt) {
 			x.convertSendWithoutTag(stmt)
 		})
 
-		for _, tag := range stmt.Tags {
+		for _, tag := range stmt.FaultMarkers() {
 			x.branched(nextState, func(x *stmtConverter) {
 				x.convertTags(stmt, tag)
 			})
