@@ -16,35 +16,35 @@ type (
 	}
 
 	IdentifierExpr struct {
-		Pos  Pos
+		Pos
 		Name string
 	}
 
 	NumberExpr struct {
-		Pos Pos
+		Pos
 		Lit string
 	}
 
 	TrueExpr struct {
-		Pos Pos
+		Pos
 	}
 
 	FalseExpr struct {
-		Pos Pos
+		Pos
 	}
 
 	NotExpr struct {
-		Pos     Pos
+		Pos
 		SubExpr Expr
 	}
 
 	UnarySubExpr struct {
-		Pos     Pos
+		Pos
 		SubExpr Expr
 	}
 
 	ParenExpr struct {
-		Pos     Pos
+		Pos
 		SubExpr Expr
 	}
 
@@ -55,31 +55,31 @@ type (
 	}
 
 	TimeoutRecvExpr struct {
-		Pos     Pos
+		Pos
 		Channel Expr
 		Args    []Expr
 	}
 
 	TimeoutPeekExpr struct {
-		Pos     Pos
+		Pos
 		Channel Expr
 		Args    []Expr
 	}
 
 	NonblockRecvExpr struct {
-		Pos     Pos
+		Pos
 		Channel Expr
 		Args    []Expr
 	}
 
 	NonblockPeekExpr struct {
-		Pos     Pos
+		Pos
 		Channel Expr
 		Args    []Expr
 	}
 
 	ArrayExpr struct {
-		Pos   Pos
+		Pos
 		Elems []Expr
 	}
 )
@@ -98,19 +98,7 @@ func (x NonblockRecvExpr) expression() {}
 func (x NonblockPeekExpr) expression() {}
 func (x ArrayExpr) expression()        {}
 
-func (x IdentifierExpr) Position() Pos   { return x.Pos }
-func (x NumberExpr) Position() Pos       { return x.Pos }
-func (x TrueExpr) Position() Pos         { return x.Pos }
-func (x FalseExpr) Position() Pos        { return x.Pos }
-func (x NotExpr) Position() Pos          { return x.Pos }
-func (x UnarySubExpr) Position() Pos     { return x.Pos }
-func (x ParenExpr) Position() Pos        { return x.Pos }
-func (x BinOpExpr) Position() Pos        { return x.LHS.Position() }
-func (x TimeoutRecvExpr) Position() Pos  { return x.Pos }
-func (x TimeoutPeekExpr) Position() Pos  { return x.Pos }
-func (x NonblockRecvExpr) Position() Pos { return x.Pos }
-func (x NonblockPeekExpr) Position() Pos { return x.Pos }
-func (x ArrayExpr) Position() Pos        { return x.Pos }
+func (x BinOpExpr) Position() Pos { return x.LHS.Position() }
 
 func (x TimeoutRecvExpr) ChannelExpr() Expr  { return x.Channel }
 func (x TimeoutPeekExpr) ChannelExpr() Expr  { return x.Channel }
