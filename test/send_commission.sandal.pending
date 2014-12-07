@@ -1,0 +1,12 @@
+fault send(ch channel { bool }, val bool) @commission {
+	send(ch, !val)
+}
+
+proc SendProc(ch channel { bool }) {
+	send(ch, true) @commission
+}
+
+init {
+	ch: channel { bool },
+	sp: SendProc(ch),
+}
