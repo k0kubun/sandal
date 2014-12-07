@@ -213,7 +213,7 @@ fault_def
 	}
 	| FAULT RECV '(' parameters_one ')' tag '{' statements_zero '}' ';'
 	{
-		$$ = data.FaultDef{}
+		$$ = data.FaultDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Tag: $6, Stmts: $8}
 	}
 
 init_block

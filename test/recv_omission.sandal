@@ -4,7 +4,7 @@ fault recv(ch channel { bool }, val bool) @omission {
 
 proc RecvProc(ch channel { bool }) {
 	var result bool
-	recv(ch, result)// @omission
+	recv(ch, result) @omission
 }
 
 init {

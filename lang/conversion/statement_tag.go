@@ -9,6 +9,7 @@ import (
 var (
 	tagPrefixByStmtType = map[string]string{
 		"data.SendStmt": "send",
+		"data.RecvStmt": "recv",
 	}
 )
 

@@ -838,7 +838,7 @@ yydefault:
 	case 20:
 		//line parser.go.y:215
 		{
-			yyVAL.definition = data.FaultDef{}
+			yyVAL.definition = data.FaultDef{Pos: yyS[yypt-9].tok.pos, Name: yyS[yypt-8].tok.lit, Parameters: yyS[yypt-6].parameters, Tag: yyS[yypt-4].tag, Stmts: yyS[yypt-2].statements}
 		}
 	case 21:
 		//line parser.go.y:221
