@@ -9,8 +9,8 @@ func exprToIr1Obj(expr Expr, env *varEnv) ir1ExprObj {
 	switch expr := expr.(type) {
 	case IdentifierExpr:
 		intObj := env.lookup(expr.Name)
-		if intExprObj, isExprObj := intObj.(ir1ExprObj); isExprObj {
-			return intExprObj
+		if ir1Obj, isExprObj := intObj.(ir1ExprObj); isExprObj {
+			return ir1Obj
 		} else {
 			panic("Referenced name is not expression")
 		}

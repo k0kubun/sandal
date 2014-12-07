@@ -170,8 +170,8 @@ func (x *stmtConverter) convertVarDecl(stmt VarDeclStmt) {
 	realName := x.genRealName(stmt.Name)
 	nextRealName := fmt.Sprintf("next(%s)", realName)
 	if stmt.Initializer != nil {
-		intExprObj := exprToIr1Obj(stmt.Initializer, x.env)
-		x.trans = append(x.trans, intExprObj.Transition(x.currentState, nextState, nextRealName)...)
+		ir1Obj := exprToIr1Obj(stmt.Initializer, x.env)
+		x.trans = append(x.trans, ir1Obj.Transition(x.currentState, nextState, nextRealName)...)
 	} else {
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
@@ -190,19 +190,19 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 	falseBranchState := x.genNextState()
 
 	{
-		intExprObj := exprToIr1Obj(stmt.Condition, x.env)
-		if intExprObj.Steps() != 0 {
+		ir1Obj := exprToIr1Obj(stmt.Condition, x.env)
+		if ir1Obj.Steps() != 0 {
 			panic("Steps constraint violation")
 		}
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
 			NextState: trueBranchState,
-			Condition: intExprObj.String(),
+			Condition: ir1Obj.String(),
 		})
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
 			NextState: falseBranchState,
-			Condition: "!(" + intExprObj.String() + ")",
+			Condition: "!(" + ir1Obj.String() + ")",
 		})
 	}
 	{
@@ -234,23 +234,23 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 
 func (x *stmtConverter) convertAssignment(stmt AssignmentStmt) {
 	nextState := x.genNextState()
-	intExprObj := exprToIr1Obj(stmt.Expr, x.env)
-	if intExprObj.Steps() > 1 {
+	ir1Obj := exprToIr1Obj(stmt.Expr, x.env)
+	if ir1Obj.Steps() > 1 {
 		panic("Steps constraint violation")
 	}
-	x.trans = append(x.trans, intExprObj.Transition(x.currentState, nextState, fmt.Sprintf("next(%s)", stmt.Variable))...)
+	x.trans = append(x.trans, ir1Obj.Transition(x.currentState, nextState, fmt.Sprintf("next(%s)", stmt.Variable))...)
 	x.currentState = nextState
 }
 
 func (x *stmtConverter) convertOpAssignment(stmt OpAssignmentStmt) {
 	nextState := x.genNextState()
-	intExprObj := exprToIr1Obj(BinOpExpr{
+	ir1Obj := exprToIr1Obj(BinOpExpr{
 		IdentifierExpr{Name: stmt.Variable}, stmt.Operator, stmt.Expr,
 	}, x.env)
-	if intExprObj.Steps() > 1 {
+	if ir1Obj.Steps() > 1 {
 		panic("Steps constraint violation")
 	}
-	x.trans = append(x.trans, intExprObj.Transition(x.currentState, nextState, fmt.Sprintf("next(%s)", stmt.Variable))...)
+	x.trans = append(x.trans, ir1Obj.Transition(x.currentState, nextState, fmt.Sprintf("next(%s)", stmt.Variable))...)
 	x.currentState = nextState
 }
 
@@ -354,11 +354,11 @@ func (x *stmtConverter) convertSkip(stmt SkipStmt) {
 
 func (x *stmtConverter) convertExpr(stmt ExprStmt) {
 	nextState := x.genNextState()
-	intExprObj := exprToIr1Obj(stmt.Expr, x.env)
-	if intExprObj.Steps() > 1 {
+	ir1Obj := exprToIr1Obj(stmt.Expr, x.env)
+	if ir1Obj.Steps() > 1 {
 		panic("Steps constraint violation")
 	}
-	x.trans = append(x.trans, intExprObj.Transition(x.currentState, nextState, "")...)
+	x.trans = append(x.trans, ir1Obj.Transition(x.currentState, nextState, "")...)
 	x.currentState = nextState
 }
 
