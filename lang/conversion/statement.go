@@ -9,7 +9,7 @@ func (x *intModConverter) convertStmts(statements []Stmt, defaults map[string]st
 	converter := newStmtConverter(x.env, defaults, tags, vars)
 
 	for _, stmt := range statements {
-		converter.convert(stmt)
+		converter.convertStmt(stmt)
 	}
 
 	return converter.vars, "state0", converter.trans
@@ -66,7 +66,7 @@ func hasTag(tags []string, tag string) bool {
 	return false
 }
 
-func (x *stmtConverter) convert(stmt Stmt) {
+func (x *stmtConverter) convertStmt(stmt Stmt) {
 	if x.unstable {
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
@@ -75,6 +75,10 @@ func (x *stmtConverter) convert(stmt Stmt) {
 		})
 	}
 
+	x.convert(stmt)
+}
+
+func (x *stmtConverter) convert(stmt Stmt) {
 	switch stmt := stmt.(type) {
 	case ConstantDef:
 		x.convertConstantDef(stmt)
@@ -147,14 +151,14 @@ func (x *stmtConverter) convertConstantDef(stmt ConstantDef) {
 
 func (x *stmtConverter) convertLabelled(stmt LabelledStmt) {
 	x.labelToState[stmt.Label] = x.currentState
-	x.convert(stmt.Stmt)
+	x.convertStmt(stmt.Stmt)
 }
 
 func (x *stmtConverter) convertBlock(stmt BlockStmt) {
 	nextState := x.genNextState()
 	x.withEnv(func(x *stmtConverter) {
 		for _, stmt := range stmt.Stmts {
-			x.convert(stmt)
+			x.convertStmt(stmt)
 		}
 	})
 	x.trans = append(x.trans, intTransition{
@@ -209,7 +213,7 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 		x.currentState = trueBranchState
 		x.withEnv(func(x *stmtConverter) {
 			for _, stmt := range stmt.TrueBranch {
-				x.convert(stmt)
+				x.convertStmt(stmt)
 			}
 		})
 		x.trans = append(x.trans, intTransition{
@@ -221,7 +225,7 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 		x.currentState = falseBranchState
 		x.withEnv(func(x *stmtConverter) {
 			for _, stmt := range stmt.FalseBranch {
-				x.convert(stmt)
+				x.convertStmt(stmt)
 			}
 		})
 		x.trans = append(x.trans, intTransition{
@@ -258,7 +262,7 @@ func (x *stmtConverter) convertChoice(stmt ChoiceStmt) {
 	nextState := x.genNextState()
 	for _, block := range stmt.Blocks {
 		x.branched(nextState, func(x *stmtConverter) {
-			x.convert(block)
+			x.convertStmt(block)
 		})
 	}
 	x.currentState = nextState
@@ -274,7 +278,7 @@ func (x *stmtConverter) convertFor(stmt ForStmt) {
 	x.breakToState = x.genNextState()
 	x.withEnv(func(x *stmtConverter) {
 		for _, stmt := range stmt.Stmts {
-			x.convert(stmt)
+			x.convertStmt(stmt)
 		}
 	})
 	x.trans = append(x.trans, intTransition{
@@ -298,7 +302,7 @@ func (x *stmtConverter) convertForIn(stmt ForInStmt) {
 					elem,
 				})
 				for _, stmt := range stmt.Stmts {
-					x.convert(stmt)
+					x.convertStmt(stmt)
 				}
 			})
 		}

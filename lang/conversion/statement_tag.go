@@ -30,6 +30,6 @@ func (x *stmtConverter) convertTags(stmt Stmt, tag string) {
 
 	faultDef := faultVar.(ir1FaultDef).Def
 	for _, stmt := range faultDef.Stmts {
-		x.convert(stmt)
+		x.convertStmt(stmt)
 	}
 }
