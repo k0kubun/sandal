@@ -5,19 +5,6 @@ import (
 	. "github.com/k0kubun/sandal/lang/data"
 )
 
-func (x *intModConverter) convertStmts(statements []Stmt, defaults map[string]string, tags []string, vars []intVar) ([]intVar, intState, []intTransition) {
-	converter := newStmtConverter(x.env, defaults, tags, vars)
-
-	for _, stmt := range statements {
-		converter.convertStmt(stmt)
-	}
-
-	return converter.vars, "state0", converter.trans
-}
-
-// ========================================
-// Stmt conversion
-
 type stmtConverter struct {
 	env           *varEnv
 	vars          []intVar
@@ -75,7 +62,24 @@ func (x *stmtConverter) convertStmt(stmt Stmt) {
 		})
 	}
 
-	x.convert(stmt)
+	if len(stmt.FaultMarkers()) == 0 {
+		x.convert(stmt)
+		return
+	}
+
+	nextState := x.genNextState()
+
+	x.branched(nextState, func(x *stmtConverter) {
+		x.convert(stmt)
+	})
+
+	for _, tag := range stmt.FaultMarkers() {
+		x.branched(nextState, func(x *stmtConverter) {
+			x.convertTags(stmt, tag)
+		})
+	}
+
+	x.currentState = nextState
 }
 
 func (x *stmtConverter) convert(stmt Stmt) {

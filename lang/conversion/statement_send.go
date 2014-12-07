@@ -6,26 +6,6 @@ import (
 )
 
 func (x *stmtConverter) convertSend(stmt SendStmt) {
-	if len(stmt.FaultMarkers()) == 0 {
-		x.convertSendWithoutTag(stmt)
-	} else {
-		nextState := x.genNextState()
-
-		x.branched(nextState, func(x *stmtConverter) {
-			x.convertSendWithoutTag(stmt)
-		})
-
-		for _, tag := range stmt.FaultMarkers() {
-			x.branched(nextState, func(x *stmtConverter) {
-				x.convertTags(stmt, tag)
-			})
-		}
-
-		x.currentState = nextState
-	}
-}
-
-func (x *stmtConverter) convertSendWithoutTag(stmt SendStmt) {
 	ch, args := convertChannelExpr(stmt, x.env)
 	chType := ch.GetType()
 

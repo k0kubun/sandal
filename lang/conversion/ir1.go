@@ -368,6 +368,16 @@ func (x *intModConverter) calculateConstExpr(expr Expr) int {
 	return 0
 }
 
+func (x *intModConverter) convertStmts(statements []Stmt, defaults map[string]string, tags []string, vars []intVar) ([]intVar, intState, []intTransition) {
+	converter := newStmtConverter(x.env, defaults, tags, vars)
+
+	for _, stmt := range statements {
+		converter.convertStmt(stmt)
+	}
+
+	return converter.vars, "state0", converter.trans
+}
+
 // ========================================
 
 func argJoin(args []string) string {
