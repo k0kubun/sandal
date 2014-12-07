@@ -1,0 +1,213 @@
+
+MODULE BufferedChannel0()
+  VAR
+    filled : array 0..0 of boolean;
+    next_idx : 0..1;
+    value_0 : array 0..0 of {Ping, Pong};
+  ASSIGN
+    init(filled[0]) := FALSE;
+    init(next_idx) := 0;
+    init(value_0[0]) := Ping;
+
+MODULE BufferedChannel0Proxy(ch)
+  VAR
+    recv_received : boolean;
+    send_filled : boolean;
+    send_value_0 : {Ping, Pong};
+  ASSIGN
+    next(ch.filled[0]) :=
+      case
+        send_filled & ch.next_idx = 0 : TRUE;
+        recv_received : FALSE;
+        TRUE : ch.filled[0];
+      esac;
+    next(ch.next_idx) :=
+      case
+        send_filled & ch.next_idx < 1 : ch.next_idx + 1;
+        recv_received & ch.next_idx > 0 : ch.next_idx - 1;
+        TRUE : ch.next_idx;
+      esac;
+    next(ch.value_0[0]) :=
+      case
+        send_filled & ch.next_idx = 0 : send_value_0;
+        TRUE : ch.value_0[0];
+      esac;
+  DEFINE
+    full := ch.next_idx = 1;
+    ready := ch.filled[0];
+    value_0 := ch.value_0[0];
+
+MODULE BufferedChannel1()
+  VAR
+    filled : array 0..0 of boolean;
+    next_idx : 0..1;
+    value_0 : array 0..0 of {Ping, Pong};
+  ASSIGN
+    init(filled[0]) := FALSE;
+    init(next_idx) := 0;
+    init(value_0[0]) := Ping;
+
+MODULE BufferedChannel1Proxy(ch)
+  VAR
+    recv_received : boolean;
+    send_filled : boolean;
+    send_value_0 : {Ping, Pong};
+  ASSIGN
+    next(ch.filled[0]) :=
+      case
+        send_filled & ch.next_idx = 0 : TRUE;
+        recv_received : FALSE;
+        TRUE : ch.filled[0];
+      esac;
+    next(ch.next_idx) :=
+      case
+        send_filled & ch.next_idx < 1 : ch.next_idx + 1;
+        recv_received & ch.next_idx > 0 : ch.next_idx - 1;
+        TRUE : ch.next_idx;
+      esac;
+    next(ch.value_0[0]) :=
+      case
+        send_filled & ch.next_idx = 0 : send_value_0;
+        TRUE : ch.value_0[0];
+      esac;
+  DEFINE
+    full := ch.next_idx = 1;
+    ready := ch.filled[0];
+    value_0 := ch.value_0[0];
+
+MODULE __pid0_PingProc(__orig_ch_send, __orig_ch_recv)
+  JUSTICE
+    running
+  VAR
+    ch_recv : BufferedChannel1Proxy(__orig_ch_recv);
+    ch_send : BufferedChannel0Proxy(__orig_ch_send);
+    msg : {Ping, Pong};
+    state : {state0, state2, state3, state4};
+    transition : {notrans, trans0, trans1, trans2, trans3};
+  TRANS transition = trans0 -> (TRUE);
+  TRANS transition = trans1 -> (!(ch_send.full));
+  TRANS transition = trans2 -> (ch_recv.ready);
+  TRANS transition = trans3 -> (TRUE);
+  ASSIGN
+    ch_recv.recv_received :=
+      case
+        transition = trans2 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch_recv.send_filled :=
+      case
+        TRUE : FALSE;
+      esac;
+    ch_recv.send_value_0 :=
+      case
+        TRUE : ch_recv.value_0;
+      esac;
+    ch_send.recv_received :=
+      case
+        TRUE : FALSE;
+      esac;
+    ch_send.send_filled :=
+      case
+        transition = trans1 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch_send.send_value_0 :=
+      case
+        transition = trans1 : Ping;
+        TRUE : ch_send.value_0;
+      esac;
+    init(state) := state0;
+    next(msg) :=
+      case
+        transition = trans2 : ch_recv.value_0;
+        TRUE : msg;
+      esac;
+    next(state) :=
+      case
+        transition = trans0 : state2;
+        transition = trans1 : state3;
+        transition = trans2 : state4;
+        transition = trans3 : state0;
+        TRUE : state;
+      esac;
+    transition :=
+      case
+        state = state0 & ((TRUE)) : {trans0};
+        state = state2 & ((!(ch_send.full))) : {trans1};
+        state = state3 & ((ch_recv.ready)) : {trans2};
+        state = state4 & ((TRUE)) : {trans3};
+        TRUE : notrans;
+      esac;
+
+MODULE __pid1_PongProc(__orig_ch_send, __orig_ch_recv)
+  JUSTICE
+    running
+  VAR
+    ch_recv : BufferedChannel0Proxy(__orig_ch_recv);
+    ch_send : BufferedChannel1Proxy(__orig_ch_send);
+    msg : {Ping, Pong};
+    state : {state0, state2, state3, state4};
+    transition : {notrans, trans0, trans1, trans2, trans3};
+  TRANS transition = trans0 -> (TRUE);
+  TRANS transition = trans1 -> (ch_recv.ready);
+  TRANS transition = trans2 -> (!(ch_send.full));
+  TRANS transition = trans3 -> (TRUE);
+  ASSIGN
+    ch_recv.recv_received :=
+      case
+        transition = trans1 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch_recv.send_filled :=
+      case
+        TRUE : FALSE;
+      esac;
+    ch_recv.send_value_0 :=
+      case
+        TRUE : ch_recv.value_0;
+      esac;
+    ch_send.recv_received :=
+      case
+        TRUE : FALSE;
+      esac;
+    ch_send.send_filled :=
+      case
+        transition = trans2 : TRUE;
+        TRUE : FALSE;
+      esac;
+    ch_send.send_value_0 :=
+      case
+        transition = trans2 : Pong;
+        TRUE : ch_send.value_0;
+      esac;
+    init(state) := state0;
+    next(msg) :=
+      case
+        transition = trans1 : ch_recv.value_0;
+        TRUE : msg;
+      esac;
+    next(state) :=
+      case
+        transition = trans0 : state2;
+        transition = trans1 : state3;
+        transition = trans2 : state4;
+        transition = trans3 : state0;
+        TRUE : state;
+      esac;
+    transition :=
+      case
+        state = state0 & ((TRUE)) : {trans0};
+        state = state2 & ((ch_recv.ready)) : {trans1};
+        state = state3 & ((!(ch_send.full))) : {trans2};
+        state = state4 & ((TRUE)) : {trans3};
+        TRUE : notrans;
+      esac;
+
+MODULE main()
+  VAR
+    P0_0 : process __pid0_PingProc(ping_to_pong_0, pong_to_ping_0);
+    P1_0 : process __pid1_PongProc(pong_to_ping_0, ping_to_pong_0);
+    ping_to_pong_0 : BufferedChannel0;
+    pong_to_ping_0 : BufferedChannel1;
+  LTLSPEC
+    F(P0_0.msg = Pong)
