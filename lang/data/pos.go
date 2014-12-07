@@ -11,6 +11,10 @@ type (
 	}
 )
 
+func (x Pos) Position() Pos {
+	return x
+}
+
 func (x Pos) String() string {
 	return fmt.Sprintf("Line: %d, Column %d", x.Line, x.Column)
 }

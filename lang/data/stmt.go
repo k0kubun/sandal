@@ -8,82 +8,82 @@ type (
 	}
 
 	LabelledStmt struct {
-		Pos   Pos
+		Pos
 		Label string
 		Stmt  Stmt
 	}
 
 	BlockStmt struct {
-		Pos   Pos
+		Pos
 		Stmts []Stmt
 	}
 
 	VarDeclStmt struct {
-		Pos         Pos
+		Pos
 		Name        string
 		Type        Type
 		Initializer Expr
 	}
 
 	IfStmt struct {
-		Pos         Pos
+		Pos
 		Condition   Expr
 		TrueBranch  []Stmt
 		FalseBranch []Stmt
 	}
 
 	AssignmentStmt struct {
-		Pos      Pos
+		Pos
 		Variable string
 		Expr     Expr
 	}
 
 	OpAssignmentStmt struct {
-		Pos      Pos
+		Pos
 		Variable string
 		Operator string
 		Expr     Expr
 	}
 
 	ChoiceStmt struct {
-		Pos    Pos
+		Pos
 		Blocks []BlockStmt
 	}
 
 	RecvStmt struct {
-		Pos     Pos
+		Pos
 		Channel Expr
 		Args    []Expr
 		Tags    []string
 	}
 
 	PeekStmt struct {
-		Pos     Pos
+		Pos
 		Channel Expr
 		Args    []Expr
 	}
 
 	SendStmt struct {
-		Pos     Pos
+		Pos
 		Channel Expr
 		Args    []Expr
 		Tags    []string
 	}
 
 	ForStmt struct {
-		Pos   Pos
+		Pos
 		Stmts []Stmt
 	}
 
 	ForInStmt struct {
-		Pos       Pos
+		Pos
 		Variable  string
 		Container Expr
 		Stmts     []Stmt
 	}
 
 	ForInRangeStmt struct {
-		Pos      Pos
+		Pos
 		Variable string
 		FromExpr Expr
 		ToExpr   Expr
@@ -91,24 +91,24 @@ type (
 	}
 
 	BreakStmt struct {
-		Pos Pos
+		Pos
 	}
 
 	GotoStmt struct {
-		Pos   Pos
+		Pos
 		Label string
 	}
 
 	SkipStmt struct {
-		Pos Pos
+		Pos
 	}
 
 	ExprStmt struct {
-		Expr Expr
+		Expr
 	}
 
 	NullStmt struct {
-		Pos Pos
+		Pos
 	}
 )
 
@@ -130,25 +130,6 @@ func (x GotoStmt) statement()         {}
 func (x SkipStmt) statement()         {}
 func (x ExprStmt) statement()         {}
 func (x NullStmt) statement()         {}
-
-func (x LabelledStmt) Position() Pos     { return x.Pos }
-func (x BlockStmt) Position() Pos        { return x.Pos }
-func (x VarDeclStmt) Position() Pos      { return x.Pos }
-func (x IfStmt) Position() Pos           { return x.Pos }
-func (x AssignmentStmt) Position() Pos   { return x.Pos }
-func (x OpAssignmentStmt) Position() Pos { return x.Pos }
-func (x ChoiceStmt) Position() Pos       { return x.Pos }
-func (x RecvStmt) Position() Pos         { return x.Pos }
-func (x PeekStmt) Position() Pos         { return x.Pos }
-func (x SendStmt) Position() Pos         { return x.Pos }
-func (x ForStmt) Position() Pos          { return x.Pos }
-func (x ForInStmt) Position() Pos        { return x.Pos }
-func (x ForInRangeStmt) Position() Pos   { return x.Pos }
-func (x BreakStmt) Position() Pos        { return x.Pos }
-func (x GotoStmt) Position() Pos         { return x.Pos }
-func (x SkipStmt) Position() Pos         { return x.Pos }
-func (x ExprStmt) Position() Pos         { return x.Expr.Position() }
-func (x NullStmt) Position() Pos         { return x.Pos }
 
 func (x RecvStmt) ChannelExpr() Expr { return x.Channel }
 func (x PeekStmt) ChannelExpr() Expr { return x.Channel }
