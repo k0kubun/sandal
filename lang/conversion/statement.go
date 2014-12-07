@@ -152,11 +152,11 @@ func (x *stmtConverter) convertLabelled(stmt LabelledStmt) {
 
 func (x *stmtConverter) convertBlock(stmt BlockStmt) {
 	nextState := x.genNextState()
-	x.pushEnv()
-	for _, stmt := range stmt.Stmts {
-		x.convert(stmt)
-	}
-	x.popEnv()
+	x.withEnv(func(x *stmtConverter) {
+		for _, stmt := range stmt.Stmts {
+			x.convert(stmt)
+		}
+	})
 	x.trans = append(x.trans, intTransition{
 		FromState: x.currentState,
 		NextState: nextState,
@@ -207,11 +207,11 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 	}
 	{
 		x.currentState = trueBranchState
-		x.pushEnv()
-		for _, stmt := range stmt.TrueBranch {
-			x.convert(stmt)
-		}
-		x.popEnv()
+		x.withEnv(func(x *stmtConverter) {
+			for _, stmt := range stmt.TrueBranch {
+				x.convert(stmt)
+			}
+		})
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
 			NextState: nextState,
@@ -219,11 +219,11 @@ func (x *stmtConverter) convertIf(stmt IfStmt) {
 	}
 	{
 		x.currentState = falseBranchState
-		x.pushEnv()
-		for _, stmt := range stmt.FalseBranch {
-			x.convert(stmt)
-		}
-		x.popEnv()
+		x.withEnv(func(x *stmtConverter) {
+			for _, stmt := range stmt.FalseBranch {
+				x.convert(stmt)
+			}
+		})
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
 			NextState: nextState,
@@ -272,11 +272,11 @@ func (x *stmtConverter) convertFor(stmt ForStmt) {
 	savedCurrentState := x.currentState
 	savedBreakState := x.breakToState
 	x.breakToState = x.genNextState()
-	x.pushEnv()
-	for _, stmt := range stmt.Stmts {
-		x.convert(stmt)
-	}
-	x.popEnv()
+	x.withEnv(func(x *stmtConverter) {
+		for _, stmt := range stmt.Stmts {
+			x.convert(stmt)
+		}
+	})
 	x.trans = append(x.trans, intTransition{
 		FromState: x.currentState,
 		NextState: savedCurrentState,
@@ -291,16 +291,16 @@ func (x *stmtConverter) convertForIn(stmt ForInStmt) {
 		savedBreakState := x.breakToState
 		x.breakToState = x.genNextState()
 		for i, elem := range container.RealLiteral.Elems {
-			x.pushEnv()
-			x.env.add(stmt.Variable, ir1PrimitiveVar{
-				fmt.Sprintf("__elem%d_%s", i, container.RealName),
-				elem.GetType(),
-				elem,
+			x.withEnv(func(x *stmtConverter) {
+				x.env.add(stmt.Variable, ir1PrimitiveVar{
+					fmt.Sprintf("__elem%d_%s", i, container.RealName),
+					elem.GetType(),
+					elem,
+				})
+				for _, stmt := range stmt.Stmts {
+					x.convert(stmt)
+				}
 			})
-			for _, stmt := range stmt.Stmts {
-				x.convert(stmt)
-			}
-			x.popEnv()
 		}
 		x.trans = append(x.trans, intTransition{
 			FromState: x.currentState,
@@ -387,6 +387,12 @@ func (x *stmtConverter) popEnv() {
 	x.env = x.env.upper
 }
 
+func (x *stmtConverter) withEnv(f func(*stmtConverter)) {
+	x.pushEnv()
+	f(x)
+	x.popEnv()
+}
+
 func (x *stmtConverter) branched(nextState intState, f func(*stmtConverter)) {
 	currentState := x.currentState
 	choicedState := x.genNextState()
@@ -395,11 +401,11 @@ func (x *stmtConverter) branched(nextState intState, f func(*stmtConverter)) {
 		NextState: choicedState,
 	})
 	x.currentState = choicedState
-	x.pushEnv()
 
-	f(x)
+	x.withEnv(func(x *stmtConverter) {
+		f(x)
+	})
 
-	x.popEnv()
 	x.trans = append(x.trans, intTransition{
 		FromState: x.currentState,
 		NextState: nextState,
