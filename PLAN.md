@@ -93,8 +93,8 @@ proc SendProc(ch channel { bool }) {
 
 ## マイルストン
 
-1. statementの障害遷移を定義する構文を追加する。statementの還元規則でfault markerを追加可能にする。
-2. recvやsend内でのchannel操作を再現するstatementを追加し、障害定義の幅を広げる。
+1. ~~statementの障害遷移を定義する構文を追加する。statementの還元規則でfault markerを追加可能にする。~~
+2. ~~recvやsend内でのchannel操作を再現するstatementを追加し、障害定義の幅を広げる。~~
 3. 拡張した構文で追加した障害を用い、リードソロモン符号やByzantine Fault Tolerantなアルゴリズムを検査する。
 4. 変数用の障害定義構文を導入する。
 5. チャネルの挙動を再現するstatementを追加する。チャネル用の障害定義構文を導入する。
