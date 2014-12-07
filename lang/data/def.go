@@ -1,5 +1,9 @@
 package data
 
+import (
+	"fmt"
+)
+
 type (
 	Def interface {
 		Position() Pos
@@ -67,3 +71,7 @@ func (x InitBlock) definition()   {}
 func (x LtlSpec) definition()     {}
 
 func (x LtlSpec) Position() Pos { panic("not implemented") }
+
+func (x ConstantDef) String() string {
+	return fmt.Sprintf("const %s %s = %s;", x.Name, x.Type, x.Expr)
+}

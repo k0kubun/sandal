@@ -1,7 +1,8 @@
 package data
 
-// ========================================
-// Misc
+import (
+	"strings"
+)
 
 type (
 	Type interface {
@@ -100,4 +101,37 @@ func (x BufferedChannelType) Equal(ty Type) bool {
 	} else {
 		return false
 	}
+}
+
+func (x NamedType) String() string { return x.Name }
+func (x ArrayType) String() string { return "[]" + x.ElemType.String() }
+
+func (x CallableType) String() string {
+	params := []string{}
+	for _, param := range x.Parameters {
+		params = append(params, param.String())
+	}
+	return "callable(" + strings.Join(params, ", ") + ")"
+}
+
+func (x HandshakeChannelType) String() string {
+	elems := []string{}
+	for _, elem := range x.Elems {
+		elems = append(elems, elem.String())
+	}
+	return "channel {" + strings.Join(elems, ", ") + "}"
+}
+
+func (x BufferedChannelType) String() string {
+	bufsize := ""
+	if x.BufferSize != nil {
+		bufsize = x.BufferSize.String()
+	}
+
+	elems := []string{}
+	for _, elem := range x.Elems {
+		elems = append(elems, elem.String())
+	}
+
+	return "channel [" + bufsize + "] {" + strings.Join(elems, ", ") + "}"
 }
