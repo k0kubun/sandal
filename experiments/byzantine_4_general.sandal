@@ -3,34 +3,53 @@ data Command {
 	Retreat,
 }
 
-proc LoyalGeneral(ch channel { Command }) {
+proc LoyalGeneral(chRecvs []channel { Command }, chSends []channel { Command }) {
 	var proposal Command
-	var decision Command
-
 	choice {
 		proposal = Attack
 	}, {
 		proposal = Retreat
 	}
+
+	for ch in chSends {
+		send(ch, proposal)
+	}
+
+	for ch in chRecvs {
+		var resp Command
+		recv(ch, resp)
+	}
+
+	var decision Command
 }
 
-proc Traitor(ch channel { Command }) {
+proc Traitor(chRecvs []channel { Command }, chSends []channel { Command }) {
 	var proposal Command
-	var decision Command
-
 	choice {
 		proposal = Attack
 	}, {
 		proposal = Retreat
 	}
+
+	for ch in chSends {
+		send(ch, proposal)
+	}
+
+	for ch in chRecvs {
+		var resp Command
+		recv(ch, resp)
+	}
+
+	var decision Command
 }
 
 init {
-	ch : channel { Command },
-	gen1 : LoyalGeneral(ch),
-	gen2 : LoyalGeneral(ch),
-	gen3 : LoyalGeneral(ch),
-	traitor : Traitor(ch),
+	ch1 : channel { Command },
+	ch2 : channel { Command },
+	gen1 : LoyalGeneral([ch1], [ch2]),
+	gen2 : LoyalGeneral([ch1], [ch2]),
+	gen3 : LoyalGeneral([ch2], [ch1]),
+	traitor : Traitor([ch2], [ch1]),
 }
 
 ltl {
