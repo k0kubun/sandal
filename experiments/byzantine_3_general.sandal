@@ -1,0 +1,84 @@
+data Command {
+	Attack,
+	Retreat,
+}
+
+proc General(chSend1 channel { Command }, chSend2 channel { Command }, chRecv1 channel { Command }, chRecv2 channel { Command }) {
+	var proposal Command
+	choice {
+		proposal = Attack
+	}, {
+		proposal = Retreat
+	}
+
+	// proposal exchange
+	send(chSend1, proposal)
+	send(chSend2, proposal)
+
+	var resp1 Command
+	var resp2 Command
+	recv(chRecv1, resp1)
+	recv(chRecv2, resp2)
+
+	// result exchange
+	send(chSend1, proposal)
+	send(chSend1, resp1)
+	send(chSend1, resp2)
+	send(chSend2, proposal)
+	send(chSend2, resp1)
+	send(chSend2, resp2)
+
+	var resp1_1 Command
+	var resp1_2 Command
+	var resp1_3 Command
+	recv(chRecv1, resp1_1)
+	recv(chRecv1, resp1_2)
+	recv(chRecv1, resp1_3)
+
+	var resp2_1 Command
+	var resp2_2 Command
+	var resp2_3 Command
+	recv(chRecv2, resp2_1)
+	recv(chRecv2, resp2_2)
+	recv(chRecv2, resp2_3)
+
+	// proposal calculation
+	var prop1 Command
+	if (resp1_1 == Attack && resp1_2 == Attack) || (resp1_2 == Attack && resp1_3 == Attack) || (resp1_3 == Attack && resp1_1 == Attack) {
+		prop1 = Attack
+	} else {
+		prop1 = Retreat
+	}
+
+	var prop2 Command
+	if (resp2_1 == Attack && resp2_2 == Attack) || (resp2_2 == Attack && resp2_3 == Attack) || (resp2_3 == Attack && resp2_1 == Attack) {
+		prop2 = Attack
+	} else {
+		prop2 = Retreat
+	}
+
+	// final decision
+	var decision Command
+	if (proposal == Attack && prop1 == Attack) || (prop1 == Attack && prop2 == Attack) || (prop2 == Attack && proposal == Attack) {
+		decision = Attack
+	} else {
+		decision = Retreat
+	}
+}
+
+init {
+	ch1_2 : channel { Command },
+	ch1_3 : channel { Command },
+	ch2_1 : channel { Command },
+	ch2_3 : channel { Command },
+	ch3_1 : channel { Command },
+	ch3_2 : channel { Command },
+
+	gen1 : General(ch1_2, ch1_3, ch2_1, ch3_1),
+	gen2 : General(ch2_1, ch2_3, ch1_2, ch3_2),
+	gen3 : General(ch3_1, ch3_2, ch1_3, ch2_3),
+}
+
+ltl {
+	F(gen1.decision == gen2.decision && gen2.decision == gen3.decision)
+}
