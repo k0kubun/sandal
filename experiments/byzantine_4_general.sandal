@@ -1,21 +1,38 @@
-proc ReliableGeneral(ch channel { bool }) {
-	var a bool
-	a = true
+data Command {
+	Attack,
+	Retreat,
 }
 
-proc BetrayalGeneral(ch channel { bool }) {
-	var b bool
-	b = true
+proc LoyalGeneral(ch channel { Command }) {
+	var proposal Command
+	var decision Command
+
+	choice {
+		proposal = Attack
+	}, {
+		proposal = Retreat
+	}
+}
+
+proc Traitor(ch channel { Command }) {
+	var proposal Command
+	var decision Command
+
+	choice {
+		proposal = Attack
+	}, {
+		proposal = Retreat
+	}
 }
 
 init {
-	ch    : channel { bool },
-	rgen1 : ReliableGeneral(ch),
-	rgen2 : ReliableGeneral(ch),
-	rgen3 : ReliableGeneral(ch),
-	bgen  : BetrayalGeneral(ch),
+	ch : channel { Command },
+	gen1 : LoyalGeneral(ch),
+	gen2 : LoyalGeneral(ch),
+	gen3 : LoyalGeneral(ch),
+	traitor : Traitor(ch),
 }
 
 ltl {
-	F (rgen1.a)
+	F (gen1.proposal == Attack || gen1.proposal == Retreat)
 }
