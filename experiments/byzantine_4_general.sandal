@@ -1,0 +1,21 @@
+proc ReliableGeneral(ch channel { bool }) {
+	var a bool
+	a = true
+}
+
+proc BetrayalGeneral(ch channel { bool }) {
+	var b bool
+	b = true
+}
+
+init {
+	ch    : channel { bool },
+	rgen1 : ReliableGeneral(ch),
+	rgen2 : ReliableGeneral(ch),
+	rgen3 : ReliableGeneral(ch),
+	bgen  : BetrayalGeneral(ch),
+}
+
+ltl {
+	F (rgen1.a)
+}
