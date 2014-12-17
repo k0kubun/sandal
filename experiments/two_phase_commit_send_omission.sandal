@@ -1,3 +1,7 @@
+fault send(ch channel { Response }, resp Response) @omission {
+	// do nothing
+}
+
 data Response {
   Ready,
   NotReady,
@@ -7,7 +11,7 @@ data Response {
 
 proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
   for ch in chSends {
-    send(ch, Ready)
+    send(ch, Ready) @omission
   }
   var all_ready bool = true
   for ch in chRecvs {
@@ -19,11 +23,11 @@ proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
   }
   if all_ready {
     for ch in chSends {
-      send(ch, Commit)
+      send(ch, Commit) @omission
     }
   } else {
     for ch in chSends {
-      send(ch, Abort)
+      send(ch, Abort) @omission
     }
   }
 }
@@ -32,9 +36,9 @@ proc Worker(chRecv channel { Response }, chSend channel { Response }) {
   var resp Response
   recv(chRecv, resp)
   choice {
-    send(chSend, NotReady)
+    send(chSend, NotReady) @omission
   }, {
-    send(chSend, Ready)
+    send(chSend, Ready) @omission
   }
   recv(chRecv, resp)
 }
