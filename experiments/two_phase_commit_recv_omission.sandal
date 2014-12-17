@@ -1,3 +1,7 @@
+fault recv(ch channel { Response }, resp Response) @omission {
+	// do nothing
+}
+
 data Response {
   Ready,
   NotReady,
@@ -12,7 +16,7 @@ proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
   var all_ready bool = true
   for ch in chRecvs {
     var resp Response
-    recv(ch, resp)
+    recv(ch, resp) @omission
     if resp != Ready {
       all_ready = false
     }
@@ -30,13 +34,13 @@ proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
 
 proc Worker(chRecv channel { Response }, chSend channel { Response }) {
   var resp Response
-  recv(chRecv, resp)
+  recv(chRecv, resp) @omission
   choice {
     send(chSend, NotReady)
   }, {
     send(chSend, Ready)
   }
-  recv(chRecv, resp)
+  recv(chRecv, resp) @omission
 }
 
 init {
