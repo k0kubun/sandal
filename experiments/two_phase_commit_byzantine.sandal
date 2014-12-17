@@ -1,3 +1,11 @@
+fault send(ch channel { Response }, resp Response) @byzantine {
+	choice {
+		send(ch, Commit)
+	}, {
+		send(ch, Abort)
+	}
+}
+
 data Response {
   Ready,
   NotReady,
@@ -19,11 +27,11 @@ proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
   }
   if all_ready {
     for ch in chSends {
-      send(ch, Commit)
+      send(ch, Commit) @byzantine
     }
   } else {
     for ch in chSends {
-      send(ch, Abort)
+      send(ch, Abort) @byzantine
     }
   }
 }
