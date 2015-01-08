@@ -1,0 +1,23 @@
+data Command {
+	Attack,
+	Retreat,
+}
+
+proc General(ch channel { Command }) {
+	var decision Command = Attack
+}
+
+proc Traitor(ch channel { Command }) {
+	var decision Command = Attack
+}
+
+init {
+	ch : channel { Command },
+	gen1 : General(ch),
+	gen2 : General(ch),
+	trt1 : Traitor(ch),
+}
+
+ltl {
+	F(gen1.decision == gen2.decision && gen2.decision == trt1.decision)
+}
