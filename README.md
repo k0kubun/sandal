@@ -20,6 +20,21 @@ To see model checking result, you have to pipe sandal's stdout to NuSMV
 $ sandal your_model.sandal | nusmv
 ```
 
+### Fault Definition
+
+Fault definition is an additional feature of this fork.
+You can inject an unusual behavior to some statements non-deteministically.
+
+```go
+fault send(ch channel { bool }, val bool) @omission {
+  // omit to send
+}
+
+proc Worker(ch channel { bool }) {
+  send(ch, true) @omission
+}
+```
+
 ### Debug
 
 You can dump AST, IR1 and IR2 with this forked version.
@@ -47,7 +62,3 @@ $ sandal -g your_model.sandal | dot -Tpng -o trans.png
 $ go build
 $ ./run_test.sh
 ```
-
-## Planned features
-
-- You can define orignal faults for any processes, channels or functions
