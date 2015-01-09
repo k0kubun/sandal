@@ -3,18 +3,113 @@ data Command {
 	Retreat,
 }
 
-proc General(ch channel { Command }) {
-	var decision Command = Attack
+proc General(sendCh channel [] { Command }, recvCh channel [] { Command }) {
+	var proposal Command
+	choice {
+		proposal = Attack
+	}, {
+		proposal = Retreat
+	}
+
+	// exchange proposal
+	send(sendCh, proposal)
+
+	var resp1_1 Command = proposal
+	var resp2_1 Command
+	recv(recvCh, resp2_1)
+
+	// share receive results
+	send(sendCh, resp1_1)
+	send(sendCh, resp2_1)
+
+	var resp1_2 Command
+	var resp2_2 Command
+	recv(recvCh, resp1_2)
+	recv(recvCh, resp2_2)
+
+	// calc proposal
+	var prop1 Command
+	var prop2 Command
+	if resp1_1 == Attack && resp1_2 == Attack {
+		prop1 = Attack
+	} else {
+		prop1 = Retreat
+	}
+
+	if resp2_1 == Attack && resp2_2 == Attack {
+		prop2 = Attack
+	} else {
+		prop2 = Retreat
+	}
+
+	var decision Command
+	if prop1 == Attack && prop2 == Attack {
+		decision = Attack
+	} else {
+		decision = Retreat
+	}
 }
 
-proc Traitor(ch channel { Command }) {
-	var decision Command = Attack
+proc Traitor(sendCh channel [] { Command }, recvCh channel [] { Command }) {
+	var proposal Command
+	choice {
+		proposal = Attack
+	}, {
+		proposal = Retreat
+	}
+
+	// exchange proposal
+	send(sendCh, proposal) @byzantine
+
+	var resp1_1 Command = proposal
+	var resp2_1 Command
+	recv(recvCh, resp2_1)
+
+	// share receive results
+	send(sendCh, resp1_1) @byzantine
+	send(sendCh, resp2_1) @byzantine
+
+	var resp1_2 Command
+	var resp2_2 Command
+	recv(recvCh, resp1_2)
+	recv(recvCh, resp2_2)
+
+	// calc proposal
+	var prop1 Command
+	var prop2 Command
+	if resp1_1 == Attack && resp1_2 == Attack {
+		prop1 = Attack
+	} else {
+		prop1 = Retreat
+	}
+
+	if resp2_1 == Attack && resp2_2 == Attack {
+		prop2 = Attack
+	} else {
+		prop2 = Retreat
+	}
+
+	var decision Command
+	if prop1 == Attack && prop2 == Attack {
+		decision = Attack
+	} else {
+		decision = Retreat
+	}
+}
+
+fault send(sendCh channel [] { Command }, val Command) @byzantine {
+	choice {
+		send(sendCh, Attack)
+	}, {
+		send(sendCh, Retreat)
+	}
 }
 
 init {
-	ch : channel { Command },
-	gen1 : General(ch),
-	trt1 : Traitor(ch),
+	ch1 : channel [2] { Command },
+	ch2 : channel [2] { Command },
+	gen1 : General(ch1, ch2),
+	trt1 : Traitor(ch2, ch1),
 }
 
 ltl {
