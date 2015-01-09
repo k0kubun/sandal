@@ -3,22 +3,118 @@ data Command {
 	Retreat,
 }
 
-proc General(ch channel { Command }) {
-	var decision Command = Attack
-}
+proc General(chSend1 channel [] { Command }, chSend2 channel [] { Command }, chSend3 channel [] { Command }, chRecv1 channel [] { Command }, chRecv2 channel [] { Command }, chRecv3 channel [] { Command }) {
+	var proposal Command
+	choice {
+		proposal = Attack
+	}, {
+		proposal = Retreat
+	}
 
-proc Traitor(ch channel { Command }) {
-	var decision Command = Attack
+	// proposal exchange
+	send(chSend1, proposal)
+	send(chSend2, proposal)
+	send(chSend3, proposal)
+
+	var resp1 Command
+	var resp2 Command
+	var resp3 Command
+	recv(chRecv1, resp1)
+	recv(chRecv2, resp2)
+	recv(chRecv3, resp2)
+
+	// result exchange
+	send(chSend1, proposal)
+	send(chSend1, resp1)
+	send(chSend1, resp2)
+	send(chSend1, resp3)
+	send(chSend2, proposal)
+	send(chSend2, resp1)
+	send(chSend2, resp2)
+	send(chSend2, resp3)
+	send(chSend3, proposal)
+	send(chSend3, resp1)
+	send(chSend3, resp2)
+	send(chSend3, resp3)
+
+	var resp1_1 Command
+	var resp1_2 Command
+	var resp1_3 Command
+	var resp1_4 Command
+	recv(chRecv1, resp1_1)
+	recv(chRecv1, resp1_2)
+	recv(chRecv1, resp1_3)
+	recv(chRecv1, resp1_4)
+
+	var resp2_1 Command
+	var resp2_2 Command
+	var resp2_3 Command
+	var resp2_4 Command
+	recv(chRecv2, resp2_1)
+	recv(chRecv2, resp2_2)
+	recv(chRecv2, resp2_3)
+	recv(chRecv2, resp2_4)
+
+	var resp3_1 Command
+	var resp3_2 Command
+	var resp3_3 Command
+	var resp3_4 Command
+	recv(chRecv3, resp3_1)
+	recv(chRecv3, resp3_2)
+	recv(chRecv3, resp3_3)
+	recv(chRecv3, resp3_4)
+
+	// proposal calculation
+	var prop1 Command
+  if (resp1_1 == Attack && resp1_2 == Attack) || (resp1_1 == Attack && resp1_3 == Attack) || (resp1_1 == Attack && resp1_4 == Attack) || (resp1_2 == Attack && resp1_3 == Attack) || (resp1_2 == Attack && resp1_4 == Attack) || (resp1_3 == Attack && resp1_4 == Attack) {
+		prop1 = Attack
+	} else {
+		prop1 = Retreat
+	}
+
+	var prop2 Command
+  if (resp2_1 == Attack && resp2_2 == Attack) || (resp2_1 == Attack && resp2_3 == Attack) || (resp2_1 == Attack && resp2_4 == Attack) || (resp2_2 == Attack && resp2_3 == Attack) || (resp2_2 == Attack && resp2_4 == Attack) || (resp2_3 == Attack && resp2_4 == Attack) {
+		prop2 = Attack
+	} else {
+		prop2 = Retreat
+	}
+
+	var prop3 Command
+	if (resp3_1 == Attack && resp3_2 == Attack) || (resp3_1 == Attack && resp3_3 == Attack) || (resp3_1 == Attack && resp3_4 == Attack) || (resp3_2 == Attack && resp3_3 == Attack) || (resp3_2 == Attack && resp3_4 == Attack) || (resp3_3 == Attack && resp3_4 == Attack) {
+		prop3 = Attack
+	} else {
+		prop3 = Retreat
+	}
+
+	// final decision
+	var decision Command
+  if (proposal == Attack && prop1 == Attack) || (proposal == Attack && prop2 == Attack) || (proposal == Attack && prop3 == Attack) || (prop1 == Attack && prop2 == Attack) || (prop1 == Attack && prop3 == Attack) || (prop2 == Attack && prop3 == Attack) {
+		decision = Attack
+	} else {
+		decision = Retreat
+	}
 }
 
 init {
-	ch : channel { Command },
-	gen1 : General(ch),
-	gen2 : General(ch),
-	gen3 : General(ch),
-	trt1 : Traitor(ch),
+	ch1_2 : channel [12] { Command },
+	ch1_3 : channel [12] { Command },
+	ch1_4 : channel [12] { Command },
+	ch2_1 : channel [12] { Command },
+	ch2_3 : channel [12] { Command },
+	ch2_4 : channel [12] { Command },
+	ch3_1 : channel [12] { Command },
+	ch3_2 : channel [12] { Command },
+	ch3_4 : channel [12] { Command },
+	ch4_1 : channel [12] { Command },
+	ch4_2 : channel [12] { Command },
+	ch4_3 : channel [12] { Command },
+
+	gen1 : General(ch1_2, ch1_3, ch1_4, ch2_1, ch3_1, ch4_1),
+	gen2 : General(ch2_1, ch2_3, ch2_4, ch1_2, ch3_2, ch4_2),
+	gen3 : General(ch3_1, ch3_2, ch3_4, ch1_3, ch2_3, ch4_3),
+	trt1 : General(ch3_1, ch3_2, ch3_4, ch1_3, ch2_3, ch4_3),
 }
 
 ltl {
-	F(gen1.decision == gen2.decision && gen2.decision == gen3.decision && gen3.decision == trt1.decision)
+	F(gen1.decision == gen2.decision && gen2.decision == gen3.decision)
 }
