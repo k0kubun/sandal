@@ -7,7 +7,7 @@ data Response {
 
 proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
   for ch in chSends {
-    send(ch, Ready)
+    send(ch, Ready) @drop
   }
   var all_ready bool = true
   for ch in chRecvs {
@@ -19,11 +19,11 @@ proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
   }
   if all_ready {
     for ch in chSends {
-      send(ch, Commit)
+      send(ch, Commit) @drop
     }
   } else {
     for ch in chSends {
-      send(ch, Abort)
+      send(ch, Abort) @drop
     }
   }
 }
@@ -32,11 +32,15 @@ proc Worker(chRecv channel { Response }, chSend channel { Response }) {
   var resp Response
   recv(chRecv, resp)
   choice {
-    send(chSend, NotReady)
+    send(chSend, NotReady) @drop
   }, {
-    send(chSend, Ready)
+    send(chSend, Ready) @drop
   }
   recv(chRecv, resp)
+}
+
+fault send(ch channel { Response }, val Response) @drop {
+	// send message drop
 }
 
 init {

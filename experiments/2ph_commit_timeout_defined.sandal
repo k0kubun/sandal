@@ -12,7 +12,8 @@ proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
   var all_ready bool = true
   for ch in chRecvs {
     var resp Response
-    var recved bool = timeout_recv(ch, resp)
+		var recved bool = true
+		recv(ch, resp) @timeout
     if !recved || (recved && resp != Ready) {
       all_ready = false
     }
@@ -26,6 +27,11 @@ proc Arbiter(chRecvs []channel { Response }, chSends []channel { Response }) {
       send(ch, Abort)
     }
   }
+}
+
+fault recv(ch channel { Reesponse }, resp Response) @timeout {
+	// timeout to receive
+	recved = false
 }
 
 proc Worker(chRecv channel { Response }, chSend channel { Response }) {
