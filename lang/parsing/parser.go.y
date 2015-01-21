@@ -548,6 +548,10 @@ ltl_expr: ltl_atom
 	{
 		$$ = data.BinOpLtlExpr{Operator: "=", LHS: $1, RHS: $3}
 	}
+	| ltl_expr NEQ ltl_expr
+	{
+		$$ = data.BinOpLtlExpr{Operator: "!=", LHS: $1, RHS: $3}
+	}
 	| ltl_expr 'U' ltl_expr
 	{
 		$$ = data.BinOpLtlExpr{Operator: "U", LHS: $1, RHS: $3}
