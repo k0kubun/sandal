@@ -1,0 +1,23 @@
+*** This is NuSMV 2.5.4 (compiled on Wed Dec 28 13:57:49 UTC 2011)
+*** Enabled addons are: compass
+*** For more information on NuSMV see <http://nusmv.fbk.eu>
+*** or email to <nusmv-users@list.fbk.eu>.
+*** Please report bugs to <nusmv-users@fbk.eu>
+
+*** Copyright (c) 2010, Fondazione Bruno Kessler
+
+*** This version of NuSMV is linked to the CUDD library version 2.4.1
+*** Copyright (c) 1995-2004, Regents of the University of Colorado
+
+*** This version of NuSMV is linked to the MiniSat SAT solver.
+*** See http://www.cs.chalmers.se/Cs/Research/FormalMethods/MiniSat
+*** Copyright (c) 2003-2005, Niklas Een, Niklas Sorensson
+
+WARNING *** Processes are still supported, but deprecated.      ***
+WARNING *** In the future processes may be no longer supported. ***
+
+WARNING *** The model contains PROCESSes or ISAs. ***
+WARNING *** The HRC hierarchy will not be usable. ***
+-- specification  F ((((((sd.b1 = rv.b1 & sd.b2 = rv.b2) & sd.b3 = rv.b3) & sd.b4 = rv.b4) & sd.b5 = rv.b5) & sd.b6 = rv.b6) & sd.b7 = rv.b7)  is true
+797.15user 0.04system 13:19.84elapsed 99%CPU (0avgtext+0avgdata 657568maxresident)k
+0inputs+16outputs (0major+46624minor)pagefaults 0swaps
