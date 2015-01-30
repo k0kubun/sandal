@@ -67,44 +67,48 @@ proc Sender(ch channel { bool }) {
 
 fault block @bitflip2 {
 	choice {
-		b1 = !b1
+		send(ch, !b1); send(ch, !b2); send(ch, b3); send(ch, b4); send(ch, b5); send(ch, b6); send(ch, b7)
 	}, {
-		b2 = !b2
+		send(ch, !b1); send(ch, b2); send(ch, !b3); send(ch, b4); send(ch, b5); send(ch, b6); send(ch, b7)
 	}, {
-		b3 = !b3
+		send(ch, !b1); send(ch, b2); send(ch, b3); send(ch, !b4); send(ch, b5); send(ch, b6); send(ch, b7)
 	}, {
-		b4 = !b4
+		send(ch, !b1); send(ch, b2); send(ch, b3); send(ch, b4); send(ch, !b5); send(ch, b6); send(ch, b7)
 	}, {
-		b5 = !b5
+		send(ch, !b1); send(ch, b2); send(ch, b3); send(ch, b4); send(ch, b5); send(ch, !b6); send(ch, b7)
 	}, {
-		b6 = !b6
+		send(ch, !b1); send(ch, b2); send(ch, b3); send(ch, b4); send(ch, b5); send(ch, b6); send(ch, !b7)
 	}, {
-		b7 = !b7
+		send(ch, b1); send(ch, !b2); send(ch, !b3); send(ch, b4); send(ch, b5); send(ch, b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, !b2); send(ch, b3); send(ch, !b4); send(ch, b5); send(ch, b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, !b2); send(ch, b3); send(ch, b4); send(ch, !b5); send(ch, b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, !b2); send(ch, b3); send(ch, b4); send(ch, b5); send(ch, !b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, !b2); send(ch, b3); send(ch, b4); send(ch, b5); send(ch, b6); send(ch, !b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, !b3); send(ch, !b4); send(ch, b5); send(ch, b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, !b3); send(ch, b4); send(ch, !b5); send(ch, b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, !b3); send(ch, b4); send(ch, b5); send(ch, !b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, !b3); send(ch, b4); send(ch, b5); send(ch, b6); send(ch, !b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, b3); send(ch, !b4); send(ch, !b5); send(ch, b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, b3); send(ch, !b4); send(ch, b5); send(ch, !b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, b3); send(ch, !b4); send(ch, b5); send(ch, b6); send(ch, !b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, b3); send(ch, b4); send(ch, !b5); send(ch, !b6); send(ch, b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, b3); send(ch, b4); send(ch, !b5); send(ch, b6); send(ch, !b7)
+	}, {
+		send(ch, b1); send(ch, b2); send(ch, b3); send(ch, b4); send(ch, b5); send(ch, !b6); send(ch, !b7)
 	}
-
-	choice {
-		b1 = !b1
-	}, {
-		b2 = !b2
-	}, {
-		b3 = !b3
-	}, {
-		b4 = !b4
-	}, {
-		b5 = !b5
-	}, {
-		b6 = !b6
-	}, {
-		b7 = !b7
-	}
-
-	send(ch, b1)
-	send(ch, b2)
-	send(ch, b3)
-	send(ch, b4)
-	send(ch, b5)
-	send(ch, b6)
-	send(ch, b7)
 }
 
 proc Receiver(ch channel { bool }) {
