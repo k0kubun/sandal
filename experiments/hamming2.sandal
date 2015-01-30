@@ -1,0 +1,159 @@
+proc Sender(ch channel { bool }) {
+	var b1 bool; var b2 bool; var b3 bool; var b4 bool; var b5 bool; var b6 bool; var b7 bool
+
+	// codeword:
+	//
+	// 0000000
+	// 1000110
+	// 0100011
+	// 0010101
+	// 0001111
+	// 1100101
+	// 1010011
+	// 1001001
+	// 0110110
+	// 0101100
+	// 0011010
+	// 1110000
+	// 1101010
+	// 1011100
+	// 0111001
+	// 1111111
+	//
+	choice {
+		b1 = false; b2 = false; b3 = false; b4 = false; b5 = false; b6 = false; b7 = false
+	}, {
+		b1 = true;  b2 = false; b3 = false; b4 = false; b5 = true;  b6 = true;  b7 = false
+	}, {
+		b1 = false; b2 = true;  b3 = false; b4 = false; b5 = false; b6 = true;  b7 = true
+	}, {
+		b1 = false; b2 = false; b3 = true;  b4 = false; b5 = true;  b6 = false; b7 = true
+	}, {
+		b1 = false; b2 = false; b3 = false; b4 = true;  b5 = true;  b6 = true;  b7 = true
+	}, {
+		b1 = true;  b2 = true;  b3 = false; b4 = false; b5 = true;  b6 = false; b7 = true
+	}, {
+		b1 = true;  b2 = false; b3 = true;  b4 = false; b5 = false; b6 = true;  b7 = true
+	}, {
+		b1 = true;  b2 = false; b3 = false; b4 = true;  b5 = false; b6 = false; b7 = true
+	}, {
+		b1 = false; b2 = true;  b3 = true;  b4 = false; b5 = true;  b6 = true;  b7 = false
+	}, {
+		b1 = false; b2 = true;  b3 = false; b4 = true;  b5 = true;  b6 = false; b7 = false
+	}, {
+		b1 = false; b2 = false; b3 = true;  b4 = true;  b5 = false; b6 = true;  b7 = false
+	}, {
+		b1 = true;  b2 = true;  b3 = true;  b4 = false; b5 = false; b6 = false; b7 = false
+	}, {
+		b1 = true;  b2 = true;  b3 = false; b4 = true;  b5 = false; b6 = true;  b7 = false
+	}, {
+		b1 = true;  b2 = false; b3 = true;  b4 = true;  b5 = true;  b6 = false; b7 = false
+	}, {
+		b1 = false; b2 = true;  b3 = true;  b4 = true;  b5 = false; b6 = false; b7 = true
+	}, {
+		b1 = true;  b2 = true;  b3 = true;  b4 = true;  b5 = true;  b6 = true;  b7 = true
+	}
+
+	{
+		send(ch, b1)
+		send(ch, b2)
+		send(ch, b3)
+		send(ch, b4)
+		send(ch, b5)
+		send(ch, b6)
+		send(ch, b7)
+	} @bitflip2
+}
+
+fault block @bitflip2 {
+	choice {
+		b1 = !b1
+	}, {
+		b2 = !b2
+	}, {
+		b3 = !b3
+	}, {
+		b4 = !b4
+	}, {
+		b5 = !b5
+	}, {
+		b6 = !b6
+	}, {
+		b7 = !b7
+	}
+
+	choice {
+		b1 = !b1
+	}, {
+		b2 = !b2
+	}, {
+		b3 = !b3
+	}, {
+		b4 = !b4
+	}, {
+		b5 = !b5
+	}, {
+		b6 = !b6
+	}, {
+		b7 = !b7
+	}
+
+	send(ch, b1)
+	send(ch, b2)
+	send(ch, b3)
+	send(ch, b4)
+	send(ch, b5)
+	send(ch, b6)
+	send(ch, b7)
+}
+
+proc Receiver(ch channel { bool }) {
+	var b1 bool; var b2 bool; var b3 bool; var b4 bool; var b5 bool; var b6 bool; var b7 bool
+	recv(ch, b1)
+	recv(ch, b2)
+	recv(ch, b3)
+	recv(ch, b4)
+	recv(ch, b5)
+	recv(ch, b6)
+	recv(ch, b7)
+
+	//     |1 0 1 1 1 0 0|T
+	// H = |1 1 0 1 0 1 0|
+	//     |0 1 1 1 0 0 1|
+	var mul1 bool; var mul2 bool; var mul3 bool;
+	mul1 = b1 != b3 != b4 != b5
+	mul2 = b1 != b2 != b4 != b6
+	mul3 = b2 != b3 != b4 != b7
+
+	if mul1 == true && mul2 == true && mul3 == false {
+		b1 = !b1
+	}
+	if mul1 == false && mul2 == true && mul3 == true {
+		b2 = !b2
+	}
+	if mul1 == true && mul2 == false && mul3 == true {
+		b3 = !b3
+	}
+	if mul1 == true && mul2 == true && mul3 == true {
+		b4 = !b4
+	}
+	if mul1 == true && mul2 == false && mul3 == false {
+		b5 = !b5
+	}
+	if mul1 == false && mul2 == true && mul3 == false {
+		b6 = !b6
+	}
+	if mul1 == false && mul2 == false && mul3 == true {
+		b7 = !b7
+	}
+}
+
+init {
+	ch : channel { bool },
+	sd : Sender(ch),
+	rv : Receiver(ch),
+}
+
+ltl {
+	F(sd.b1 == rv.b1 && sd.b2 == rv.b2 && sd.b3 == rv.b3 && sd.b4 == rv.b4 && sd.b5 == rv.b5 && sd.b6 == rv.b6 && sd.b7 == rv.b7)
+}
