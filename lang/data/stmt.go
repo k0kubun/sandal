@@ -22,6 +22,7 @@ type (
 	BlockStmt struct {
 		Pos
 		Stmts []Stmt
+		Tags
 	}
 
 	VarDeclStmt struct {
@@ -122,7 +123,6 @@ type (
 
 func (x Tags) FaultMarkers() []string             { return []string(x) }
 func (x LabelledStmt) FaultMarkers() []string     { return []string{} }
-func (x BlockStmt) FaultMarkers() []string        { return []string{} }
 func (x VarDeclStmt) FaultMarkers() []string      { return []string{} }
 func (x IfStmt) FaultMarkers() []string           { return []string{} }
 func (x AssignmentStmt) FaultMarkers() []string   { return []string{} }

@@ -20,7 +20,7 @@ func TestDefStringify(t *testing.T) {
 
 func TestStmtStringify(t *testing.T) {
 	expectString(t, LabelledStmt{Pos{}, "label", ExprStmt{NumberExpr{Pos{}, "1"}}}, "label: 1;")
-	expectString(t, BlockStmt{Pos{}, []Stmt{SkipStmt{}, NullStmt{}}}, "{ skip; ; };")
+	expectString(t, BlockStmt{Pos{}, []Stmt{SkipStmt{}, NullStmt{}}, []string{}}, "{ skip; ; };")
 	expectString(t, VarDeclStmt{Pos{}, "a", NamedType{"int"}, NumberExpr{Pos{}, "1"}}, "var a int = 1;")
 	expectString(t, VarDeclStmt{Pos{}, "a", NamedType{"int"}, nil}, "var a int;")
 	expectString(t, IfStmt{Pos{}, IdentifierExpr{Pos{}, "a"}, []Stmt{SkipStmt{}}, nil}, "if a { skip; };")
@@ -30,8 +30,8 @@ func TestStmtStringify(t *testing.T) {
 	expectString(t, OpAssignmentStmt{Pos{}, "a", "+", NumberExpr{Pos{}, "1"}}, "a += 1;")
 	expectString(t,
 		ChoiceStmt{Pos{}, []BlockStmt{
-			BlockStmt{Pos{}, []Stmt{SkipStmt{}}},
-			BlockStmt{Pos{}, []Stmt{ExprStmt{NumberExpr{Pos{}, "1"}}}}}},
+			BlockStmt{Pos{}, []Stmt{SkipStmt{}}, []string{}},
+			BlockStmt{Pos{}, []Stmt{ExprStmt{NumberExpr{Pos{}, "1"}}}, []string{}}}},
 		"choice { skip; }, { 1; };")
 	expectString(t, RecvStmt{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}, []string{}}, "recv(ch, a);")
 	expectString(t, PeekStmt{Pos{}, IdentifierExpr{Pos{}, "ch"}, []Expr{IdentifierExpr{Pos{}, "a"}}}, "peek(ch, a);")

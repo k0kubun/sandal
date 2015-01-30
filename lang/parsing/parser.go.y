@@ -112,6 +112,7 @@ type token struct {
 %token<tok> ELSE
 %token<tok> CHOICE
 %token<tok> RECV
+%token<tok> BLOCK
 %token<tok> TIMEOUT_RECV
 %token<tok> NONBLOCK_RECV
 %token<tok> PEEK
@@ -215,6 +216,10 @@ fault_def
 	{
 		$$ = data.FaultDef{Pos: $1.pos, Name: $2.lit, Parameters: $4, Tag: $6, Stmts: $8}
 	}
+	| FAULT BLOCK tag '{' statements_zero '}' ';'
+	{
+		$$ = data.FaultDef{Pos: $1.pos, Name: $2.lit, Parameters: []data.Parameter{}, Tag: $3, Stmts: $5}
+	}
 
 init_block
 	: INIT '{' initvars_zero '}' ';'
@@ -280,9 +285,9 @@ statement
 	{
 		$$ = data.LabelledStmt{Pos: $1.pos, Label: $1.lit, Stmt: $3}
 	}
-	| '{' statements_zero '}' ';'
+	| '{' statements_zero '}' tags_zero ';'
 	{
-		$$ = data.BlockStmt{Pos: $1.pos, Stmts: $2}
+		$$ = data.BlockStmt{Pos: $1.pos, Stmts: $2, Tags: $4}
 	}
 	| VAR IDENTIFIER type ';'
 	{

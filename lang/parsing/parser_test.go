@@ -156,7 +156,7 @@ func parseInBlock(t *testing.T, src string, expect interface{}) {
 
 func TestParseStmt(t *testing.T) {
 	parseInBlock(t, "test: ;", LabelledStmt{Pos{1, 1 + parseBlockOffset}, "test", NullStmt{Pos{1, 7 + parseBlockOffset}}})
-	parseInBlock(t, "{ ; };", BlockStmt{Pos{1, 1 + parseBlockOffset}, []Stmt{NullStmt{Pos{1, 3 + parseBlockOffset}}}})
+	parseInBlock(t, "{ ; };", BlockStmt{Pos{1, 1 + parseBlockOffset}, []Stmt{NullStmt{Pos{1, 3 + parseBlockOffset}}}, []string(nil)})
 	parseInBlock(t, "var abc bool;", VarDeclStmt{Pos{1, 1 + parseBlockOffset}, "abc", NamedType{"bool"}, nil})
 	parseInBlock(t, "var abc bool = false;", VarDeclStmt{Pos{1, 1 + parseBlockOffset}, "abc", NamedType{"bool"}, FalseExpr{Pos{1, 16 + parseBlockOffset}}})
 	parseInBlock(t, "if false { ; };", IfStmt{Pos{1, 1 + parseBlockOffset}, FalseExpr{Pos{1, 4 + parseBlockOffset}}, []Stmt{NullStmt{Pos{1, 12 + parseBlockOffset}}}, nil})
@@ -174,7 +174,7 @@ func TestParseStmt(t *testing.T) {
 	parseInBlock(t, "a<<=b;", OpAssignmentStmt{Pos{1, 1 + parseBlockOffset}, "a", "<<", IdentifierExpr{Pos{1, 5 + parseBlockOffset}, "b"}})
 	parseInBlock(t, "a>>=b;", OpAssignmentStmt{Pos{1, 1 + parseBlockOffset}, "a", ">>", IdentifierExpr{Pos{1, 5 + parseBlockOffset}, "b"}})
 
-	parseInBlock(t, "choice { ; }, { skip; };", ChoiceStmt{Pos{1, 1 + parseBlockOffset}, []BlockStmt{BlockStmt{Pos{1, 8 + parseBlockOffset}, []Stmt{NullStmt{Pos{1, 10 + parseBlockOffset}}}}, BlockStmt{Pos{1, 15 + parseBlockOffset}, []Stmt{SkipStmt{Pos{1, 17 + parseBlockOffset}}}}}})
+	parseInBlock(t, "choice { ; }, { skip; };", ChoiceStmt{Pos{1, 1 + parseBlockOffset}, []BlockStmt{BlockStmt{Pos{1, 8 + parseBlockOffset}, []Stmt{NullStmt{Pos{1, 10 + parseBlockOffset}}}, []string(nil)}, BlockStmt{Pos{1, 15 + parseBlockOffset}, []Stmt{SkipStmt{Pos{1, 17 + parseBlockOffset}}}, []string(nil)}}})
 	parseInBlock(t, "recv(ch, 1, 2);", RecvStmt{Pos{1, 1 + parseBlockOffset}, IdentifierExpr{Pos{1, 6 + parseBlockOffset}, "ch"}, []Expr{NumberExpr{Pos{1, 10 + parseBlockOffset}, "1"}, NumberExpr{Pos{1, 13 + parseBlockOffset}, "2"}}, nil})
 	parseInBlock(t, "recv(ch, 1, 2) @omission;", RecvStmt{Pos{1, 1 + parseBlockOffset}, IdentifierExpr{Pos{1, 6 + parseBlockOffset}, "ch"}, []Expr{NumberExpr{Pos{1, 10 + parseBlockOffset}, "1"}, NumberExpr{Pos{1, 13 + parseBlockOffset}, "2"}}, []string{"omission"}})
 	parseInBlock(t, "peek(ch);", PeekStmt{Pos{1, 1 + parseBlockOffset}, IdentifierExpr{Pos{1, 6 + parseBlockOffset}, "ch"}, []Expr{}})

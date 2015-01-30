@@ -22,6 +22,7 @@ var keywords = map[string]int{
 	"else":          ELSE,
 	"choice":        CHOICE,
 	"recv":          RECV,
+	"block":         BLOCK,
 	"timeout_recv":  TIMEOUT_RECV,
 	"nonblock_recv": NONBLOCK_RECV,
 	"peek":          PEEK,

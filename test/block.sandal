@@ -1,0 +1,15 @@
+fault block @bitflip {
+	send(ch, !bit)
+}
+
+proc SendProc(ch channel { bool }) {
+	var bit bool = true
+	{
+		send(ch, bit)
+	} @bitflip
+}
+
+init {
+	ch : channel { bool },
+	sp : SendProc(ch),
+}
