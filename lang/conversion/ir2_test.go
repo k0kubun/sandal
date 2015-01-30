@@ -117,7 +117,7 @@ func TestConvertProcModuleToTemplate(t *testing.T) {
 		Name: "__pid0_ProcA",
 		Args: []string{"ch0"},
 		Vars: []intVar{
-			{"b", "0..127"},
+			{"b", "0..1"},
 		},
 		InitState: intState("state0"),
 		Trans: []intTransition{
@@ -150,7 +150,7 @@ func TestConvertProcModuleToTemplate(t *testing.T) {
 			Vars: []tmplVar{
 				{"state", "{state0, state1, state2}"},
 				{"transition", "{notrans, trans0, trans1}"},
-				{"b", "0..127"},
+				{"b", "0..1"},
 			},
 			Trans: []string{
 				"transition = trans0 -> (TRUE)",

@@ -64,7 +64,7 @@ func TestConvertASTToIntModule(t *testing.T) {
 			Args: []string{"__orig_ch0"},
 			Vars: []intVar{
 				{"ch0", "HandshakeChannel0Proxy(__orig_ch0)"},
-				{"b", "0..127"},
+				{"b", "0..1"},
 			},
 			InitState: intState("state0"),
 			Trans: []intTransition{

@@ -51,7 +51,7 @@ MODULE __pid0_ProcA(__orig_ch0)
   JUSTICE
     running
   VAR
-    b : 0..127;
+    b : 0..1;
     ch0 : HandshakeChannel0Proxy(__orig_ch0);
     state : {state0, state1, state2, state3};
     transition : {notrans, trans0, trans1, trans2};
@@ -227,7 +227,7 @@ MODULE __pid0_ProcA(__orig_ch0)
   JUSTICE
     running
   VAR
-    b : 0..127;
+    b : 0..1;
     ch0 : BufferedChannel0Proxy(__orig_ch0);
     state : {state0, state1, state2};
     transition : {notrans, trans0, trans1};

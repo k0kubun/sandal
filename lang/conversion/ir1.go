@@ -318,7 +318,7 @@ func convertTypeToString(ty Type, env *varEnv) string {
 		case "bool":
 			return "boolean"
 		case "int":
-			return "0..127"
+			return "0..1"
 		default:
 			switch intObj := env.lookup(ty.Name).(type) {
 			case ir1DataTypeDef:
