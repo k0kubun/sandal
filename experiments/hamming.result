@@ -18,6 +18,6 @@ WARNING *** In the future processes may be no longer supported. ***
 
 WARNING *** The model contains PROCESSes or ISAs. ***
 WARNING *** The HRC hierarchy will not be usable. ***
--- specification  F ((((((sd.b1 = rv.b1 & sd.b2 = rv.b2) & sd.b3 = rv.b3) & sd.b4 = rv.b4) & sd.b5 = rv.b5) & sd.b6 = rv.b6) & sd.b7 = rv.b7)  is true
-797.15user 0.04system 13:19.84elapsed 99%CPU (0avgtext+0avgdata 657568maxresident)k
-0inputs+16outputs (0major+46624minor)pagefaults 0swaps
+-- specification  F (((((((rv.finish & sd.b1 = rv.b1) & sd.b2 = rv.b2) & sd.b3 = rv.b3) & sd.b4 = rv.b4) & sd.b5 = rv.b5) & sd.b6 = rv.b6) & sd.b7 = rv.b7)  is true
+1576.54user 0.09system 26:21.95elapsed 99%CPU (0avgtext+0avgdata 1312176maxresident)k
+0inputs+16outputs (0major+90541minor)pagefaults 0swaps
