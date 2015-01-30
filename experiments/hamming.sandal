@@ -130,6 +130,8 @@ proc Receiver(ch channel { bool }) {
 	if mul1 == false && mul2 == false && mul3 == true {
 		b7 = !b7
 	}
+
+	var finish bool = true
 }
 
 init {
@@ -139,5 +141,5 @@ init {
 }
 
 ltl {
-	F(sd.b1 == rv.b1 && sd.b2 == rv.b2 && sd.b3 == rv.b3 && sd.b4 == rv.b4 && sd.b5 == rv.b5 && sd.b6 == rv.b6 && sd.b7 == rv.b7)
+	F(rv.finish && sd.b1 == rv.b1 && sd.b2 == rv.b2 && sd.b3 == rv.b3 && sd.b4 == rv.b4 && sd.b5 == rv.b5 && sd.b6 == rv.b6 && sd.b7 == rv.b7)
 }
