@@ -190,21 +190,21 @@ proc Traitor(chSend1 channel [] { Command }, chSend2 channel [] { Command }, chS
 // workaround
 fault send(chSend1 channel [] { Command }, proposal Command) @byzantine1 {
 	choice {
-		send(chSend1, Attack)
+		send(chSend1, Retreat)
 	}, {
 		send(chSend1, Attack)
 	}
 }
 fault send(chSend2 channel [] { Command }, proposal Command) @byzantine2 {
 	choice {
-		send(chSend2, Attack)
+		send(chSend2, Retreat)
 	}, {
 		send(chSend2, Attack)
 	}
 }
 fault send(chSend3 channel [] { Command }, proposal Command) @byzantine3 {
 	choice {
-		send(chSend3, Attack)
+		send(chSend3, Retreat)
 	}, {
 		send(chSend3, Attack)
 	}
